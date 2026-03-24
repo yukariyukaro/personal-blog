@@ -39,6 +39,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Resolve base path
+        env:
+          VITE_BASE_URL_OVERRIDE: ${{ vars.VITE_BASE_URL }}
+        run: |
+          if [ -n "$VITE_BASE_URL_OVERRIDE" ]; then
+            echo "VITE_BASE_URL=$VITE_BASE_URL_OVERRIDE" >> "$GITHUB_ENV"
+          else
+            REPO_NAME="${GITHUB_REPOSITORY#*/}"
+            if [[ "$REPO_NAME" == *.github.io ]]; then
+              echo "VITE_BASE_URL=/" >> "$GITHUB_ENV"
+            else
+              echo "VITE_BASE_URL=/$REPO_NAME/" >> "$GITHUB_ENV"
+            fi
+          fi
+
       - name: Build
         run: pnpm run build
 

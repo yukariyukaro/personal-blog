@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { resolvePublicAsset } from '../../App'
 import Navbar from '../../components/Navbar'
 import EasterEggHint from '../../components/EasterEggHint'
 import './home.css'
 
-const HOME_IMAGE_SRC = '/home/home.webp'
-const HOME_AV1_VIDEO_SRC = '/home/home_av1.webm'
-const HOME_MP4_VIDEO_SRC = '/home/home.mp4'
+const HOME_IMAGE_SRC = resolvePublicAsset('home/home.webp')
+const HOME_AV1_VIDEO_SRC = resolvePublicAsset('home/home_av1.webm')
 const QUOTE_TEXT = '我们都是小怪兽，总有一天会被正义的奥特曼杀死。'
 
 type NetworkInformationLike = {
@@ -176,7 +176,6 @@ function Home() {
             aria-hidden="true"
           >
             <source src={HOME_AV1_VIDEO_SRC} type='video/webm; codecs="av01.0.05M.08"' />
-            <source src={HOME_MP4_VIDEO_SRC} type="video/mp4" />
           </video>
         )}
       </section>
