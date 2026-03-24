@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import Navbar from '../../components/Navbar'
+import EasterEggHint from '../../components/EasterEggHint'
 import './home.css'
 
 const HOME_IMAGE_SRC = '/home/home.webp'
 const HOME_AV1_VIDEO_SRC = '/home/home_av1.webm'
 const HOME_MP4_VIDEO_SRC = '/home/home.mp4'
+const QUOTE_TEXT = '我们都是小怪兽，总有一天会被正义的奥特曼杀死。'
 
 type NetworkInformationLike = {
   saveData?: boolean
@@ -15,6 +18,7 @@ function Home() {
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
+  const [typedLength, setTypedLength] = useState(0)
 
   const canUseVideo = useMemo(
     () => isVideoEnabled && !hasVideoError,
@@ -23,7 +27,7 @@ function Home() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const connection = navigator.connection as NetworkInformationLike | undefined
+    const connection = (navigator as any).connection as NetworkInformationLike | undefined
     const updateVideoAvailability = () => {
       const reduceMotion = mediaQuery.matches
       const saveData = Boolean(connection?.saveData)
@@ -96,32 +100,87 @@ function Home() {
     }
   }, [canUseVideo])
 
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      setTypedLength(QUOTE_TEXT.length)
+      return
+    }
+
+    const totalDuration = 3500
+    const delayDuration = 2000
+    const totalSteps = QUOTE_TEXT.length
+    const stepDuration = totalDuration / totalSteps
+    let timeoutId = 0
+    let intervalId = 0
+
+    setTypedLength(0)
+    timeoutId = window.setTimeout(() => {
+      let current = 0
+      intervalId = window.setInterval(() => {
+        current += 1
+        setTypedLength(current)
+        if (current >= totalSteps) {
+          window.clearInterval(intervalId)
+        }
+      }, stepDuration)
+    }, delayDuration)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.clearInterval(intervalId)
+    }
+  }, [])
+
   return (
-    <section className="home-bg" aria-label="home background">
-      <img
-        className={`home-bg__image ${isVideoReady ? 'is-hidden' : ''}`}
-        src={HOME_IMAGE_SRC}
-        alt=""
-        aria-hidden="true"
-        loading="eager"
-        fetchPriority="high"
-      />
-      {canUseVideo && (
-        <video
-          ref={videoRef}
-          className={`home-bg__video ${isVideoReady ? 'is-visible' : ''}`}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
+    <main className="home-container">
+      {/* 顶部毛玻璃导航栏组件 */}
+      <Navbar />
+
+      {/* 绝对定位在右上角的标题 */}
+      <div className="home-title-container">
+        <h1 className="home-title">娄宿三's blog</h1>
+        <div className="home-title-easter-egg">
+          <EasterEggHint />
+        </div>
+      </div>
+
+      {/* 中心偏上内容区 (引用名言) */}
+      <header className="home-hero">
+        <div className="home-hero__quote-container" aria-label={QUOTE_TEXT}>
+          <p className="home-hero__quote" aria-hidden="true">
+            <span className="home-hero__quote-text">{QUOTE_TEXT.slice(0, typedLength)}</span>
+          </p>
+        </div>
+      </header>
+
+      {/* 背景层 */}
+      <section className="home-bg" aria-label="home background">
+        <img
+          className={`home-bg__image ${isVideoReady ? 'is-hidden' : ''}`}
+          src={HOME_IMAGE_SRC}
+          alt=""
           aria-hidden="true"
-        >
-          <source src={HOME_AV1_VIDEO_SRC} type='video/webm; codecs="av01.0.05M.08"' />
-          <source src={HOME_MP4_VIDEO_SRC} type="video/mp4" />
-        </video>
-      )}
-    </section>
+          loading="eager"
+          fetchPriority="high"
+        />
+        {canUseVideo && (
+          <video
+            ref={videoRef}
+            className={`home-bg__video ${isVideoReady ? 'is-visible' : ''}`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source src={HOME_AV1_VIDEO_SRC} type='video/webm; codecs="av01.0.05M.08"' />
+            <source src={HOME_MP4_VIDEO_SRC} type="video/mp4" />
+          </video>
+        )}
+      </section>
+    </main>
   )
 }
 

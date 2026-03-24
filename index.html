@@ -12,11 +12,12 @@
       @font-face {
         font-family: 'SmileySans';
         src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');
-        font-display: swap;
+        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */
       }
 
       body {
         margin: 0;
+        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */
       }
 
       #global-loading {
@@ -61,14 +62,47 @@
         align-items: flex-end;
         border-bottom: 4px solid #39C5BB;
         padding-bottom: 4px;
+        border-radius: 2px;
       }
 
       .loading-title {
+        display: flex;
+        align-items: baseline;
         font-size: 3rem;
         line-height: 1;
         font-weight: bold;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         margin: 0;
+        /* 可爱的字体描边和阴影效果 (贴纸风格) */
+        color: #39C5BB;
+        -webkit-text-stroke: 1px #020202;
+        text-shadow: 
+          3px 3px 0 #2ca097, 
+          4px 4px 5px rgba(0, 0, 0, 0.15);
+      }
+
+      /* 错落有致的文字排版 */
+      .loading-title span {
+        display: inline-block;
+        transform-origin: bottom center;
+      }
+
+      /* 第一、三个文字同高度、大小稍大 */
+      .loading-title .char-1,
+      .loading-title .char-3 {
+        font-size: 1.1em;
+        transform: translateY(-0.2em);
+      }
+
+      /* 第四个文字大小稍大，高度与二、五一致（贴底） */
+      .loading-title .char-4 {
+        font-size: 1.1em;
+      }
+
+      /* 第二、五个文字稍小，高度偏低（贴底） */
+      .loading-title .char-2,
+      .loading-title .char-5 {
+        font-size: 0.85em;
       }
 
       .loading-subtitle {
@@ -78,6 +112,9 @@
         padding-top: 4px;
         margin: 0;
         animation: loading-blink 1.5s infinite;
+        /* 副标题同样增加微弱的描边使其更清晰 */
+        color: #39C5BB;
+        text-shadow: 1px 1px 0 #2ca097;
       }
 
       @keyframes loading-blink {
@@ -111,7 +148,13 @@
         <img class="loading-image" src="/吃葱.webp" alt="loading" />
         <div class="loading-text-container">
           <div class="loading-title-wrapper">
-            <h1 class="loading-title">少女吃葱中</h1>
+            <h1 class="loading-title">
+              <span class="char-1">少</span>
+              <span class="char-2">女</span>
+              <span class="char-3">吃</span>
+              <span class="char-4">葱</span>
+              <span class="char-5">中</span>
+            </h1>
           </div>
           <p class="loading-subtitle">Now Loading...</p>
         </div>

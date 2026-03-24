@@ -1,0 +1,81 @@
+/* 彩蛋触发器：一个小绿点 */
+.glass-nav__easter-egg-trigger {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.glass-nav__easter-egg-trigger:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.glass-nav__egg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #39C5BB; /* 初音绿 */
+  box-shadow: 0 0 8px rgba(57, 197, 187, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-nav__easter-egg-trigger:hover .glass-nav__egg-dot {
+  transform: scale(1.5);
+  box-shadow: 0 0 12px rgba(57, 197, 187, 0.9);
+}
+
+/* Tooltip 内容 */
+.glass-nav__tooltip-content {
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(30, 30, 30, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(57, 197, 187, 0.3);
+  user-select: none;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  /* 确保文本能正常显示在所有图层之上 */
+  z-index: 9999;
+}
+.glass-nav__tooltip-content[data-state='delayed-open'][data-side='top'] {
+  animation-name: slideDownAndFade;
+}
+.glass-nav__tooltip-content[data-state='delayed-open'][data-side='right'] {
+  animation-name: slideLeftAndFade;
+}
+.glass-nav__tooltip-content[data-state='delayed-open'][data-side='bottom'] {
+  animation-name: slideUpAndFade;
+}
+.glass-nav__tooltip-content[data-state='delayed-open'][data-side='left'] {
+  animation-name: slideRightAndFade;
+}
+
+.glass-nav__tooltip-arrow {
+  fill: rgba(30, 30, 30, 0.85);
+}
+
+@keyframes slideUpAndFade {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideRightAndFade {
+  from { opacity: 0; transform: translateX(-2px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideDownAndFade {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideLeftAndFade {
+  from { opacity: 0; transform: translateX(2px); }
+  to { opacity: 1; transform: translateX(0); }
+}
