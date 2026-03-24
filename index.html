@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vite-project</title>
+    <!-- 预加载自定义字体，赋予最高优先级 -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+    <style>
+      /* 全局 Loading 关键样式 */
+      @font-face {
+        font-family: 'SmileySans';
+        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      #global-loading {
+        position: fixed;
+        inset: 0;
+        background-color: #ffffff;
+        z-index: 9999;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 5vw;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        font-family: 'SmileySans', system-ui, sans-serif;
+      }
+
+      #global-loading.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .loading-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 1rem;
+      }
+
+      .loading-image {
+        width: 120px;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .loading-text-container {
+        display: flex;
+        flex-direction: column;
+        color: #39C5BB; /* miku色 */
+      }
+
+      .loading-title-wrapper {
+        display: flex;
+        align-items: flex-end;
+        border-bottom: 4px solid #39C5BB;
+        padding-bottom: 4px;
+      }
+
+      .loading-title {
+        font-size: 3rem;
+        line-height: 1;
+        font-weight: bold;
+        letter-spacing: 0.1em;
+        margin: 0;
+      }
+
+      .loading-subtitle {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        align-self: flex-end;
+        padding-top: 4px;
+        margin: 0;
+        animation: loading-blink 1.5s infinite;
+      }
+
+      @keyframes loading-blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .loading-subtitle {
+          animation: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .loading-image {
+          width: 80px;
+        }
+        .loading-title {
+          font-size: 2rem;
+        }
+        .loading-subtitle {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 全局 Loading DOM -->
+    <div id="global-loading" aria-label="Loading" role="status" aria-live="polite">
+      <div class="loading-container">
+        <img class="loading-image" src="/吃葱.webp" alt="loading" />
+        <div class="loading-text-container">
+          <div class="loading-title-wrapper">
+            <h1 class="loading-title">少女吃葱中</h1>
+          </div>
+          <p class="loading-subtitle">Now Loading...</p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
