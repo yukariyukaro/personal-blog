@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { resolvePublicAsset } from '../../App'
+import { resolvePublicAsset } from '../../utils/baseUrl'
 import Navbar from '../../components/Navbar'
 import EasterEggHint from '../../components/EasterEggHint'
 import './home.css'
@@ -13,12 +13,18 @@ type NetworkInformationLike = {
   effectiveType?: string
 }
 
+type NavigatorWithConnection = Navigator & {
+  connection?: NetworkInformationLike
+}
+
 function Home() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isVideoReady, setIsVideoReady] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
-  const [typedLength, setTypedLength] = useState(0)
+  const [typedLength, setTypedLength] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? QUOTE_TEXT.length : 0,
+  )
 
   const canUseVideo = useMemo(
     () => isVideoEnabled && !hasVideoError,
@@ -27,7 +33,7 @@ function Home() {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const connection = (navigator as any).connection as NetworkInformationLike | undefined
+    const connection = (navigator as NavigatorWithConnection).connection
     const updateVideoAvailability = () => {
       const reduceMotion = mediaQuery.matches
       const saveData = Boolean(connection?.saveData)
@@ -43,21 +49,6 @@ function Home() {
     mediaQuery.addEventListener('change', updateVideoAvailability)
     return () => {
       mediaQuery.removeEventListener('change', updateVideoAvailability)
-    }
-  }, [])
-
-  // 移除全局 Loading 动画
-  useEffect(() => {
-    const loadingEl = document.getElementById('global-loading')
-    if (loadingEl) {
-      // 延迟一小段时间，确保过渡动画可见
-      const timer = setTimeout(() => {
-        loadingEl.classList.add('is-hidden')
-        setTimeout(() => {
-          loadingEl.remove()
-        }, 500) // 与 CSS 中的 transition 时间保持一致
-      }, 300)
-      return () => clearTimeout(timer)
     }
   }, [])
 
@@ -103,7 +94,6 @@ function Home() {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) {
-      setTypedLength(QUOTE_TEXT.length)
       return
     }
 
@@ -114,7 +104,6 @@ function Home() {
     let timeoutId = 0
     let intervalId = 0
 
-    setTypedLength(0)
     timeoutId = window.setTimeout(() => {
       let current = 0
       intervalId = window.setInterval(() => {
