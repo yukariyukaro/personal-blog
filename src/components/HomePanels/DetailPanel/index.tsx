@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { resolvePublicAsset } from '../../../utils/baseUrl'
 import './DetailPanel.css'
 
@@ -145,8 +145,6 @@ function DetailPanel() {
         <div className="detail-menu" role="tablist" aria-orientation="vertical">
           {PROJECTS.map((project, index) => {
             const isActive = index === activeIndex
-            const isHovered = index === hoverIndex
-            const showPreview = isHovered && project.previewImage
 
             return (
               <div
@@ -177,16 +175,17 @@ function DetailPanel() {
         {/* 将预览图容器移出循环，作为独立的跟随鼠标元素 */}
         {PROJECTS.map((project, index) => {
           if (!project.previewImage) {
-            previewRefs.current[index] = null;
-            return null;
+            return null
           }
           
-          const isHovered = index === hoverIndex;
+          const isHovered = index === hoverIndex
           
           return (
             <div 
               key={`preview-${project.id}`}
-              ref={(el) => { previewRefs.current[index] = el; }}
+              ref={(el) => {
+                previewRefs.current[index] = el
+              }}
               className={`detail-menu__preview-container ${isHovered ? 'is-visible' : ''} type-${project.previewType}`}
             >
               <div className="detail-menu__preview-wrapper">
@@ -198,7 +197,7 @@ function DetailPanel() {
                 <div className="detail-menu__preview-overlay"></div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
 
