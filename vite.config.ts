@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import Pages from "vite-plugin-pages";
+import { existsSync } from "node:fs";
 
 const normalizeBase = (rawBase: string) => {
   if (!rawBase) {
@@ -13,8 +14,12 @@ const normalizeBase = (rawBase: string) => {
 };
 
 const repository = process.env.GITHUB_REPOSITORY?.split("/")[1] ?? "";
-const defaultBase =
-  repository && !repository.endsWith(".github.io") ? `/${repository}/` : "/";
+const hasCustomDomain = existsSync("CNAME");
+const defaultBase = hasCustomDomain
+  ? "/"
+  : repository && !repository.endsWith(".github.io")
+    ? `/${repository}/`
+    : "/";
 const base = normalizeBase(process.env.VITE_BASE_URL ?? defaultBase);
 
 export default defineConfig({

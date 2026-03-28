@@ -7,7 +7,7 @@ const PROJECTS = [
   {
     id: 'project-triple-uni',
     title: 'Triple Uni',
-    bgImage: resolvePublicAsset('home/home.webp'), 
+    bgImage: resolvePublicAsset('home/home.webp'),
     previewImage: resolvePublicAsset('Detail/TripleUni.webp'),
     previewType: 'landscape',
     description: 'Triple Uni 是接通香港大学“HKU噗噗”、香港中文大学“马料水哔哔机”及香港科技大学“科大星尘”的三校匿名树洞社交平台，拥有30K+注册用户和高频的日活跃度，旨在打造港校交流的小宇宙。',
