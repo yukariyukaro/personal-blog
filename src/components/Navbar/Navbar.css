@@ -1,46 +1,80 @@
-.glass-nav {
+.site-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   display: flex;
   align-items: center;
-  height: 64px;
-  padding: 0 5vw;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  height: 96px;
+  padding: 0 180px 0 5vw;
+  z-index: 9999;
+  /* Deep to light frosted glass gradient */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.4) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  /* Use mask to make blur fade out towards bottom */
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  
   animation: nav-slide-down 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: 0.5s;
-  transform: translateY(-100%);
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-nav__list {
+.site-nav::after {
+  width: auto;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 5vw;
+  right: 0;
+  height: 1px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  transform-origin: left center;
+  opacity: 0;
+  animation: nav-divider-slide-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+}
+
+@keyframes nav-divider-slide-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.site-nav__list {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
   list-style: none;
-  margin: 0;
+  margin: 0 0 0 6vw; /* Add space between Logo and Menu items */
   padding: 0;
+  gap: 4rem;
 }
 
-.glass-nav__logo-item {
+.site-nav__logo-container {
   display: flex;
   align-items: center;
   height: 64px;
+  flex-shrink: 0;
 }
 
-.glass-nav__logo {
-  display: flex;
-  align-items: center;
-  height: 64px;
-}
-
-.glass-nav__logo a {
+.site-nav__logo {
   display: flex;
   align-items: center;
   height: 100%;
@@ -48,26 +82,99 @@
   font-family: 'SmileySans', system-ui, sans-serif;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: rgba(245, 248, 252, 0.95);
   letter-spacing: 0.1em;
   text-decoration: none;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow:
+    0 1px 10px rgba(4, 8, 16, 0.5),
+    0 0 14px rgba(230, 236, 246, 0.24);
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
 
-.glass-nav__logo a:hover {
-  opacity: 0.8;
+.site-nav__logo:hover {
+  opacity: 0.88;
+}
+
+.site-nav__item {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+
+.site-nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  gap: 4px;
+  padding: 0 12px;
+  position: relative;
+  cursor: pointer;
+}
+
+.site-nav__text-en {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.site-nav__text-zh {
+  font-family: 'SmileySans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: normal;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease;
+}
+
+.site-nav__link:hover .site-nav__text-en,
+.site-nav__link--active .site-nav__text-en {
+  color: #00e5ff;
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+}
+
+.site-nav__link:hover .site-nav__text-zh,
+.site-nav__link--active .site-nav__text-zh {
+  color: #00e5ff;
 }
 
 @keyframes nav-slide-down {
+  from {
+    transform: translateY(-100%);
+  }
   to {
     transform: translateY(0);
   }
 }
 
+@media (max-width: 768px) {
+  .site-nav {
+    height: 72px;
+    padding: 0 80px 0 5vw;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .glass-nav {
+  .site-nav,
+  .site-nav::after {
     animation-duration: 0.01ms !important;
+  }
+}
+
+.site-nav--hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .site-nav {
+    right: 80px;
   }
 }

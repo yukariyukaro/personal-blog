@@ -1,0 +1,586 @@
+/* -------------------------------------
+   DetailPanel 容器与全局变量
+------------------------------------- */
+.detail-panel {
+  --detail-theme: #d4ff00; /* 高对比黄 */
+  --detail-dark: #111111;
+  --detail-gray: #222222;
+  --detail-text-gray: #888888;
+  
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--detail-dark);
+  display: flex;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* -------------------------------------
+   背景层 (根据选中的项目切换)
+------------------------------------- */
+.detail-panel__bg-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.detail-panel__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.3);
+  transform: scale(1.05); /* 隐藏由于blur产生的白边 */
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-panel__bg.is-active {
+  opacity: 1;
+}
+
+/* 背景几何装饰网格 */
+.detail-panel__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* -------------------------------------
+   左侧抽屉 / 作品列表
+------------------------------------- */
+.detail-panel__left {
+  position: relative;
+  z-index: 2;
+  width: 45%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* 几何切割效果 */
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  border-right: 4px solid var(--detail-theme);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: max(5%, 4rem);
+  padding-right: 15%;
+}
+
+/* 装饰边缘亮线 */
+.detail-panel__left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  background: rgba(212, 255, 0, 0.15);
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.detail-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  z-index: 20; /* 确保标题在预览图之上 */
+}
+
+.detail-menu__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.8rem;
+  cursor: pointer;
+  group: hover;
+}
+
+.detail-menu__item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+/* 底部下划线动画 */
+.detail-menu__item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.detail-menu__item::before {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--detail-theme);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.detail-menu__item:hover::before,
+.detail-menu__item.is-active::before {
+  width: 100%;
+}
+
+/* 菱形图标 */
+.detail-menu__icon {
+  font-size: 1.5rem;
+  color: var(--detail-theme);
+  opacity: 0;
+  transform: translateX(-15px) rotate(45deg);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.detail-menu__item:hover .detail-menu__icon,
+.detail-menu__item.is-active .detail-menu__icon {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+}
+
+.detail-menu__title {
+  font-family: 'SmileySans', system-ui, sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  transition: color 0.3s ease;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.detail-menu__item:hover .detail-menu__title,
+.detail-menu__item.is-active .detail-menu__title {
+  color: var(--detail-theme);
+}
+
+/* -------------------------------------
+   左侧悬浮预览图 (Preview Image)
+------------------------------------- */
+.detail-menu__preview-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  /* 移除 transform 过渡，因为我们要用 JS 实时更新 transform，保留其他属性的过渡 */
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 添加毛玻璃边框和阴影 */
+  border-radius: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(212, 255, 0, 0.1);
+  border: 1px solid rgba(212, 255, 0, 0.2);
+  will-change: transform, opacity;
+}
+
+.detail-menu__preview-container.is-visible {
+  opacity: 1;
+  z-index: 10; /* 显示时提升层级 */
+}
+
+.detail-menu__preview-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--detail-dark);
+}
+
+/* 遮罩层，增加一点暗角效果让图片更融入环境 */
+.detail-menu__preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.detail-menu__preview-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 3s ease-out;
+}
+
+.detail-menu__preview-container.is-visible .detail-menu__preview-img {
+  transform: scale(1.05);
+}
+
+/* 针对不同类型的预览图设定尺寸 */
+.detail-menu__preview-container.type-landscape {
+  width: 400px;
+  height: 225px; /* 16:9 比例 */
+}
+
+.detail-menu__preview-container.type-portrait {
+  width: 240px;
+  height: 426px; /* 9:16 比例 */
+}
+
+.detail-menu__preview-container.type-logo {
+  width: 280px;
+  height: 120px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.detail-menu__preview-container.type-logo .detail-menu__preview-img {
+  object-fit: contain;
+  padding: 1.5rem;
+}
+
+/* -------------------------------------
+   右侧详情卡片
+------------------------------------- */
+.detail-panel__right {
+  position: relative;
+  z-index: 2;
+  width: 55%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 靠近左侧抽屉 */
+  padding-left: 2rem;
+  padding-right: max(180px, 10%); /* 为 SideIndicator 留出空间 */
+}
+
+.detail-card-wrapper {
+  width: 100%;
+  max-width: 680px;
+  perspective: 1000px;
+}
+
+.detail-card {
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px 24px 2px 24px; /* 几何切角 */
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  
+  /* 动画 */
+  opacity: 0;
+  transform: rotateX(5deg) translateY(20px);
+  animation: detail-card-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+}
+
+@keyframes detail-card-in {
+  to {
+    opacity: 1;
+    transform: rotateX(0) translateY(0);
+  }
+}
+
+.home-panel--current .detail-card {
+  animation: detail-card-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
+}
+
+/* 卡片头部 */
+.detail-card__header {
+  background: var(--detail-theme);
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 头部斜线纹理 */
+.detail-card__header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.06) 8px,
+    rgba(0, 0, 0, 0.06) 16px
+  );
+  pointer-events: none;
+}
+
+.detail-card__index {
+  font-family: 'SmileySans', system-ui, sans-serif;
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 0.8;
+  color: var(--detail-dark);
+}
+
+.detail-card__header-text {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.detail-card__label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.detail-card__header-title {
+  font-family: 'SmileySans', system-ui, sans-serif;
+  font-size: 2.2rem;
+  color: var(--detail-dark);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+/* 卡片主体 */
+.detail-card__body {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.detail-card__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-card__section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--detail-theme);
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+.detail-card__section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.2em;
+  background-color: var(--detail-theme);
+}
+
+.detail-card__text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  text-align: justify;
+}
+
+/* 按钮动作区 */
+.detail-card__action {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detail-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: transparent;
+  color: var(--detail-theme);
+  text-decoration: none;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--detail-theme);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 切角效果 */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.detail-card__btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--detail-theme);
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.detail-card__btn:hover {
+  color: var(--detail-dark);
+  box-shadow: 0 0 15px rgba(212, 255, 0, 0.4);
+}
+
+.detail-card__btn:hover::before {
+  transform: translateX(0);
+}
+
+.detail-card__btn-text,
+.detail-card__btn-icon {
+  position: relative;
+  z-index: 1;
+}
+
+.detail-card__btn-icon {
+  display: flex;
+  align-items: center;
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-card__btn:hover .detail-card__btn-icon {
+  transform: translateX(4px);
+}
+
+/* -------------------------------------
+   响应式设计 (Responsive)
+------------------------------------- */
+@media (max-width: 1200px) {
+  .detail-panel__left {
+    width: 40%;
+    padding-left: 2rem;
+    padding-right: 10%;
+  }
+  .detail-panel__right {
+    width: 60%;
+    padding-right: 120px;
+  }
+  .detail-menu__title {
+    font-size: 2rem;
+  }
+  .detail-menu__subtitle {
+    font-size: 1rem;
+  }
+  
+  /* 屏幕变小时缩小预览图 */
+  .detail-menu__preview-container.type-landscape {
+    width: 320px;
+    height: 180px;
+  }
+  .detail-menu__preview-container.type-portrait {
+    width: 180px;
+    height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-panel {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .detail-panel__bg {
+    filter: blur(12px) brightness(0.25);
+  }
+
+  .detail-panel__left {
+    width: 100%;
+    height: auto;
+    clip-path: none;
+    border-right: none;
+    border-bottom: 2px solid var(--detail-theme);
+    padding: 15vh 2rem 2rem;
+    background: rgba(10, 10, 10, 0.85);
+  }
+
+  .detail-panel__left::after {
+    display: none;
+  }
+
+  .detail-menu {
+    gap: 1.5rem;
+  }
+
+  .detail-menu__title {
+    font-size: 1.8rem;
+  }
+
+  /* 移动端隐藏悬浮预览图 */
+  .detail-menu__preview-container {
+    display: none;
+  }
+
+  .detail-panel__right {
+    width: 100%;
+    height: auto;
+    padding: 2rem;
+    padding-bottom: 10vh; /* 为底部滚动指示器留空间 */
+    justify-content: center;
+  }
+
+  .detail-card-wrapper {
+    max-width: 100%;
+  }
+  
+  .detail-card__header {
+    padding: 1.2rem 1.5rem;
+  }
+  
+  .detail-card__index {
+    font-size: 3rem;
+  }
+  
+  .detail-card__header-title {
+    font-size: 1.8rem;
+  }
+  
+  .detail-card__body {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-panel__bg,
+  .detail-menu__item::before,
+  .detail-menu__icon,
+  .detail-card {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

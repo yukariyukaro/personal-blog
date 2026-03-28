@@ -1,12 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { resolvePublicAsset } from '../../utils/baseUrl'
-import Navbar from '../../components/Navbar'
-import EasterEggHint from '../../components/EasterEggHint'
+import { useOutletContext } from 'react-router-dom'
+import type { AppContextType } from '../../App'
+import HeroPanel from '../../components/HomePanels/HeroPanel'
+import SideIndicator from '../../components/SideIndicator'
+import ScrollIndicator from '../../components/ScrollIndicator'
 import './home.css'
 
-const HOME_IMAGE_SRC = resolvePublicAsset('home/home.webp')
-const HOME_AV1_VIDEO_SRC = resolvePublicAsset('home/home_av1.webm')
-const QUOTE_TEXT = '我们都是小怪兽，总有一天会被正义的奥特曼杀死。'
+const IntroPanel = lazy(() => import('../../components/HomePanels/IntroPanel'))
+const DetailPanel = lazy(() => import('../../components/HomePanels/DetailPanel'))
+
+const QUOTE_TEXT = '在你最孤独最无望的时候，有一扇门会在你身边打开。'
+const HOME_STATES = ['hero', 'intro', 'detail'] as const
+
+const PANEL_TITLES = [
+  { en: 'HOMEPAGE', zh: '首页' },
+  { en: 'INFORMATION', zh: '介绍' },
+  { en: 'PORTFOLIO', zh: '作品' },
+]
 
 type NetworkInformationLike = {
   saveData?: boolean
@@ -17,18 +28,302 @@ type NavigatorWithConnection = Navigator & {
   connection?: NetworkInformationLike
 }
 
+type HomeState = (typeof HOME_STATES)[number]
+type TransitionDirection = 'next' | 'prev'
+
 function Home() {
+  const { activeStateIndex: externalActiveIndex, setActiveStateIndex: setExternalActiveIndex } = useOutletContext<AppContextType>() || { activeStateIndex: 0, setActiveStateIndex: () => {} }
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isVideoReady, setIsVideoReady] = useState(false)
+  const touchStartYRef = useRef<number | null>(null)
+  const wheelDeltaRef = useRef(0)
+  const interactionLockUntilRef = useRef(0)
+  const prefetchedIntroRef = useRef(false)
+  const prefetchedDetailRef = useRef(false)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [isVideoVisible, setIsVideoVisible] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
+  
+  // Use internal state synced with external
+  const [activeState, setActiveState] = useState<HomeState>(HOME_STATES[externalActiveIndex] || 'hero')
+  const [transitionFromState, setTransitionFromState] = useState<HomeState | null>(null)
+  const [transitionDirection, setTransitionDirection] = useState<TransitionDirection>('next')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [renderedPanels, setRenderedPanels] = useState({
+    intro: externalActiveIndex >= 1,
+    detail: externalActiveIndex >= 2,
+  })
   const [typedLength, setTypedLength] = useState(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches ? QUOTE_TEXT.length : 0,
   )
+  const prefersReducedMotion = useMemo(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  )
+  const activeStateIndex = useMemo(() => HOME_STATES.indexOf(activeState), [activeState])
+
+  // Sync internal state to external
+  useEffect(() => {
+    if (externalActiveIndex !== activeStateIndex) {
+      setExternalActiveIndex(activeStateIndex)
+    }
+  }, [activeStateIndex, externalActiveIndex, setExternalActiveIndex])
+
+  // Sync external state to internal (when navbar is clicked)
+  useEffect(() => {
+    if (externalActiveIndex !== activeStateIndex) {
+      const targetState = HOME_STATES[externalActiveIndex]
+      if (targetState) {
+        transitionToState(targetState)
+      }
+    }
+  }, [externalActiveIndex]) // Only listen to external index changes here
 
   const canUseVideo = useMemo(
     () => isVideoEnabled && !hasVideoError,
     [isVideoEnabled, hasVideoError],
+  )
+  const homeImageSrc = useMemo(() => resolvePublicAsset('home/home.webp'), [])
+  const homeAv1VideoSrc = useMemo(() => resolvePublicAsset('home/home_av1.webm'), [])
+
+  const preloadIntroPanel = useCallback(() => {
+    if (prefetchedIntroRef.current) {
+      return
+    }
+    prefetchedIntroRef.current = true
+    void import('../../components/HomePanels/IntroPanel')
+  }, [])
+
+  const preloadDetailPanel = useCallback(() => {
+    if (prefetchedDetailRef.current) {
+      return
+    }
+    prefetchedDetailRef.current = true
+    void import('../../components/HomePanels/DetailPanel')
+  }, [])
+
+  useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (callback: IdleRequestCallback) => number
+      cancelIdleCallback?: (handle: number) => void
+    }
+
+    if (prefetchedIntroRef.current) {
+      return
+    }
+
+    if (win.requestIdleCallback) {
+      const idleId = win.requestIdleCallback(() => {
+        preloadIntroPanel()
+      })
+      return () => {
+        if (win.cancelIdleCallback) {
+          win.cancelIdleCallback(idleId)
+        }
+      }
+    }
+
+    const timer = window.setTimeout(() => {
+      preloadIntroPanel()
+    }, 1200)
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [preloadIntroPanel])
+
+  const transitionToState = useCallback(
+    (targetState: HomeState) => {
+      if (targetState === activeState || isTransitioning) {
+        return false
+      }
+
+      if (targetState === 'intro') {
+        setRenderedPanels((prev) => ({ ...prev, intro: true }))
+      }
+      if (targetState === 'detail') {
+        setRenderedPanels((prev) => ({ ...prev, intro: true, detail: true }))
+      }
+
+      setTransitionFromState(activeState)
+      setTransitionDirection(
+        HOME_STATES.indexOf(targetState) > HOME_STATES.indexOf(activeState) ? 'next' : 'prev',
+      )
+      setActiveState(targetState)
+
+      if (!prefersReducedMotion) {
+        setIsTransitioning(true)
+      }
+      return true
+    },
+    [activeState, isTransitioning, prefersReducedMotion],
+  )
+
+  const goNext = useCallback(() => {
+    if (activeStateIndex >= HOME_STATES.length - 1) {
+      return false
+    }
+    const nextState = HOME_STATES[activeStateIndex + 1]
+    if (nextState === 'intro') {
+      preloadIntroPanel()
+    }
+    if (nextState === 'detail') {
+      preloadDetailPanel()
+    }
+    return transitionToState(nextState)
+  }, [activeStateIndex, preloadDetailPanel, preloadIntroPanel, transitionToState])
+
+  const goPrev = useCallback(() => {
+    if (activeStateIndex <= 0) {
+      return false
+    }
+    const prevState = HOME_STATES[activeStateIndex - 1]
+    return transitionToState(prevState)
+  }, [activeStateIndex, transitionToState])
+
+  const navigateWithLock = useCallback(
+    (direction: TransitionDirection) => {
+      const now = Date.now()
+      if (isTransitioning || now < interactionLockUntilRef.current) {
+        return false
+      }
+
+      const handled = direction === 'next' ? goNext() : goPrev()
+      interactionLockUntilRef.current = now + (handled ? 700 : 220)
+      return handled
+    },
+    [goNext, goPrev, isTransitioning],
+  )
+
+  useEffect(() => {
+    if (activeState === 'intro') {
+      preloadDetailPanel()
+    }
+  }, [activeState, preloadDetailPanel])
+
+  useEffect(() => {
+    const wheelThreshold = 30
+    const touchThreshold = 48
+
+    const handleWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+        return
+      }
+      wheelDeltaRef.current += event.deltaY
+
+      if (Math.abs(wheelDeltaRef.current) < wheelThreshold) {
+        return
+      }
+
+      const direction: TransitionDirection = wheelDeltaRef.current > 0 ? 'next' : 'prev'
+      wheelDeltaRef.current = 0
+      const handled = navigateWithLock(direction)
+      if (handled) {
+        event.preventDefault()
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return
+      }
+
+      if (event.key === 'ArrowDown' || event.key === 'PageDown' || event.key === ' ') {
+        const handled = navigateWithLock('next')
+        if (handled) {
+          event.preventDefault()
+        }
+        return
+      }
+
+      if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+        const handled = navigateWithLock('prev')
+        if (handled) {
+          event.preventDefault()
+        }
+      }
+    }
+
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartYRef.current = event.touches[0]?.clientY ?? null
+    }
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      const startY = touchStartYRef.current
+      const endY = event.changedTouches[0]?.clientY
+      touchStartYRef.current = null
+
+      if (startY == null || endY == null) {
+        return
+      }
+
+      const deltaY = startY - endY
+      if (Math.abs(deltaY) < touchThreshold) {
+        return
+      }
+
+      if (deltaY > 0) {
+        navigateWithLock('next')
+      } else {
+        navigateWithLock('prev')
+      }
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [navigateWithLock])
+
+  const getPanelClass = useCallback(
+    (state: HomeState) => {
+      const stateIndex = HOME_STATES.indexOf(state)
+
+      if (!isTransitioning || !transitionFromState) {
+        if (state === activeState) {
+          return 'home-panel--current'
+        }
+        return stateIndex < activeStateIndex ? 'home-panel--left' : 'home-panel--right'
+      }
+
+      if (state === transitionFromState) {
+        return transitionDirection === 'next' ? 'home-panel--from-next' : 'home-panel--from-prev'
+      }
+
+      if (state === activeState) {
+        return transitionDirection === 'next' ? 'home-panel--to-next' : 'home-panel--to-prev'
+      }
+
+      return stateIndex < activeStateIndex ? 'home-panel--left' : 'home-panel--right'
+    },
+    [activeState, activeStateIndex, isTransitioning, transitionDirection, transitionFromState],
+  )
+
+  const handlePanelTransitionEnd = useCallback(
+    (event: React.TransitionEvent<HTMLDivElement>) => {
+      if (!isTransitioning) {
+        return
+      }
+      const target = event.target as HTMLElement
+      if (!target.classList.contains('home-panel') || event.propertyName !== 'transform') {
+        return
+      }
+      setIsTransitioning(false)
+      setTransitionFromState(null)
+    },
+    [isTransitioning],
   )
 
   useEffect(() => {
@@ -58,38 +353,46 @@ function Home() {
       return
     }
 
-    const markVideoReady = () => {
-      setIsVideoReady(true)
+    const markVideoLoaded = () => {
+      setIsVideoLoaded(true)
     }
+
     const handleError = () => {
       setHasVideoError(true)
-      setIsVideoReady(false)
+      setIsVideoLoaded(false)
+      setIsVideoVisible(false)
     }
 
-    videoElement.addEventListener('loadeddata', markVideoReady)
-    videoElement.addEventListener('canplay', markVideoReady)
-    videoElement.addEventListener('playing', markVideoReady)
+    videoElement.addEventListener('canplaythrough', markVideoLoaded)
     videoElement.addEventListener('error', handleError)
 
-    if (videoElement.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      markVideoReady()
+    if (videoElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      markVideoLoaded()
     }
 
-    videoElement.play().catch((error: unknown) => {
-      if (import.meta.env.DEV) {
-        console.warn('[HomeVideo] play() rejected', error)
-      }
-    })
-
     return () => {
-      videoElement.removeEventListener('loadeddata', markVideoReady)
-      videoElement.removeEventListener('canplay', markVideoReady)
-      videoElement.removeEventListener('playing', markVideoReady)
+      videoElement.removeEventListener('canplaythrough', markVideoLoaded)
       videoElement.removeEventListener('error', handleError)
       videoElement.pause()
       videoElement.currentTime = 0
     }
   }, [canUseVideo])
+
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement || !canUseVideo || !isVideoLoaded) {
+      return
+    }
+
+    const revealTimer = window.setTimeout(() => {
+      videoElement.play().catch(() => undefined)
+      setIsVideoVisible(true)
+    }, 180)
+
+    return () => {
+      window.clearTimeout(revealTimer)
+    }
+  }, [canUseVideo, isVideoLoaded])
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -123,51 +426,43 @@ function Home() {
 
   return (
     <main className="home-container">
-      {/* 顶部毛玻璃导航栏组件 */}
-      <Navbar />
+      <ScrollIndicator visible={activeStateIndex < HOME_STATES.length - 1} />
 
-      {/* 绝对定位在右上角的标题 */}
-      <div className="home-title-container">
-        <h1 className="home-title">娄宿三's blog</h1>
-        <div className="home-title-easter-egg">
-          <EasterEggHint />
-        </div>
+      <div className="home-panels" onTransitionEnd={handlePanelTransitionEnd}>
+        <HeroPanel
+          panelClass={getPanelClass('hero')}
+          quoteText={QUOTE_TEXT}
+          typedLength={typedLength}
+          canUseVideo={canUseVideo}
+          isVideoLoaded={isVideoLoaded}
+          isVideoVisible={isVideoVisible}
+          imageSrc={homeImageSrc}
+          videoSrc={homeAv1VideoSrc}
+          videoRef={videoRef}
+          onVideoLoadStart={() => {
+            setIsVideoLoaded(false)
+            setIsVideoVisible(false)
+          }}
+        />
+
+        <section className={`home-panel ${getPanelClass('intro')}`} aria-label="home intro panel">
+          <Suspense fallback={<div className="home-panel__blank home-panel__blank--intro" />}>
+            {renderedPanels.intro ? <IntroPanel /> : null}
+          </Suspense>
+        </section>
+
+        <section className={`home-panel ${getPanelClass('detail')}`} aria-label="home detail panel">
+          <Suspense fallback={<div className="home-panel__blank home-panel__blank--detail" />}>
+            {renderedPanels.detail ? <DetailPanel /> : null}
+          </Suspense>
+        </section>
       </div>
 
-      {/* 中心偏上内容区 (引用名言) */}
-      <header className="home-hero">
-        <div className="home-hero__quote-container" aria-label={QUOTE_TEXT}>
-          <p className="home-hero__quote" aria-hidden="true">
-            <span className="home-hero__quote-text">{QUOTE_TEXT.slice(0, typedLength)}</span>
-          </p>
-        </div>
-      </header>
-
-      {/* 背景层 */}
-      <section className="home-bg" aria-label="home background">
-        <img
-          className={`home-bg__image ${isVideoReady ? 'is-hidden' : ''}`}
-          src={HOME_IMAGE_SRC}
-          alt=""
-          aria-hidden="true"
-          loading="eager"
-          fetchPriority="high"
-        />
-        {canUseVideo && (
-          <video
-            ref={videoRef}
-            className={`home-bg__video ${isVideoReady ? 'is-visible' : ''}`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source src={HOME_AV1_VIDEO_SRC} type='video/webm; codecs="av01.0.05M.08"' />
-          </video>
-        )}
-      </section>
+      <SideIndicator 
+        currentIndex={activeStateIndex} 
+        total={HOME_STATES.length} 
+        titles={PANEL_TITLES} 
+      />
     </main>
   )
 }
