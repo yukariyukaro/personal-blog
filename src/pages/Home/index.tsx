@@ -490,7 +490,33 @@ function Home() {
 
     const revealTimer = window.setTimeout(() => {
       videoElement.play().catch(() => undefined)
-      setIsVideoVisible(true)
+
+      let isRevealed = false
+      const reveal = () => {
+        if (isRevealed) {
+          return
+        }
+        isRevealed = true
+        setIsVideoVisible(true)
+      }
+
+      const withVideoFrameCallback = videoElement as HTMLVideoElement & {
+        requestVideoFrameCallback?: (callback: () => void) => number
+      }
+
+      if (typeof withVideoFrameCallback.requestVideoFrameCallback === 'function') {
+        withVideoFrameCallback.requestVideoFrameCallback(() => {
+          reveal()
+        })
+      } else {
+        const handleFirstTimeUpdate = () => {
+          reveal()
+        }
+        videoElement.addEventListener('timeupdate', handleFirstTimeUpdate, { once: true })
+        window.setTimeout(() => {
+          reveal()
+        }, 260)
+      }
     }, 180)
 
     return () => {
