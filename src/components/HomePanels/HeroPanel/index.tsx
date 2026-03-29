@@ -11,6 +11,7 @@ type HeroPanelProps = {
   isVideoVisible: boolean
   imageSrc: string
   videoSrc: string
+  videoMimeType: string
   videoRef: RefObject<HTMLVideoElement | null>
   onVideoLoadStart: () => void
 }
@@ -24,6 +25,7 @@ function HeroPanel({
   isVideoVisible,
   imageSrc,
   videoSrc,
+  videoMimeType,
   videoRef,
   onVideoLoadStart,
 }: HeroPanelProps) {
@@ -66,7 +68,7 @@ function HeroPanel({
             aria-hidden="true"
             onLoadStart={onVideoLoadStart}
           >
-            <source src={videoSrc} type='video/webm; codecs="av01.0.05M.08"' />
+            {videoSrc ? <source src={videoSrc} type={videoMimeType} /> : null}
           </video>
         )}
       </section>

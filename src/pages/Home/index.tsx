@@ -2,6 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } fro
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { useOutletContext } from 'react-router-dom'
 import type { AppContextType } from '../../App'
+import Hls from 'hls.js'
 import HeroPanel from '../../components/HomePanels/HeroPanel'
 import SideIndicator from '../../components/SideIndicator'
 import ScrollIndicator from '../../components/ScrollIndicator'
@@ -39,10 +40,12 @@ function Home() {
   const interactionLockUntilRef = useRef(0)
   const prefetchedIntroRef = useRef(false)
   const prefetchedDetailRef = useRef(false)
+  const hlsRef = useRef<Hls | null>(null)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isVideoVisible, setIsVideoVisible] = useState(false)
   const [hasVideoError, setHasVideoError] = useState(false)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
+  const [videoMode, setVideoMode] = useState<'hls' | 'file'>('hls')
   
   // Use internal state synced with external
   const [activeState, setActiveState] = useState<HomeState>(HOME_STATES[externalActiveIndex] || 'hero')
@@ -84,7 +87,16 @@ function Home() {
     [isVideoEnabled, hasVideoError],
   )
   const homeImageSrc = useMemo(() => resolvePublicAsset('home/home.webp'), [])
+  const homeHlsVideoSrc = useMemo(() => resolvePublicAsset('home/hls/index.m3u8'), [])
   const homeAv1VideoSrc = useMemo(() => resolvePublicAsset('home/home_av1.webm'), [])
+  const activeVideoSrc = useMemo(
+    () => (videoMode === 'hls' ? '' : homeAv1VideoSrc),
+    [homeAv1VideoSrc, videoMode],
+  )
+  const activeVideoMimeType = useMemo(
+    () => (videoMode === 'hls' ? 'application/vnd.apple.mpegurl' : 'video/webm; codecs="av01.0.05M.08"'),
+    [videoMode],
+  )
 
   const preloadIntroPanel = useCallback(() => {
     if (prefetchedIntroRef.current) {
@@ -204,6 +216,16 @@ function Home() {
       preloadDetailPanel()
     }
   }, [activeState, preloadDetailPanel])
+
+  useEffect(
+    () => () => {
+      if (hlsRef.current) {
+        hlsRef.current.destroy()
+        hlsRef.current = null
+      }
+    },
+    [],
+  )
 
   useEffect(() => {
     const wheelThreshold = 30
@@ -372,11 +394,74 @@ function Home() {
       return
     }
 
+    if (hlsRef.current) {
+      hlsRef.current.destroy()
+      hlsRef.current = null
+    }
+
+    videoElement.pause()
+    videoElement.removeAttribute('src')
+    videoElement.load()
+
+    if (videoMode !== 'hls') {
+      videoElement.src = homeAv1VideoSrc
+      videoElement.load()
+      return
+    }
+
+    const canPlayNativeHls = videoElement.canPlayType('application/vnd.apple.mpegurl') !== ''
+    if (canPlayNativeHls) {
+      videoElement.src = homeHlsVideoSrc
+      videoElement.load()
+      return
+    }
+
+    if (!Hls.isSupported()) {
+      setVideoMode('file')
+      return
+    }
+
+    const hls = new Hls({
+      enableWorker: true,
+    })
+
+    hlsRef.current = hls
+    hls.attachMedia(videoElement)
+    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+      hls.loadSource(homeHlsVideoSrc)
+    })
+    hls.on(Hls.Events.ERROR, (_, data) => {
+      if (!data.fatal) {
+        return
+      }
+      hls.destroy()
+      hlsRef.current = null
+      setVideoMode('file')
+    })
+
+    return () => {
+      hls.destroy()
+      if (hlsRef.current === hls) {
+        hlsRef.current = null
+      }
+    }
+  }, [canUseVideo, homeAv1VideoSrc, homeHlsVideoSrc, videoMode])
+
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement || !canUseVideo) {
+      return
+    }
+
     const markVideoLoaded = () => {
       setIsVideoLoaded(true)
     }
 
     const handleError = () => {
+      if (videoMode === 'hls') {
+        setVideoMode('file')
+        return
+      }
       setHasVideoError(true)
       setIsVideoLoaded(false)
       setIsVideoVisible(false)
@@ -395,7 +480,7 @@ function Home() {
       videoElement.pause()
       videoElement.currentTime = 0
     }
-  }, [canUseVideo])
+  }, [canUseVideo, videoMode])
 
   useEffect(() => {
     const videoElement = videoRef.current
@@ -456,7 +541,8 @@ function Home() {
           isVideoLoaded={isVideoLoaded}
           isVideoVisible={isVideoVisible}
           imageSrc={homeImageSrc}
-          videoSrc={homeAv1VideoSrc}
+          videoSrc={activeVideoSrc}
+          videoMimeType={activeVideoMimeType}
           videoRef={videoRef}
           onVideoLoadStart={() => {
             setIsVideoLoaded(false)
