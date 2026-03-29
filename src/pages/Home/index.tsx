@@ -2,7 +2,6 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } fro
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { useOutletContext } from 'react-router-dom'
 import type { AppContextType } from '../../App'
-import Hls from 'hls.js'
 import HeroPanel from '../../components/HomePanels/HeroPanel'
 import SideIndicator from '../../components/SideIndicator'
 import ScrollIndicator from '../../components/ScrollIndicator'
@@ -34,18 +33,14 @@ type TransitionDirection = 'next' | 'prev'
 
 function Home() {
   const { activeStateIndex: externalActiveIndex, setActiveStateIndex: setExternalActiveIndex } = useOutletContext<AppContextType>() || { activeStateIndex: 0, setActiveStateIndex: () => {} }
-  const videoRef = useRef<HTMLVideoElement>(null)
   const touchStartYRef = useRef<number | null>(null)
   const wheelDeltaRef = useRef(0)
   const interactionLockUntilRef = useRef(0)
-  const prefetchedIntroRef = useRef(false)
-  const prefetchedDetailRef = useRef(false)
-  const hlsRef = useRef<Hls | null>(null)
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
-  const [isVideoVisible, setIsVideoVisible] = useState(false)
-  const [hasVideoError, setHasVideoError] = useState(false)
+  const introImportPromiseRef = useRef<Promise<unknown> | null>(null)
+  const detailImportPromiseRef = useRef<Promise<unknown> | null>(null)
+  const introAssetsPromiseRef = useRef<Promise<void> | null>(null)
+  const detailAssetsPromiseRef = useRef<Promise<void> | null>(null)
   const [isVideoEnabled, setIsVideoEnabled] = useState(true)
-  const [videoMode, setVideoMode] = useState<'hls' | 'file'>('hls')
   
   // Use internal state synced with external
   const [activeState, setActiveState] = useState<HomeState>(HOME_STATES[externalActiveIndex] || 'hero')
@@ -53,6 +48,10 @@ function Home() {
   const [transitionDirection, setTransitionDirection] = useState<TransitionDirection>('next')
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [renderedPanels, setRenderedPanels] = useState({
+    intro: externalActiveIndex >= 1,
+    detail: externalActiveIndex >= 2,
+  })
+  const [panelReady, setPanelReady] = useState({
     intro: externalActiveIndex >= 1,
     detail: externalActiveIndex >= 2,
   })
@@ -72,52 +71,96 @@ function Home() {
     }
   }, [activeStateIndex, externalActiveIndex, setExternalActiveIndex])
 
-  // Sync external state to internal (when navbar is clicked)
-  useEffect(() => {
-    if (externalActiveIndex !== activeStateIndex) {
-      const targetState = HOME_STATES[externalActiveIndex]
-      if (targetState) {
-        transitionToState(targetState)
-      }
-    }
-  }, [externalActiveIndex]) // Only listen to external index changes here
-
-  const canUseVideo = useMemo(
-    () => isVideoEnabled && !hasVideoError,
-    [isVideoEnabled, hasVideoError],
-  )
+  const canUseVideo = useMemo(() => isVideoEnabled, [isVideoEnabled])
   const homeImageSrc = useMemo(() => resolvePublicAsset('home/home.webp'), [])
-  const homeHlsVideoSrc = useMemo(() => resolvePublicAsset('home/hls/index.m3u8'), [])
+  const homeHlsManifestSrc = useMemo(() => resolvePublicAsset('home/hls/index.m3u8'), [])
   const homeAv1VideoSrc = useMemo(() => resolvePublicAsset('home/home_av1.webm'), [])
-  const activeVideoSrc = useMemo(
-    () => (videoMode === 'hls' ? '' : homeAv1VideoSrc),
-    [homeAv1VideoSrc, videoMode],
+  const introFallbackBg = useMemo(() => resolvePublicAsset('information/background.webp'), [])
+  const detailFallbackBg = useMemo(() => resolvePublicAsset('home/home.webp'), [])
+
+  const prefetchImageAsset = useCallback((url: string) => {
+    const image = new Image()
+    image.decoding = 'async'
+    image.loading = 'eager'
+    image.fetchPriority = 'low'
+    return new Promise<void>((resolve) => {
+      image.onload = () => resolve()
+      image.onerror = () => resolve()
+      image.src = url
+    })
+  }, [])
+
+  const prefetchAssetsWithConcurrency = useCallback(
+    async (urls: string[], concurrency = 2) => {
+      const uniqueUrls = Array.from(new Set(urls))
+      if (uniqueUrls.length === 0) {
+        return
+      }
+      let cursor = 0
+      const worker = async () => {
+        while (cursor < uniqueUrls.length) {
+          const currentIndex = cursor
+          cursor += 1
+          await prefetchImageAsset(uniqueUrls[currentIndex])
+        }
+      }
+      await Promise.all(
+        Array.from({ length: Math.min(concurrency, uniqueUrls.length) }, () => worker()),
+      )
+    },
+    [prefetchImageAsset],
   )
-  const activeVideoMimeType = useMemo(
-    () => (videoMode === 'hls' ? 'application/vnd.apple.mpegurl' : 'video/webm; codecs="av01.0.05M.08"'),
-    [videoMode],
-  )
+
+  const preloadIntroAssets = useCallback(() => {
+    if (!introAssetsPromiseRef.current) {
+      introAssetsPromiseRef.current = prefetchAssetsWithConcurrency(
+        [resolvePublicAsset('information/background.webp')],
+        1,
+      )
+    }
+    return introAssetsPromiseRef.current
+  }, [prefetchAssetsWithConcurrency])
+
+  const preloadDetailAssets = useCallback(() => {
+    if (!detailAssetsPromiseRef.current) {
+      detailAssetsPromiseRef.current = prefetchAssetsWithConcurrency(
+        [
+          resolvePublicAsset('Detail/TripleUni.webp'),
+          resolvePublicAsset('Detail/YearReport.webp'),
+          resolvePublicAsset('home/home.webp'),
+          resolvePublicAsset('information/background.webp'),
+        ],
+        2,
+      )
+    }
+    return detailAssetsPromiseRef.current
+  }, [prefetchAssetsWithConcurrency])
 
   const preloadIntroPanel = useCallback(() => {
-    if (prefetchedIntroRef.current) {
-      return
+    if (!introImportPromiseRef.current) {
+      introImportPromiseRef.current = import('../../components/HomePanels/IntroPanel')
     }
-    prefetchedIntroRef.current = true
-    
-    // 预加载第二步（IntroPanel）的背景图
-    const img = new Image()
-    img.src = resolvePublicAsset('information/background.webp')
-
-    void import('../../components/HomePanels/IntroPanel')
+    return introImportPromiseRef.current
   }, [])
 
   const preloadDetailPanel = useCallback(() => {
-    if (prefetchedDetailRef.current) {
-      return
+    if (!detailImportPromiseRef.current) {
+      detailImportPromiseRef.current = import('../../components/HomePanels/DetailPanel')
     }
-    prefetchedDetailRef.current = true
-    void import('../../components/HomePanels/DetailPanel')
+    return detailImportPromiseRef.current
   }, [])
+
+  const ensureIntroReady = useCallback(async () => {
+    await Promise.all([preloadIntroPanel(), preloadIntroAssets()])
+    setPanelReady((prev) => (prev.intro ? prev : { ...prev, intro: true }))
+    setRenderedPanels((prev) => (prev.intro ? prev : { ...prev, intro: true }))
+  }, [preloadIntroAssets, preloadIntroPanel])
+
+  const ensureDetailReady = useCallback(async () => {
+    await Promise.all([preloadDetailPanel(), preloadDetailAssets()])
+    setPanelReady((prev) => (prev.detail ? prev : { ...prev, intro: true, detail: true }))
+    setRenderedPanels((prev) => (prev.detail ? prev : { ...prev, intro: true, detail: true }))
+  }, [preloadDetailAssets, preloadDetailPanel])
 
   useEffect(() => {
     const win = window as Window & {
@@ -125,13 +168,12 @@ function Home() {
       cancelIdleCallback?: (handle: number) => void
     }
 
-    if (prefetchedIntroRef.current) {
-      return
-    }
-
     if (win.requestIdleCallback) {
       const idleId = win.requestIdleCallback(() => {
-        preloadIntroPanel()
+        void ensureIntroReady()
+        window.setTimeout(() => {
+          void ensureDetailReady()
+        }, 350)
       })
       return () => {
         if (win.cancelIdleCallback) {
@@ -141,12 +183,15 @@ function Home() {
     }
 
     const timer = window.setTimeout(() => {
-      preloadIntroPanel()
-    }, 1200)
+      void ensureIntroReady()
+      window.setTimeout(() => {
+        void ensureDetailReady()
+      }, 450)
+    }, 700)
     return () => {
       window.clearTimeout(timer)
     }
-  }, [preloadIntroPanel])
+  }, [ensureDetailReady, ensureIntroReady])
 
   const transitionToState = useCallback(
     (targetState: HomeState) => {
@@ -175,19 +220,43 @@ function Home() {
     [activeState, isTransitioning, prefersReducedMotion],
   )
 
+  // Sync external state to internal (when navbar is clicked)
+  useEffect(() => {
+    if (externalActiveIndex !== activeStateIndex) {
+      const targetState = HOME_STATES[externalActiveIndex]
+      if (targetState) {
+        if (targetState === 'intro' && !panelReady.intro) {
+          void ensureIntroReady()
+          return
+        }
+        if (targetState === 'detail' && !panelReady.detail) {
+          void ensureDetailReady()
+          return
+        }
+        transitionToState(targetState)
+      }
+    }
+  }, [activeStateIndex, ensureDetailReady, ensureIntroReady, externalActiveIndex, panelReady.detail, panelReady.intro, transitionToState]) // Only listen to external index changes here
+
   const goNext = useCallback(() => {
     if (activeStateIndex >= HOME_STATES.length - 1) {
       return false
     }
     const nextState = HOME_STATES[activeStateIndex + 1]
     if (nextState === 'intro') {
-      preloadIntroPanel()
+      if (!panelReady.intro) {
+        void ensureIntroReady()
+        return false
+      }
     }
     if (nextState === 'detail') {
-      preloadDetailPanel()
+      if (!panelReady.detail) {
+        void ensureDetailReady()
+        return false
+      }
     }
     return transitionToState(nextState)
-  }, [activeStateIndex, preloadDetailPanel, preloadIntroPanel, transitionToState])
+  }, [activeStateIndex, ensureDetailReady, ensureIntroReady, panelReady.detail, panelReady.intro, transitionToState])
 
   const goPrev = useCallback(() => {
     if (activeStateIndex <= 0) {
@@ -213,19 +282,9 @@ function Home() {
 
   useEffect(() => {
     if (activeState === 'intro') {
-      preloadDetailPanel()
+      void ensureDetailReady()
     }
-  }, [activeState, preloadDetailPanel])
-
-  useEffect(
-    () => () => {
-      if (hlsRef.current) {
-        hlsRef.current.destroy()
-        hlsRef.current = null
-      }
-    },
-    [],
-  )
+  }, [activeState, ensureDetailReady])
 
   useEffect(() => {
     const wheelThreshold = 30
@@ -389,142 +448,6 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    const videoElement = videoRef.current
-    if (!videoElement || !canUseVideo) {
-      return
-    }
-
-    if (hlsRef.current) {
-      hlsRef.current.destroy()
-      hlsRef.current = null
-    }
-
-    videoElement.pause()
-    videoElement.removeAttribute('src')
-    videoElement.load()
-
-    if (videoMode !== 'hls') {
-      videoElement.src = homeAv1VideoSrc
-      videoElement.load()
-      return
-    }
-
-    const canPlayNativeHls = videoElement.canPlayType('application/vnd.apple.mpegurl') !== ''
-    if (canPlayNativeHls) {
-      videoElement.src = homeHlsVideoSrc
-      videoElement.load()
-      return
-    }
-
-    if (!Hls.isSupported()) {
-      setVideoMode('file')
-      return
-    }
-
-    const hls = new Hls({
-      enableWorker: true,
-    })
-
-    hlsRef.current = hls
-    hls.attachMedia(videoElement)
-    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      hls.loadSource(homeHlsVideoSrc)
-    })
-    hls.on(Hls.Events.ERROR, (_, data) => {
-      if (!data.fatal) {
-        return
-      }
-      hls.destroy()
-      hlsRef.current = null
-      setVideoMode('file')
-    })
-
-    return () => {
-      hls.destroy()
-      if (hlsRef.current === hls) {
-        hlsRef.current = null
-      }
-    }
-  }, [canUseVideo, homeAv1VideoSrc, homeHlsVideoSrc, videoMode])
-
-  useEffect(() => {
-    const videoElement = videoRef.current
-    if (!videoElement || !canUseVideo) {
-      return
-    }
-
-    const markVideoLoaded = () => {
-      setIsVideoLoaded(true)
-    }
-
-    const handleError = () => {
-      if (videoMode === 'hls') {
-        setVideoMode('file')
-        return
-      }
-      setHasVideoError(true)
-      setIsVideoLoaded(false)
-      setIsVideoVisible(false)
-    }
-
-    videoElement.addEventListener('canplaythrough', markVideoLoaded)
-    videoElement.addEventListener('error', handleError)
-
-    if (videoElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-      markVideoLoaded()
-    }
-
-    return () => {
-      videoElement.removeEventListener('canplaythrough', markVideoLoaded)
-      videoElement.removeEventListener('error', handleError)
-      videoElement.pause()
-      videoElement.currentTime = 0
-    }
-  }, [canUseVideo, videoMode])
-
-  useEffect(() => {
-    const videoElement = videoRef.current
-    if (!videoElement || !canUseVideo || !isVideoLoaded) {
-      return
-    }
-
-    const revealTimer = window.setTimeout(() => {
-      videoElement.play().catch(() => undefined)
-
-      let isRevealed = false
-      const reveal = () => {
-        if (isRevealed) {
-          return
-        }
-        isRevealed = true
-        setIsVideoVisible(true)
-      }
-
-      const withVideoFrameCallback = videoElement as HTMLVideoElement & {
-        requestVideoFrameCallback?: (callback: () => void) => number
-      }
-
-      if (typeof withVideoFrameCallback.requestVideoFrameCallback === 'function') {
-        withVideoFrameCallback.requestVideoFrameCallback(() => {
-          reveal()
-        })
-      } else {
-        const handleFirstTimeUpdate = () => {
-          reveal()
-        }
-        videoElement.addEventListener('timeupdate', handleFirstTimeUpdate, { once: true })
-        window.setTimeout(() => {
-          reveal()
-        }, 260)
-      }
-    }, 180)
-
-    return () => {
-      window.clearTimeout(revealTimer)
-    }
-  }, [canUseVideo, isVideoLoaded])
-
-  useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) {
       return
@@ -564,26 +487,37 @@ function Home() {
           quoteText={QUOTE_TEXT}
           typedLength={typedLength}
           canUseVideo={canUseVideo}
-          isVideoLoaded={isVideoLoaded}
-          isVideoVisible={isVideoVisible}
           imageSrc={homeImageSrc}
-          videoSrc={activeVideoSrc}
-          videoMimeType={activeVideoMimeType}
-          videoRef={videoRef}
-          onVideoLoadStart={() => {
-            setIsVideoLoaded(false)
-            setIsVideoVisible(false)
-          }}
+          hlsManifestSrc={homeHlsManifestSrc}
+          fallbackVideoSrc={homeAv1VideoSrc}
         />
 
         <section className={`home-panel ${getPanelClass('intro')}`} aria-label="home intro panel">
-          <Suspense fallback={<div className="home-panel__blank home-panel__blank--intro" />}>
+          <Suspense
+            fallback={
+              <div
+                className="home-panel__blank home-panel__blank--intro"
+                style={{
+                  backgroundImage: `linear-gradient(130deg, rgba(10, 10, 10, 0.88) 0%, rgba(17, 17, 17, 0.78) 55%, rgba(10, 10, 10, 0.9) 100%), url(${introFallbackBg})`,
+                }}
+              />
+            }
+          >
             {renderedPanels.intro ? <IntroPanel /> : null}
           </Suspense>
         </section>
 
         <section className={`home-panel ${getPanelClass('detail')}`} aria-label="home detail panel">
-          <Suspense fallback={<div className="home-panel__blank home-panel__blank--detail" />}>
+          <Suspense
+            fallback={
+              <div
+                className="home-panel__blank home-panel__blank--detail"
+                style={{
+                  backgroundImage: `linear-gradient(125deg, rgba(4, 4, 4, 0.9) 0%, rgba(11, 11, 11, 0.78) 50%, rgba(3, 3, 3, 0.9) 100%), url(${detailFallbackBg})`,
+                }}
+              />
+            }
+          >
             {renderedPanels.detail ? <DetailPanel /> : null}
           </Suspense>
         </section>

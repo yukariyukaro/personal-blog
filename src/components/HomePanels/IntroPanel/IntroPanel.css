@@ -32,6 +32,11 @@
   transform: scale(1);
 }
 
+.home-panel--to-next .intro-panel__bg,
+.home-panel--to-prev .intro-panel__bg {
+  transform: scale(1);
+}
+
 /* -------------------------------------
    右侧倾斜卡片覆盖层
 ------------------------------------- */
@@ -94,6 +99,12 @@
 }
 
 .home-panel--current .intro-panel__card {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.home-panel--to-next .intro-panel__card,
+.home-panel--to-prev .intro-panel__card {
   opacity: 1;
   transform: translateX(0);
 }

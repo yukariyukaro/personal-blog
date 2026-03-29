@@ -306,6 +306,11 @@
   animation: detail-card-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
 }
 
+.home-panel--to-next .detail-card,
+.home-panel--to-prev .detail-card {
+  animation: detail-card-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.15s;
+}
+
 /* 卡片头部 */
 .detail-card__header {
   background: var(--detail-theme);
