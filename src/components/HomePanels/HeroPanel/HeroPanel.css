@@ -210,8 +210,10 @@
 
 @media (max-width: 768px) {
   .home-info-container {
-    bottom: 10vh;
-    right: calc(80px + 4vw);
+    left: 2rem;
+    bottom: 12vh;
+    right: 80px; /* Leave space for indicator */
+    gap: 1.2rem;
   }
 
   .home-info-header {
@@ -221,15 +223,17 @@
   }
 
   .home-title {
-    font-size: 2.2rem;
+    font-size: 3rem;
   }
 
   .home-subtitle {
-    font-size: 0.75rem;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
   }
 
   .home-quote {
     font-size: 1rem;
+    line-height: 1.6;
   }
 
   .home-title-easter-egg {

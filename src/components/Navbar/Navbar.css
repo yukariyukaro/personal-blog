@@ -153,13 +153,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .site-nav {
-    height: 72px;
-    padding: 0 80px 0 5vw;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .site-nav,
   .site-nav::after {
@@ -175,6 +168,6 @@
 
 @media (max-width: 768px) {
   .site-nav {
-    right: 80px;
+    display: none; /* 在移动端直接隐藏整个 Navbar */
   }
 }

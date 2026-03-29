@@ -512,6 +512,8 @@
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior-y: contain; /* 防止滚动穿透到外层引起意外的翻页 */
+    -webkit-overflow-scrolling: touch;
   }
   
   .detail-panel__bg {
@@ -524,7 +526,7 @@
     clip-path: none;
     border-right: none;
     border-bottom: 2px solid var(--detail-theme);
-    padding: 15vh 2rem 2rem;
+    padding: 10vh 1.5rem 1.5rem;
     background: rgba(10, 10, 10, 0.85);
   }
 
@@ -533,11 +535,12 @@
   }
 
   .detail-menu {
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
 
   .detail-menu__title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
   }
 
   /* 移动端隐藏悬浮预览图 */
@@ -548,8 +551,8 @@
   .detail-panel__right {
     width: 100%;
     height: auto;
-    padding: 2rem;
-    padding-bottom: 10vh; /* 为底部滚动指示器留空间 */
+    padding: 1.5rem;
+    padding-bottom: 12vh; /* 为底部滚动指示器留空间 */
     justify-content: center;
   }
 
@@ -557,21 +560,30 @@
     max-width: 100%;
   }
   
+  .detail-card {
+    border-radius: 2px 16px 2px 16px;
+  }
+  
   .detail-card__header {
-    padding: 1.2rem 1.5rem;
+    padding: 1rem 1.2rem;
   }
   
   .detail-card__index {
-    font-size: 3rem;
+    font-size: 2.2rem;
   }
   
   .detail-card__header-title {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
   
   .detail-card__body {
-    padding: 1.5rem;
-    gap: 1.5rem;
+    padding: 1.2rem;
+    gap: 1.2rem;
+  }
+  
+  .detail-card__text {
+    font-size: 0.9rem;
+    line-height: 1.6;
   }
 }
 

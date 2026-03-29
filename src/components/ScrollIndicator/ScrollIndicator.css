@@ -77,3 +77,21 @@
     opacity: 1 !important;
   }
 }
+
+@media (max-width: 768px) {
+  .scroll-indicator {
+    bottom: 2vh;
+    transform: translate(-50%, 10px) scale(0.8);
+  }
+  .scroll-indicator--visible {
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  .scroll-indicator--hidden {
+    transform: translate(-50%, 10px) scale(0.8);
+  }
+  .scroll-text {
+    font-family: 'SmileySans', system-ui, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+}

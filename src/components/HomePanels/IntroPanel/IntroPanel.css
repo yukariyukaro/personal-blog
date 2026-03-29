@@ -313,6 +313,14 @@
   transition: transform 0.2s ease;
 }
 
+.social-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
 .social-link:hover {
   transform: translateY(-2px);
 }
@@ -332,7 +340,13 @@
   transition: all 0.2s ease;
 }
 
-.social-link:hover .social-icon {
+.social-icon--success {
+  background: #39C5BB;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(57, 197, 187, 0.5);
+}
+
+.social-link:hover .social-icon:not(.social-icon--success) {
   background: #00e5ff;
   color: #000;
   box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
@@ -394,8 +408,8 @@
     );
     border-left: none;
     align-items: flex-end;
-    padding-right: calc(80px + 4vw);
-    padding-bottom: 15vh;
+    padding-right: 60px; /* 留给更窄的 SideIndicator */
+    padding-bottom: 12vh;
   }
   
   .intro-panel__card-wrapper::before {
@@ -405,25 +419,32 @@
   .intro-panel__card {
     margin-left: 0;
     padding: 0 1rem;
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
 
   .intro-panel__title {
-    font-size: 3rem;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   }
   
   .intro-panel__subtitle {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
   }
 
   .intro-panel__avatar {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .intro-panel__text {
     font-size: 0.85rem;
     line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .intro-panel__quote p {
+    font-size: 1rem;
   }
 }
 

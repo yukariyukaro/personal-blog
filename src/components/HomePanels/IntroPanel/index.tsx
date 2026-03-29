@@ -71,16 +71,16 @@ function IntroPanel() {
 
           <div className="intro-panel__footer">
             <div className="intro-panel__social-links">
-              <a href="https://github.com/yukariyukaro" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
-                <span className="social-icon"><Github size={16} /></span>
-                <span className="social-text">GITHUB</span>
+              <a href="https://github.com/YukariYukaro" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
+                <span className="social-icon"><Github /></span>
+                <span className="social-text">GitHub</span>
               </a>
-              <a href="https://space.bilibili.com/39374538?spm_id_from=333.1007.0.0" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
-                <span className="social-icon"><Bilibili size={16} /></span>
-                <span className="social-text">BILIBILI</span>
+              <a href="https://space.bilibili.com/393848520" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
+                <span className="social-icon"><Bilibili /></span>
+                <span className="social-text">Bilibili</span>
               </a>
-              <a href="#" onClick={handleCopyQQ} className="social-link" aria-label="Copy QQ">
-                <span className="social-icon">
+              <button onClick={handleCopyQQ} className="social-link social-button" aria-label="Copy QQ" type="button">
+                <span className={`social-icon ${copyStatus === 'copied' ? 'social-icon--success' : ''}`}>
                   {copyStatus === 'copied' ? (
                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="20 6 9 17 4 12"></polyline>
@@ -89,8 +89,8 @@ function IntroPanel() {
                     <QQIcon style={{ fontSize: '14px', fill: '#fff' }} />
                   )}
                 </span>
-                <span className="social-text">{copyStatus === 'copied' ? '已复制' : '1981805808@qq.com'}</span>
-              </a>
+                <span className="social-text">{copyStatus === 'copied' ? '已复制邮箱' : 'QQ 邮箱'}</span>
+              </button>
             </div>
             <div className="intro-panel__decoration-line"></div>
           </div>

@@ -111,25 +111,43 @@
 
 @media (max-width: 768px) {
   .side-indicator {
-    width: 80px;
+    width: 60px;
   }
   .side-indicator__inner {
-    padding-left: 12px;
+    padding-left: 8px;
   }
   .side-indicator__current {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   .side-indicator__divider {
-    font-size: 0.8rem;
-    margin: 0 4px;
+    font-size: 0.7rem;
+    margin: 0 2px;
   }
   .side-indicator__total {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   .side-indicator__title-en {
-    font-size: 0.7rem;
+    display: none; /* 在移动端精简掉长英文 */
   }
   .side-indicator__title-zh {
-    font-size: 0.65rem;
+    font-size: 0.85rem;
+    writing-mode: vertical-lr; /* 移动端改为竖排，更节省空间也更有设计感 */
+    letter-spacing: 0.4em;
+    margin-top: 8px;
+  }
+  .side-indicator__text {
+    border-left: none;
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    padding-left: 0;
+    padding-top: 8px;
+    align-items: center;
+  }
+  .side-indicator__numbers {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .side-indicator__divider {
+    transform: rotate(90deg);
   }
 }

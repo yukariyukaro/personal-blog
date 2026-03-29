@@ -91,6 +91,11 @@ function Home() {
       return
     }
     prefetchedIntroRef.current = true
+    
+    // 预加载第二步（IntroPanel）的背景图
+    const img = new Image()
+    img.src = resolvePublicAsset('information/background.webp')
+
     void import('../../components/HomePanels/IntroPanel')
   }, [])
 
@@ -250,15 +255,29 @@ function Home() {
     }
 
     const handleTouchStart = (event: TouchEvent) => {
+      // 检查触摸目标是否在可滚动的面板内部
+      const target = event.target as HTMLElement
+      const scrollablePanel = target.closest('.detail-panel')
+      
+      // 如果在可滚动面板内，且该面板确实可以滚动，则不记录起始点（放弃外层翻页逻辑）
+      if (scrollablePanel && scrollablePanel.scrollHeight > scrollablePanel.clientHeight) {
+        touchStartYRef.current = null
+        return
+      }
+
       touchStartYRef.current = event.touches[0]?.clientY ?? null
     }
 
     const handleTouchEnd = (event: TouchEvent) => {
       const startY = touchStartYRef.current
+      if (startY === null) {
+        return // 在滚动面板内部触发的 touch，被忽略
+      }
+      
       const endY = event.changedTouches[0]?.clientY
       touchStartYRef.current = null
 
-      if (startY == null || endY == null) {
+      if (endY == null) {
         return
       }
 
