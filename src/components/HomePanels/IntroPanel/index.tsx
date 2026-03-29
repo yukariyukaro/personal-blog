@@ -75,7 +75,7 @@ function IntroPanel() {
                 <span className="social-icon"><Github /></span>
                 <span className="social-text">GitHub</span>
               </a>
-              <a href="https://space.bilibili.com/393848520" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
+              <a href="https://space.bilibili.com/39374538" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
                 <span className="social-icon"><Bilibili /></span>
                 <span className="social-text">Bilibili</span>
               </a>
