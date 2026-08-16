@@ -44,11 +44,6 @@ jobs:
       - name: 构建网站
         run: pnpm run build
 
-      - name: 写入并校验自定义域名
-        run: |
-          cp CNAME dist/CNAME
-          test "$(cat dist/CNAME)" = "blog.mmmiku.com"
-
       - name: 配置 GitHub Pages
         uses: actions/configure-pages@v5
 

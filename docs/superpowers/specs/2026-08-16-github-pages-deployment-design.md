@@ -26,7 +26,6 @@
 - 安装 Node.js LTS，并启用 pnpm 缓存。
 - 在 `apps/web` 执行 `pnpm install --frozen-lockfile`。
 - 执行 `pnpm run build`。
-- 将 `apps/web/CNAME` 复制到 `apps/web/dist/CNAME` 并校验内容。
 - 配置 GitHub Pages 并上传 `apps/web/dist`。
 
 ### deploy
@@ -47,22 +46,21 @@
 
 ## 域名与路径
 
-- 保留 `apps/web/CNAME`，Vite 继续以 `/` 为 `base`。
-- Vite 不会自动复制项目根目录的 `CNAME`。工作流必须在构建后显式复制，并确认 `dist/CNAME` 内容为 `blog.mmmiku.com`。
+- 保留 `apps/web/CNAME` 作为 Vite 使用根路径 `base` 的构建标记。
+- 自定义 Actions 工作流会忽略制品中的 `CNAME`。域名必须在 GitHub Pages 设置中配置为 `blog.mmmiku.com`。
 - GitHub Pages 发布源设置为 GitHub Actions。
 - DNS 解析不由工作流修改；现有 DNS 必须指向 GitHub Pages。
 
 ## 失败处理
 
 - 安装、类型检查或构建失败时，不上传、不部署。
-- 制品缺少 `CNAME` 时，验证失败并阻止部署。
 - Pages 设置未启用 GitHub Actions 时，在仓库设置页完成启用后重跑工作流。
+- Pages 未绑定自定义域名时，部署地址会回退到项目路径，与根路径构建不匹配；必须先修正 Pages 设置。
 - 自定义域名不可访问时，分别检查 Actions、Pages 域名状态和 DNS，避免将 DNS 故障误判为构建故障。
 
 ## 验收
 
 - 本地 `pnpm run build` 成功。
-- `dist/CNAME` 内容为 `blog.mmmiku.com`。
 - 工作流语法有效，推送到 `master` 后执行成功。
-- Pages 设置显示发布源为 GitHub Actions。
+- Pages 设置显示发布源为 GitHub Actions，自定义域名为 `blog.mmmiku.com`。
 - `https://blog.mmmiku.com/` 返回成功响应，首页脚本和关键静态资源可加载。

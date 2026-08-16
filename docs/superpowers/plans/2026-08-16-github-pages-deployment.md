@@ -4,7 +4,7 @@
 
 **目标：** 为 `apps/web` 增加 GitHub Actions 工作流，将生产制品部署到 GitHub Pages，并保留 `blog.mmmiku.com`。
 
-**架构：** 工作流在 `master` 推送或手动触发时构建 `apps/web`，显式将根目录 `CNAME` 放入 `dist`，再通过 GitHub Pages 官方制品 Actions 发布。构建与部署拆成两个任务，部署只在构建和制品校验成功后执行。
+**架构：** 工作流在 `master` 推送或手动触发时构建 `apps/web`，再通过 GitHub Pages 官方制品 Actions 发布。构建与部署拆成两个任务，部署只在构建和制品上传成功后执行；发布源和自定义域名在 GitHub Pages 设置中维护。
 
 **技术栈：** GitHub Actions、pnpm、Node.js LTS、Vite、GitHub Pages
 
@@ -76,11 +76,6 @@ jobs:
       - name: 构建网站
         run: pnpm run build
 
-      - name: 写入并校验自定义域名
-        run: |
-          cp CNAME dist/CNAME
-          test "$(cat dist/CNAME)" = "blog.mmmiku.com"
-
       - name: 配置 GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -115,8 +110,7 @@ ruby -e "require 'yaml'; YAML.load_file('.github/workflows/deploy-pages.yml'); p
 
 **文件：**
 - 验证：`apps/web/pnpm-lock.yaml`
-- 验证：`apps/web/CNAME`
-- 验证：`apps/web/dist/CNAME`
+- 验证：`apps/web/dist/index.html`
 
 - [x] **步骤 1：验证冻结依赖安装**
 
@@ -142,18 +136,17 @@ pnpm run build
 
 预期：退出码为 0，生成 `apps/web/dist`。
 
-- [x] **步骤 3：复现工作流中的域名制品处理**
+- [x] **步骤 3：验证自定义域名构建使用根路径资源**
 
 运行：
 
 ```bash
-cp CNAME dist/CNAME
-test "$(cat dist/CNAME)" = "blog.mmmiku.com"
+rg -n 'src="/assets/|href="/assets/' dist/index.html
 ```
 
 工作目录：`apps/web`
 
-预期：退出码为 0，`dist/CNAME` 内容严格等于 `blog.mmmiku.com`。
+预期：退出码为 0，生产 HTML 使用适配 `blog.mmmiku.com` 的根路径资源。
 
 - [x] **步骤 4：检查差异**
 
