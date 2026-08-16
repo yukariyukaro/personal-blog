@@ -1,9 +1,4 @@
-import type { paths } from '@lousuxing/contracts/generated/web-client'
-
-type HealthSuccess =
-  paths['/api/health']['get']['responses']['200']['content']['application/json']
-
-export const fetchHealth = async (): Promise<HealthSuccess | null> => {
+export const fetchHealth = async (): Promise<unknown | null> => {
   try {
     const response = await fetch('/api/health', {
       method: 'GET',
@@ -14,7 +9,7 @@ export const fetchHealth = async (): Promise<HealthSuccess | null> => {
     if (!response.ok) {
       return null
     }
-    return (await response.json()) as HealthSuccess
+    return response.json()
   } catch {
     return null
   }
