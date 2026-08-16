@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(claude mcp:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm search:*)"
+    ]
+  }
+}

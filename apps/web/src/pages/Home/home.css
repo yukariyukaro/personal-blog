@@ -1,0 +1,107 @@
+/* -------------------------------------
+   布局容器
+------------------------------------- */
+.home-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-panels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.home-panel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition:
+    transform 860ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 860ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+  transform: translate3d(0, 0, 0);
+  opacity: 0;
+  filter: brightness(1) blur(0);
+  backface-visibility: hidden;
+}
+
+.home-panel--current {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  filter: brightness(1) blur(0);
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.home-panel--left {
+  transform: translate3d(-100%, 0, 0);
+  opacity: 0;
+  filter: brightness(0.9) blur(0);
+  z-index: 1;
+}
+
+.home-panel--right {
+  transform: translate3d(100%, 0, 0);
+  opacity: 0;
+  filter: brightness(0.9) blur(0);
+  z-index: 1;
+}
+
+.home-panel--from-next {
+  transform: translate3d(-3%, 0, 0) scale(0.985);
+  opacity: 0;
+  filter: brightness(0.62) blur(1px);
+  z-index: 3;
+}
+
+.home-panel--to-next {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  filter: brightness(1) blur(0);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.home-panel--from-prev {
+  transform: translate3d(3%, 0, 0) scale(0.985);
+  opacity: 0;
+  filter: brightness(0.62) blur(1px);
+  z-index: 3;
+}
+
+.home-panel--to-prev {
+  transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  filter: brightness(1) blur(0);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.home-panel__blank {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.home-panel__blank--intro {
+  background: linear-gradient(130deg, #0a0a0a 0%, #111 55%, #0a0a0a 100%);
+}
+
+.home-panel__blank--detail {
+  background: linear-gradient(125deg, #040404 0%, #0b0b0b 50%, #030303 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-panel {
+    transition-duration: 0.01ms !important;
+  }
+}

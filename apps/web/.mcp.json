@@ -1,0 +1,13 @@
+{
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp@latest"]
+  },
+  "tavily": {
+    "command": "npx",
+    "args": ["-y", "tavily-mcp@latest"],
+    "env": {
+      "TAVILY_API_KEY": "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"
+    }
+  }
+}

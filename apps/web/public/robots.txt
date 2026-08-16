@@ -1,0 +1,12 @@
+# Robots.txt for 少女吃葱中 Blog
+# https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# 禁止爬取不必要的路径
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Sitemap 位置 (需要根据实际部署地址更新)
+# Sitemap: https://your-domain.com/sitemap.xml
