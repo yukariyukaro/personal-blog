@@ -1,0 +1,69 @@
+name: 部署 GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v6
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.2
+          run_install: false
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建网站
+        run: pnpm run build
+
+      - name: 写入并校验自定义域名
+        run: |
+          cp CNAME dist/CNAME
+          test "$(cat dist/CNAME)" = "blog.mmmiku.com"
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传 GitHub Pages 制品
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 部署 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
