@@ -15,9 +15,20 @@
 ```bash
 pnpm run dev      # 启动开发服务器
 pnpm run build    # 构建生产版本（先执行 tsc 类型检查）
+pnpm run content:build # 校验并生成文章静态内容
 pnpm run lint     # 运行 ESLint 检查
 pnpm run preview  # 本地预览生产构建
 ```
+
+## 文章内容
+
+文章源文件位于仓库根目录的 `blog-content/posts/`。执行开发或生产构建前，脚本会：
+
+1. 校验文章 Frontmatter 和正文。
+2. 生成 `public/content/index.json` 文章索引。
+3. 将正文保持为 Markdown，输出到 `public/content/articles/<slug>.md`。
+
+`public/content/` 是生成目录，不提交到 Git。GitHub Pages 部署后，前端通过 `/content/index.json` 和 `/content/articles/<slug>.md` 获取内容。
 
 ## 项目结构
 
@@ -37,10 +48,9 @@ src/
 
 public/               # 静态资源
 ├── home/             # 首页背景资源
-│   ├── home.png      # 背景图源文件（1920×1080）
-│   ├── home.webp     # 默认背景图（由 home.png 转换，1920×1080，约 101KB）
+│   ├── home.png      # 背景图源文件
+│   ├── home.webp     # 默认背景图（1920×1080，约 101KB）
 │   ├── home-vp9.webm # 回退视频（1080p VP9，约 4.2MB，10s 循环）
-│   ├── input.mp4     # 视频 H.264 母版（与 home-vp9.webm 同源，编辑用）
 │   └── hls/          # HLS 视频清单与分片（VP9 fMP4，总约 2.4MB）
 └── loading-chicong.webp # Loading 动画图片
 ```
@@ -89,7 +99,7 @@ public/               # 静态资源
 ### 3) 分片资源约定
 
 - `public/home/hls/` 必须随仓库部署（含 `index.m3u8`、`init.mp4`、`segment_*.m4s`）。
-- 当前切片为 2s 一段、VP9 fMP4 格式，单片约 470KB，总量约 2.4MB（此前 4K H.264 版本为 57MB）。
+- 当前切片为 2s 一段、VP9 fMP4 格式，单片约 470KB，总量约 2.4MB。
 - 从源视频重新生成 HLS（在 `public/home/hls/` 目录下执行）：
 
 ```bash
@@ -100,7 +110,7 @@ ffmpeg -y -i ../home-vp9.webm -c:v libvpx-vp9 -crf 30 -b:v 0 -row-mt 1 \
   -hls_list_size 0 index.m3u8
 ```
 
-  （`-g 48` 对应 23.976fps 下每 2s 一个关键帧，需与源视频帧率匹配；源视频若无关键帧将无法无损切片。）
+  `-g 48` 对应 23.976fps 下每 2s 一个关键帧，需与源视频帧率匹配。
 
 - 默认背景图重新生成（在 `public/home/` 目录下执行）：
 

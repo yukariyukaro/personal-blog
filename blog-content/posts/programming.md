@@ -1,0 +1,391 @@
+---
+title: 编程是什么
+slug: programming
+summary: 从功能、数据和流程三个角度理解编程的本质。
+publishedAt: '2026-08-29'
+category: Web 基础
+coverImage: /Detail/TripleUni.webp
+tags:
+  - Web 基础
+  - 编程
+---
+
+## 编程是什么
+
+编程，简单说就是：**用代码告诉计算机怎么完成一件事**。
+
+这件事可以很小，比如计算两个数字相加；也可以很大，比如做一个网站、一个 App、一个游戏，或者一个自动统计数据的工具。
+
+计算机本身不会“理解你的想法”，它只会按指令执行。所以编程的核心工作，就是把人的需求拆成计算机能执行的步骤。
+
+例如，人会说：
+
+> 如果用户输入了正确密码，就让他登录；否则提示密码错误。
+
+程序会写成更明确的步骤：
+
+1. 接收用户输入的密码。
+2. 拿这个密码和系统保存的密码比较。
+3. 如果一样，显示“登录成功”。
+4. 如果不一样，显示“密码错误”。
+
+这就是编程在做的事：**把一个问题拆成数据和步骤，再让计算机一步步执行**。
+
+## 一、程序是什么
+
+程序就是一组指令。它告诉计算机：
+
+- 要接收什么信息；
+- 要怎么处理这些信息；
+- 最后要得到什么结果。
+
+可以把程序理解成一个“自动执行的流程”：
+
+```text
+输入 -> 处理 -> 输出
+```
+
+例如一个计算器：
+
+```text
+输入：3 和 5
+处理：把两个数字相加
+输出：8
+```
+
+例如一个天气页面：
+
+```text
+输入：用户所在城市
+处理：请求天气数据，整理温度、天气、空气质量
+输出：在页面上展示天气信息
+```
+
+例如一个短视频点赞按钮：
+
+```text
+输入：用户点击点赞
+处理：记录点赞状态，更新点赞数量
+输出：按钮变亮，数字加 1
+```
+
+所以，程序不是神秘的东西。它本质上就是：**拿到信息，按规则处理，给出结果**。
+
+## 二、数据是什么
+
+数据就是程序处理的“材料”。
+
+现实世界里的很多东西，放进程序里都会变成数据：
+
+| 现实中的东西 | 程序里的数据 |
+| --- | --- |
+| 用户名字 | `"张三"` |
+| 商品价格 | `99` |
+| 是否登录 | `true` 或 `false` |
+| 购物车商品 | `["手机", "耳机", "充电器"]` |
+| 用户信息 | `{ name: "张三", age: 18 }` |
+
+在 JavaScript 里，常见数据类型包括：
+
+- 数字：`18`、`99.9`
+- 字符串：`"你好"`、`"JavaScript"`
+- 布尔值：`true`、`false`
+- 数组：`[1, 2, 3]`
+- 对象：`{ name: "张三", age: 18 }`
+
+程序处理数据时，一定要知道数据是什么类型。比如：
+
+```js
+5 + 5; // 10
+"5" + "5"; // "55"
+```
+
+第一个是数字相加，第二个是字符串拼接。看起来都像 `5`，但它们在程序里的含义不一样。
+
+## 三、变量是什么
+
+变量就是给数据起一个名字，方便后面继续使用。
+
+可以把变量理解成一个贴了标签的盒子：
+
+```js
+const userName = "张三";
+let score = 0;
+```
+
+这里：
+
+- `userName` 是一个名字，里面放着 `"张三"`；
+- `score` 是一个名字，里面放着 `0`。
+
+有了变量，程序就可以“记住”信息。
+
+例如记录点赞数：
+
+```js
+let likeCount = 10;
+
+likeCount = likeCount + 1;
+
+console.log(likeCount); // 11
+```
+
+如果没有变量，程序就很难知道“当前点赞数是多少”“用户输入了什么”“购物车里有什么”。
+
+## 四、函数是什么
+
+函数就是一段可以重复使用的处理逻辑。
+
+更简单地说，函数像一台小机器：
+
+```text
+输入 -> 函数处理 -> 输出
+```
+
+例如“计算总价”这个任务，可以写成一个函数：
+
+```js
+function calculateTotal(price, count) {
+  return price * count;
+}
+
+const total = calculateTotal(99, 3);
+
+console.log(total); // 297
+```
+
+这个函数里：
+
+- `price` 和 `count` 是输入；
+- `price * count` 是处理过程；
+- `return` 后面的结果是输出。
+
+函数的好处是：**把一段逻辑封装起来，需要时直接调用，不用重复写**。
+
+例如页面上很多地方都要判断是否成年：
+
+```js
+function isAdult(age) {
+  return age >= 18;
+}
+
+console.log(isAdult(20)); // true
+console.log(isAdult(15)); // false
+```
+
+以后只要需要判断年龄，就调用 `isAdult()`，不用每次都重新写 `age >= 18`。
+
+## 五、编程就是用函数处理数据
+
+从最简单的角度看，编程可以理解成：
+
+> **编写函数，让函数按照规则处理数据。**
+
+例如一个登录功能：
+
+```js
+function checkLogin(inputPassword, savedPassword) {
+  if (inputPassword === savedPassword) {
+    return "登录成功";
+  }
+
+  return "密码错误";
+}
+
+console.log(checkLogin("123456", "123456")); // 登录成功
+console.log(checkLogin("111111", "123456")); // 密码错误
+```
+
+这里的数据是：
+
+- 用户输入的密码；
+- 系统保存的密码。
+
+函数做的事是：
+
+- 比较两个密码是否一样；
+- 根据比较结果返回不同文案。
+
+再看一个购物车例子：
+
+```js
+function calculateCartTotal(items) {
+  let total = 0;
+
+  for (const item of items) {
+    total = total + item.price * item.count;
+  }
+
+  return total;
+}
+
+const cart = [
+  { name: "键盘", price: 199, count: 1 },
+  { name: "鼠标", price: 99, count: 2 },
+];
+
+console.log(calculateCartTotal(cart)); // 397
+```
+
+这个程序做了三件事：
+
+1. 用数组保存购物车数据。
+2. 用循环逐个处理商品。
+3. 用函数算出总价。
+
+这已经是一个真实业务功能的雏形了。
+
+## 六、条件判断：让程序做选择
+
+程序不是永远从上到下机械执行。很多时候，它需要根据情况做不同选择。
+
+这就需要条件判断。
+
+例如根据分数判断是否及格：
+
+```js
+function getExamResult(score) {
+  if (score >= 60) {
+    return "及格";
+  }
+
+  return "不及格";
+}
+
+console.log(getExamResult(80)); // 及格
+console.log(getExamResult(45)); // 不及格
+```
+
+再比如前端页面里常见的逻辑：
+
+```text
+如果用户已登录 -> 展示用户头像
+如果用户未登录 -> 展示登录按钮
+```
+
+条件判断让程序具备了“根据不同情况走不同流程”的能力。
+
+## 七、循环：让程序重复做事
+
+如果要给 100 个用户发送消息，不可能手写 100 次发送逻辑。程序可以用循环重复执行同一段代码。
+
+例如打印商品名称：
+
+```js
+const products = ["手机", "耳机", "充电器"];
+
+for (const product of products) {
+  console.log(product);
+}
+```
+
+输出：
+
+```text
+手机
+耳机
+充电器
+```
+
+循环适合处理“一组数据”：
+
+- 遍历商品列表；
+- 渲染文章列表；
+- 统计考试成绩；
+- 给每个用户发送通知；
+- 检查购物车里每一件商品。
+
+## 八、一个前端例子：点击按钮后更新页面
+
+前端开发里，最常见的事情是：用户操作页面，程序处理数据，然后页面发生变化。
+
+例如一个简单的点赞按钮：
+
+```html
+<button id="likeButton">点赞</button>
+<span id="likeCount">0</span>
+```
+
+```js
+let count = 0;
+
+const button = document.querySelector("#likeButton");
+const countText = document.querySelector("#likeCount");
+
+button.addEventListener("click", function () {
+  count = count + 1;
+  countText.textContent = count;
+});
+```
+
+这个例子里：
+
+- 数据：`count`
+- 输入：用户点击按钮
+- 函数：点击后执行的处理逻辑
+- 输出：页面上的点赞数更新
+
+这就是前端编程的基本模型：
+
+```text
+用户行为 -> 修改数据 -> 更新页面
+```
+
+后面学习 HTML、CSS、JavaScript、React，本质上都是围绕这个模型展开。
+
+## 九、写程序时到底在想什么
+
+新手写代码时，不要一开始就盯着语法。可以先问自己几个问题：
+
+1. 我要解决什么问题？
+2. 这个问题需要哪些数据？
+3. 数据从哪里来？
+4. 我要对数据做什么处理？
+5. 什么情况下走不同流程？
+6. 有没有重复执行的步骤？
+7. 最后要输出什么结果？
+
+例如做一个“判断是否免运费”的功能：
+
+```text
+问题：订单满 99 元免运费
+数据：订单金额
+规则：金额 >= 99
+输出：是否免运费
+```
+
+写成代码：
+
+```js
+function isFreeShipping(orderAmount) {
+  return orderAmount >= 99;
+}
+
+console.log(isFreeShipping(120)); // true
+console.log(isFreeShipping(50)); // false
+```
+
+这就是从需求到代码的过程。
+
+## 十、编程不是背语法，而是训练拆问题的能力
+
+语法当然要学，但语法只是表达工具。真正重要的是：
+
+- 能不能把一个大问题拆成小步骤；
+- 能不能找出问题里的数据；
+- 能不能写出清晰的处理规则；
+- 能不能让程序在不同情况下给出正确结果；
+- 出错时能不能一步步定位原因。
+
+所以，编程更像是在训练一种思维方式：**把模糊的问题变成明确的流程**。
+
+最后用一句话总结：
+
+> **编程 = 用代码描述数据如何被处理，并让计算机自动执行这个过程。**
+
+参考资料：
+
+- <https://www.coursera.org/articles/what-is-programming>
+- <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions>
+- <https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Variables>
+- <https://www.educative.io/blog/beginners-guide-to-computers-and-programming>

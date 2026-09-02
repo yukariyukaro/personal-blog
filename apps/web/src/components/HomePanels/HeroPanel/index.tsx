@@ -52,8 +52,9 @@ function HeroPanel({
     }
 
     const warmup = () => {
-      const initUrl = new URL('init.mp4', hlsManifestSrc).toString()
-      const firstSegmentUrl = new URL('segment_000.m4s', hlsManifestSrc).toString()
+      const manifestUrl = new URL(hlsManifestSrc, window.location.href)
+      const initUrl = new URL('init.mp4', manifestUrl).toString()
+      const firstSegmentUrl = new URL('segment_000.m4s', manifestUrl).toString()
       const urls = [hlsManifestSrc, initUrl, firstSegmentUrl]
       for (const url of urls) {
         void fetch(url, {
@@ -115,8 +116,12 @@ function HeroPanel({
     }
 
     if (!Hls.isSupported()) {
-      setVideoMode('file')
-      return
+      const fallbackTimer = window.setTimeout(() => {
+        setVideoMode('file')
+      }, 0)
+      return () => {
+        window.clearTimeout(fallbackTimer)
+      }
     }
 
     const hls = new Hls({
@@ -172,15 +177,15 @@ function HeroPanel({
       setIsVideoVisible(false)
     }
 
-    videoElement.addEventListener('canplaythrough', markVideoLoaded)
+    videoElement.addEventListener('canplay', markVideoLoaded)
     videoElement.addEventListener('error', handleError)
 
-    if (videoElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+    if (videoElement.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
       markVideoLoaded()
     }
 
     return () => {
-      videoElement.removeEventListener('canplaythrough', markVideoLoaded)
+      videoElement.removeEventListener('canplay', markVideoLoaded)
       videoElement.removeEventListener('error', handleError)
     }
   }, [shouldRenderVideo, videoMode])

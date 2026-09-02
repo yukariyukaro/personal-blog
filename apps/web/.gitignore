@@ -12,6 +12,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+public/content
+output/playwright
 *.local
 
 # Editor directories and files
