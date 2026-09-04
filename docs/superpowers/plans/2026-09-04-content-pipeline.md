@@ -60,7 +60,7 @@ apps/web/
 - 修改：`apps/web/scripts/build-content.mjs`
 - 修改：`apps/web/package.json`
 
-- [ ] **Step 1：编写 Schema 与草稿模式失败测试**
+- [x] **Step 1：编写 Schema 与草稿模式失败测试**
 
 使用临时目录创建公开文章、草稿、目录式 `index.mdx`、非法日期和重复 slug，断言：
 
@@ -85,7 +85,7 @@ await assert.rejects(() => buildInvalidDate(), /publishedAt.*YYYY-MM-DD/)
 await assert.rejects(() => buildDuplicateSlug(), /Duplicate article slug/)
 ```
 
-- [ ] **Step 2：运行测试并确认失败**
+- [x] **Step 2：运行测试并确认失败**
 
 运行：
 
@@ -95,7 +95,7 @@ node --test scripts/content/build-content.test.mjs
 
 预期：因内容模块尚不存在而失败。
 
-- [ ] **Step 3：实现可选字段的严格读取**
+- [x] **Step 3：实现可选字段的严格读取**
 
 `article-schema.mjs` 输出 `parseArticleFrontmatter(data, sourcePath)`。必填字段保持
 `title/slug/summary/publishedAt/category/tags`；新增字段均为可选，缺失时不写入
@@ -122,7 +122,7 @@ node --test scripts/content/build-content.test.mjs
 URL 只允许 `http:` 或 `https:`；permalink 只允许无查询串和片段的站内绝对路径。
 不为缺失字段补默认业务值。
 
-- [ ] **Step 4：实现文章发现和构建模式**
+- [x] **Step 4：实现文章发现和构建模式**
 
 `discover-posts.mjs` 递归发现 `.md/.mdx`，忽略 `README.md`，同时支持
 `posts/name.md` 与 `posts/name/index.md`。`build-content.mjs` 导出：
@@ -138,7 +138,7 @@ export async function buildContent({
 草稿必须在排序、分类、标签和统计前过滤。排序依次使用 `pinned`、`priority`、
 `publishedAt`、`slug`；未提供的可选字段不写入索引。
 
-- [ ] **Step 5：收口 CLI 与开发模式**
+- [x] **Step 5：收口 CLI 与开发模式**
 
 根入口只解析 `--include-drafts` 并调用模块：
 
@@ -160,7 +160,7 @@ await buildContent({
 }
 ```
 
-- [ ] **Step 6：运行测试并提交**
+- [x] **Step 6：运行测试并提交**
 
 ```bash
 node --test scripts/content/build-content.test.mjs
