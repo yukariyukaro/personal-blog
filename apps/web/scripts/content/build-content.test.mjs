@@ -289,6 +289,9 @@ test('permalink 仅接受站内绝对路径并规范化首尾斜杠', () => {
     '/http://example.com/x',
     '/https://example.com/x',
     '/custom+scheme:/x',
+    '/javascript:alert(1)',
+    '/%6aavascript%3Aalert(1)',
+    '/posts/a:b',
     '/a//b',
   ]) {
     assert.throws(
