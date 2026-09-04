@@ -286,6 +286,10 @@ test('permalink 仅接受站内绝对路径并规范化首尾斜杠', () => {
     '//example.com/schema-post',
     'https://example.com/schema-post',
     'custom:route',
+    '/http://example.com/x',
+    '/https://example.com/x',
+    '/custom+scheme:/x',
+    '/a//b',
   ]) {
     assert.throws(
       () =>

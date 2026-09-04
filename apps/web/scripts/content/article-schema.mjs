@@ -1,6 +1,7 @@
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const datePattern = /^(\d{4})-(\d{2})-(\d{2})$/
 const controlCharacterPattern = /[\u0000-\u001f\u007f-\u009f]/
+const uriSchemePattern = /^[A-Za-z][A-Za-z0-9+.-]*:$/
 
 const requireString = (data, field, sourcePath) => {
   const value = data[field]
@@ -104,7 +105,7 @@ const readHttpUrl = (value, field, sourcePath) => {
   return value
 }
 
-const isUnsafePermalinkSegment = (segment) => {
+const isUnsafePermalinkSegment = (segment, index) => {
   let decodedSegment
   try {
     decodedSegment = decodeURIComponent(segment)
@@ -113,6 +114,8 @@ const isUnsafePermalinkSegment = (segment) => {
   }
 
   return (
+    decodedSegment === '' ||
+    (index === 0 && uriSchemePattern.test(decodedSegment)) ||
     decodedSegment === '.' ||
     decodedSegment === '..' ||
     decodedSegment.includes('/') ||
