@@ -8,7 +8,9 @@ type AppBootstrapProps = {
 
 function AppBootstrap({ children }: AppBootstrapProps) {
   useEffect(() => {
-    void fetchHealth()
+    if (import.meta.env.VITE_HEALTHCHECK_URL) {
+      void fetchHealth()
+    }
   }, [])
 
   useEffect(() => {

@@ -6,18 +6,20 @@ import './IntroPanel.css'
 
 function IntroPanel() {
   const bgImage = resolvePublicAsset('information/background.webp')
-  // Using placeholder avatar for now until provided
-  const avatarImage = resolvePublicAsset('information/background.webp') 
+  const avatarImage = resolvePublicAsset('home/miku_点赞.jpg')
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle')
 
   const handleCopyQQ = (e: React.MouseEvent) => {
     e.preventDefault()
-    navigator.clipboard.writeText('1981805808@qq.com').then(() => {
-      setCopyStatus('copied')
-      setTimeout(() => {
-        setCopyStatus('idle')
-      }, 2000)
-    })
+    navigator.clipboard
+      .writeText('1981805808@qq.com')
+      .then(() => {
+        setCopyStatus('copied')
+        setTimeout(() => {
+          setCopyStatus('idle')
+        }, 2000)
+      })
+      .catch(() => undefined)
   }
 
   return (
@@ -41,7 +43,7 @@ function IntroPanel() {
             <div className="intro-panel__avatar-container">
               <div className="intro-panel__avatar-orbit"></div>
               <div className="intro-panel__avatar">
-                <img src={avatarImage} alt="Avatar" />
+                <img src={avatarImage} alt="娄宿三" />
               </div>
               <div className="intro-panel__avatar-planet"></div>
             </div>

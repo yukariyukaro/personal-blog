@@ -4,7 +4,6 @@ slug: ai-friendly-frontend-architecture
 summary: 面向 AI 辅助开发的前端上下文组织、模块边界与工程约束。
 publishedAt: '2026-08-29'
 category: 前端架构
-coverImage: /Detail/YearReport.webp
 tags:
   - AI
   - 前端架构

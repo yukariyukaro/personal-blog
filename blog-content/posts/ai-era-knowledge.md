@@ -4,7 +4,6 @@ slug: ai-era-knowledge
 summary: AI 降低代码生成成本后，开发者应当重点掌握哪些知识与能力。
 publishedAt: '2026-08-29'
 category: AI
-coverImage: /information/background.webp
 tags:
   - AI
   - 学习方法

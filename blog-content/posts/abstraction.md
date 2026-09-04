@@ -4,7 +4,6 @@ slug: abstraction
 summary: 理解抽象如何隐藏细节、划分边界并降低系统复杂度。
 publishedAt: '2026-08-29'
 category: 软件设计
-coverImage: /Detail/TripleUni.webp
 tags:
   - Web 基础
   - 软件设计

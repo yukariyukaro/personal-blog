@@ -4,7 +4,6 @@ slug: programming
 summary: 从功能、数据和流程三个角度理解编程的本质。
 publishedAt: '2026-08-29'
 category: Web 基础
-coverImage: /Detail/TripleUni.webp
 tags:
   - Web 基础
   - 编程

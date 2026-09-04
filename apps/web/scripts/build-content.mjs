@@ -50,6 +50,17 @@ const requireString = (data, field, sourcePath) => {
   return value.trim()
 }
 
+const readOptionalString = (data, field, sourcePath) => {
+  const value = data[field]
+  if (value === undefined || value === null || value === '') {
+    return undefined
+  }
+  if (typeof value !== 'string') {
+    throw new Error(`${sourcePath}: "${field}" must be a string when provided`)
+  }
+  return value.trim() || undefined
+}
+
 const createPostAsset = (sourcePath, slug, assetPath, displayPath) => {
   const sourceDir = dirname(sourcePath)
   const absoluteSourcePath = resolve(sourceDir, assetPath)
@@ -120,7 +131,7 @@ const parsePost = async (sourcePath) => {
   const summary = requireString(data, 'summary', displayPath)
   const publishedAt = requireString(data, 'publishedAt', displayPath)
   const category = requireString(data, 'category', displayPath)
-  const coverImage = requireString(data, 'coverImage', displayPath)
+  const coverImage = readOptionalString(data, 'coverImage', displayPath)
   const assets = []
 
   if (!slugPattern.test(slug)) {
@@ -157,7 +168,17 @@ const parsePost = async (sourcePath) => {
       publishedAt,
       category,
       tags: data.tags.map((tag) => tag.trim()),
-      coverImage: resolveArticleImage(coverImage, sourcePath, slug, displayPath, assets),
+      ...(coverImage
+        ? {
+            coverImage: resolveArticleImage(
+              coverImage,
+              sourcePath,
+              slug,
+              displayPath,
+              assets,
+            ),
+          }
+        : {}),
       wordCount,
       readingMinutes,
       contentPath: `content/articles/${slug}.md`,

@@ -4,7 +4,6 @@ slug: computer
 summary: 从输入、处理、存储和输出理解计算机如何执行程序。
 publishedAt: '2026-08-29'
 category: 计算机基础
-coverImage: /home/home.webp
 tags:
   - Web 基础
   - 计算机

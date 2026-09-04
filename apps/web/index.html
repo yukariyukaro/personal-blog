@@ -31,13 +31,6 @@
     <meta name="msapplication-TileColor" content="#39C5BB" />
 
     <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin="anonymous">
-    <link
-      rel="preload"
-      as="image"
-      href="https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp"
-      fetchpriority="high"
-    >
-
     <!-- 预加载自定义字体，赋予最高优先级 -->
     <link rel="preload" href="https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf" as="font" type="font/ttf" crossorigin="anonymous">
     <style>
@@ -45,7 +38,7 @@
       @font-face {
         font-family: 'SmileySans';
         src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');
-        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */
+        font-display: swap;
       }
 
       body {
@@ -56,7 +49,7 @@
       #global-loading {
         position: fixed;
         inset: 0;
-        background-color: #ffffff;
+        background-color: #071016;
         z-index: 9999;
         display: flex;
         align-items: flex-end;
@@ -87,13 +80,13 @@
       .loading-text-container {
         display: flex;
         flex-direction: column;
-        color: #39C5BB; /* miku色 */
+        color: #68e0d1;
       }
 
       .loading-title-wrapper {
         display: flex;
         align-items: flex-end;
-        border-bottom: 4px solid #39C5BB;
+        border-bottom: 4px solid #68e0d1;
         padding-bottom: 4px;
         border-radius: 2px;
       }
@@ -107,7 +100,7 @@
         letter-spacing: 0.05em;
         margin: 0;
         /* 可爱的字体描边和阴影效果 (贴纸风格) */
-        color: #39C5BB;
+        color: #68e0d1;
         -webkit-text-stroke: 1px #020202;
         text-shadow: 
           3px 3px 0 #2ca097, 
@@ -146,7 +139,7 @@
         margin: 0;
         animation: loading-blink 1.5s infinite;
         /* 副标题同样增加微弱的描边使其更清晰 */
-        color: #39C5BB;
+        color: #68e0d1;
         text-shadow: 1px 1px 0 #2ca097;
       }
 

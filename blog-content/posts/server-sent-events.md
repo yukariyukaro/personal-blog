@@ -4,7 +4,6 @@ slug: server-sent-events
 summary: SSE 的通信模型、协议格式、浏览器接入方式与适用边界。
 publishedAt: '2026-08-29'
 category: JavaScript
-coverImage: /information/background.webp
 tags:
   - JavaScript
   - 网络

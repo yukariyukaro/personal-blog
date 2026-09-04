@@ -1,4 +1,5 @@
 .home-page {
+  --home-wave-fill: #030608;
   width: 100%;
   min-height: 100vh;
   overflow-x: clip;
@@ -19,6 +20,46 @@
   inset: 0;
 }
 
+.home-page__waves {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  z-index: 4;
+  height: clamp(9rem, 18vh, 15rem);
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.home-page__waves-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.home-page__waves-parallax use {
+  transform: translateZ(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: home-wave 25s cubic-bezier(0.5, 0.5, 0.45, 0.5) infinite;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+@keyframes home-wave {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
 .home-page__reader-placeholder {
   min-height: 100vh;
   background: #071016;
@@ -34,5 +75,15 @@
 @media (max-width: 768px) {
   .home-page__hero {
     min-height: 32rem;
+  }
+
+  .home-page__waves {
+    height: 8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page__waves-parallax use {
+    animation: none;
   }
 }
