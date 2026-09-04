@@ -1,5 +1,6 @@
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const datePattern = /^(\d{4})-(\d{2})-(\d{2})$/
+const controlCharacterPattern = /[\u0000-\u001f\u007f-\u009f]/
 
 const requireString = (data, field, sourcePath) => {
   const value = data[field]
@@ -103,7 +104,25 @@ const readHttpUrl = (value, field, sourcePath) => {
   return value
 }
 
+const isUnsafePermalinkSegment = (segment) => {
+  let decodedSegment
+  try {
+    decodedSegment = decodeURIComponent(segment)
+  } catch {
+    return true
+  }
+
+  return (
+    decodedSegment === '.' ||
+    decodedSegment === '..' ||
+    decodedSegment.includes('/') ||
+    decodedSegment.includes('\\') ||
+    controlCharacterPattern.test(decodedSegment)
+  )
+}
+
 const readOptionalPermalink = (data, sourcePath) => {
+  const rawValue = data.permalink
   const value = readOptionalString(data, 'permalink', sourcePath)
   if (value === undefined) {
     return undefined
@@ -114,11 +133,15 @@ const readOptionalPermalink = (data, sourcePath) => {
     value.startsWith('//') ||
     value.includes('?') ||
     value.includes('#') ||
-    value.split('/').includes('..')
+    controlCharacterPattern.test(rawValue)
   const path = value.replace(/^\/|\/+$/g, '')
-  if (invalidPath || path === '') {
+  if (
+    invalidPath ||
+    path === '' ||
+    path.split('/').some(isUnsafePermalinkSegment)
+  ) {
     throw new Error(
-      `${sourcePath}: "permalink" must be a non-empty site-absolute path without "..", query, hash, or protocol`,
+      `${sourcePath}: "permalink" must be a safely encoded, non-empty site-absolute path without dot segments, backslashes, query, hash, control characters, or protocol`,
     )
   }
 

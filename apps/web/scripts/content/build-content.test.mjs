@@ -255,6 +255,10 @@ test('permalink 仅接受站内绝对路径并规范化首尾斜杠', () => {
   for (const [permalink, expected] of [
     ['/articles/schema-post', '/articles/schema-post/'],
     ['/articles/schema-post///', '/articles/schema-post/'],
+    [
+      '/%E4%B8%AD%E6%96%87/%E8%B7%AF%E5%BE%84',
+      '/%E4%B8%AD%E6%96%87/%E8%B7%AF%E5%BE%84/',
+    ],
   ]) {
     assert.equal(
       parseArticleFrontmatter(
@@ -272,6 +276,11 @@ test('permalink 仅接受站内绝对路径并规范化首尾斜杠', () => {
     '///',
     'articles/schema-post',
     '/articles/../secret',
+    '/a/%2e%2e/b',
+    String.raw`/a\..\b`,
+    '/a/./b',
+    '/articles/%E4%B8%AD%E6%96%87/%ZZ',
+    '/articles/%00/control',
     '/articles/schema-post?draft=true',
     '/articles/schema-post#section',
     '//example.com/schema-post',
