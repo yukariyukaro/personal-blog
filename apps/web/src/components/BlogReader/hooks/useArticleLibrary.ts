@@ -1,14 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   fetchArticleContent,
   fetchArticleIndex,
   type ArticleIndex,
-  type ArticleSummary,
 } from '../../../utils/contentApi'
 
 export function useArticleLibrary(requestedSlug: string | null) {
   const [articleIndex, setArticleIndex] = useState<ArticleIndex | null>(null)
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(null)
   const [loadedArticles, setLoadedArticles] = useState<Record<string, string>>({})
   const [indexError, setIndexError] = useState(false)
   const [failedSlug, setFailedSlug] = useState<string | null>(null)
@@ -22,7 +20,6 @@ export function useArticleLibrary(requestedSlug: string | null) {
           return
         }
         setArticleIndex(index)
-        setSelectedSlug(index.articles[0]?.slug ?? null)
       })
       .catch(() => {
         if (!isCancelled) {
@@ -37,14 +34,16 @@ export function useArticleLibrary(requestedSlug: string | null) {
 
   const articles = articleIndex?.articles ?? null
   const effectiveSelectedSlug = useMemo(() => {
-    if (
-      requestedSlug &&
-      articles?.some((article) => article.slug === requestedSlug)
-    ) {
-      return requestedSlug
+    if (!articles) {
+      return null
     }
-    return selectedSlug
-  }, [articles, requestedSlug, selectedSlug])
+    if (requestedSlug === null) {
+      return articles[0]?.slug ?? null
+    }
+    return articles.some((article) => article.slug === requestedSlug)
+      ? requestedSlug
+      : null
+  }, [articles, requestedSlug])
 
   const selectedArticle = useMemo(
     () =>
@@ -82,10 +81,6 @@ export function useArticleLibrary(requestedSlug: string | null) {
     }
   }, [loadedArticles, selectedArticle])
 
-  const selectArticle = useCallback((article: ArticleSummary) => {
-    setSelectedSlug(article.slug)
-  }, [])
-
   return {
     articles,
     stats: articleIndex?.stats ?? null,
@@ -95,6 +90,5 @@ export function useArticleLibrary(requestedSlug: string | null) {
     articleContent,
     contentError: failedSlug === effectiveSelectedSlug,
     indexError,
-    selectArticle,
   }
 }

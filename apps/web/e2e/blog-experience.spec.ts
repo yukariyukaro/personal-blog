@@ -62,6 +62,38 @@ test.describe('博客核心体验', () => {
     ).toBeVisible()
   })
 
+  test('非法文章参数不会显示其他正文', async ({ page }) => {
+    await page.goto('/#/Home?post=missing-article')
+
+    await expect(page).toHaveURL(/\/#\/Home\?post=missing-article$/)
+    await expect(
+      page
+        .locator('.blog-article-grid')
+        .getByRole('heading', { name: '抽象是什么' }),
+    ).toBeVisible()
+    await expect(page.locator('#blog-document-title')).toHaveCount(0)
+    await expect(
+      page.getByRole('button', { name: '复制文章链接' }),
+    ).toHaveCount(0)
+  })
+
+  test('浏览器后退会恢复默认文章', async ({ page }) => {
+    const documentTitle = page.locator('#blog-document-title')
+    await expect(documentTitle).toHaveText('抽象是什么')
+
+    await page
+      .locator('.blog-article-grid')
+      .getByRole('heading', { name: 'Server-Sent Events' })
+      .click()
+    await expect(page).toHaveURL(/\/#\/Home\?post=server-sent-events$/)
+    await expect(documentTitle).toHaveText('Server-Sent Events')
+
+    await page.goBack()
+
+    await expect(page).toHaveURL(/\/#\/Home$/)
+    await expect(documentTitle).toHaveText('抽象是什么')
+  })
+
   test('首屏过渡层可见，Live2D 默认按需开启', async ({ page }) => {
     test.skip(test.info().project.name === 'mobile-chromium', '移动端默认隐藏 Live2D')
     const wave = page.locator('.home-page__waves')

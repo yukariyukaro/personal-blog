@@ -37,7 +37,6 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     articleSectionRef,
     library.selectedArticle?.slug ?? null,
   )
-  const selectArticle = library.selectArticle
   const setActiveHeadingId = reading.setActiveHeadingId
 
   const visibleArticles = useMemo(
@@ -106,7 +105,6 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
   const openArticle = useCallback(
     (article: ArticleSummary) => {
       setShareStatus('idle')
-      selectArticle(article)
       setParams((currentParams) => {
         const nextParams = new URLSearchParams(currentParams)
         nextParams.set('post', article.slug)
@@ -119,7 +117,7 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
         })
       })
     },
-    [selectArticle, setParams],
+    [setParams],
   )
 
   const copyEmail = useCallback(async () => {
