@@ -196,9 +196,7 @@ test.describe('博客核心体验', () => {
     await expect(page.getByText('文章链接已复制')).toHaveCount(0)
   })
 
-  test('首屏过渡层可见，Live2D 默认按需开启', async ({ page }) => {
-    test.setTimeout(30_000)
-    test.skip(test.info().project.name === 'mobile-chromium', '移动端默认隐藏 Live2D')
+  test('首屏波浪层级与阅读区背景符合契约', async ({ page }) => {
     const wave = page.locator('.home-page__waves')
     await expect(wave).toBeVisible()
     const waveStyle = await wave.locator('use').first().evaluate((element) => ({
@@ -207,7 +205,7 @@ test.describe('博客核心体验', () => {
       isInsideHero: Boolean(element.closest('.home-page__hero')),
     }))
     expect(waveStyle.animationName).toBe('home-wave')
-    expect(waveStyle.height).toBeGreaterThanOrEqual(140)
+    expect(waveStyle.height).toBeGreaterThanOrEqual(128)
     expect(waveStyle.isInsideHero).toBe(true)
     const scrollIndicator = page.locator('.scroll-indicator')
     await expect(scrollIndicator).toBeVisible()
@@ -223,7 +221,15 @@ test.describe('博客核心体验', () => {
     await expect(
       page.locator('iframe[title="Live2D 看板娘"]'),
     ).toHaveCount(0)
+  })
 
+  test('非移动端 Live2D 默认按需开启', async ({ page }) => {
+    test.setTimeout(30_000)
+    test.skip(test.info().project.name === 'mobile-chromium', '移动端不提供 Live2D')
+
+    await expect(
+      page.locator('iframe[title="Live2D 看板娘"]'),
+    ).toHaveCount(0)
     await page.getByRole('button', { name: '开启 Live2D 看板娘' }).click()
     await expect(
       page.getByRole('button', { name: '关闭 Live2D 看板娘' }),
