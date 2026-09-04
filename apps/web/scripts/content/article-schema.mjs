@@ -1,9 +1,43 @@
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 const datePattern = /^(\d{4})-(\d{2})-(\d{2})$/
 const controlCharacterPattern = /[\u0000-\u001f\u007f-\u009f]/
+const articleFields = new Set([
+  'title',
+  'slug',
+  'summary',
+  'publishedAt',
+  'category',
+  'tags',
+  'updatedAt',
+  'draft',
+  'pinned',
+  'priority',
+  'language',
+  'comments',
+  'author',
+  'source',
+  'license',
+  'aliases',
+  'permalink',
+  'coverImage',
+])
+const namedLinkFields = new Set(['name', 'url'])
+const sourceFields = new Set(['title', 'url'])
+
+const readOwnValue = (data, field) =>
+  Object.hasOwn(data, field) ? data[field] : undefined
+
+const assertKnownFields = (data, allowedFields, sourcePath) => {
+  const unknownField = Object.keys(data).find(
+    (field) => !allowedFields.has(field),
+  )
+  if (unknownField !== undefined) {
+    throw new Error(`${sourcePath}: unknown field "${unknownField}"`)
+  }
+}
 
 const requireString = (data, field, sourcePath) => {
-  const value = data[field]
+  const value = readOwnValue(data, field)
   if (typeof value !== 'string' || value.trim() === '') {
     throw new Error(`${sourcePath}: "${field}" must be a non-empty string`)
   }
@@ -11,7 +45,7 @@ const requireString = (data, field, sourcePath) => {
 }
 
 const readOptionalString = (data, field, sourcePath) => {
-  const value = data[field]
+  const value = readOwnValue(data, field)
   if (value === undefined) {
     return undefined
   }
@@ -24,7 +58,7 @@ const readOptionalString = (data, field, sourcePath) => {
 }
 
 const readOptionalCoverImage = (data, sourcePath) => {
-  const value = data.coverImage
+  const value = readOwnValue(data, 'coverImage')
   if (value === undefined || value === null) {
     return undefined
   }
@@ -39,7 +73,7 @@ const readOptionalCoverImage = (data, sourcePath) => {
 }
 
 const readOptionalBoolean = (data, field, sourcePath) => {
-  const value = data[field]
+  const value = readOwnValue(data, field)
   if (value === undefined) {
     return undefined
   }
@@ -127,7 +161,7 @@ const isUnsafePermalinkSegment = (segment) => {
 }
 
 const readOptionalPermalink = (data, sourcePath) => {
-  const rawValue = data.permalink
+  const rawValue = readOwnValue(data, 'permalink')
   const value = readOptionalString(data, 'permalink', sourcePath)
   if (value === undefined) {
     return undefined
@@ -154,7 +188,7 @@ const readOptionalPermalink = (data, sourcePath) => {
 }
 
 const requireObject = (data, field, sourcePath) => {
-  const value = data[field]
+  const value = readOwnValue(data, field)
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     throw new Error(`${sourcePath}: "${field}" must be an object when provided`)
   }
@@ -162,11 +196,12 @@ const requireObject = (data, field, sourcePath) => {
 }
 
 const readOptionalNamedLink = (data, field, sourcePath) => {
-  if (data[field] === undefined) {
+  if (readOwnValue(data, field) === undefined) {
     return undefined
   }
 
   const value = requireObject(data, field, sourcePath)
+  assertKnownFields(value, namedLinkFields, `${sourcePath}: "${field}"`)
   const name = requireString(value, 'name', `${sourcePath}: "${field}"`)
   const urlValue = readOptionalString(value, 'url', `${sourcePath}: "${field}"`)
   const url =
@@ -180,11 +215,12 @@ const readOptionalNamedLink = (data, field, sourcePath) => {
 }
 
 const readOptionalSource = (data, sourcePath) => {
-  if (data.source === undefined) {
+  if (readOwnValue(data, 'source') === undefined) {
     return undefined
   }
 
   const value = requireObject(data, 'source', sourcePath)
+  assertKnownFields(value, sourceFields, `${sourcePath}: "source"`)
   const title = readOptionalString(value, 'title', `${sourcePath}: "source"`)
   const url = readHttpUrl(
     requireString(value, 'url', `${sourcePath}: "source"`),
@@ -198,7 +234,7 @@ const readOptionalSource = (data, sourcePath) => {
 }
 
 const readStringArray = (data, field, sourcePath, allowEmpty) => {
-  const value = data[field]
+  const value = readOwnValue(data, field)
   if (
     !Array.isArray(value) ||
     (!allowEmpty && value.length === 0) ||
@@ -214,6 +250,7 @@ export const parseArticleFrontmatter = (data, sourcePath) => {
   if (typeof data !== 'object' || data === null || Array.isArray(data)) {
     throw new Error(`${sourcePath}: frontmatter must be an object`)
   }
+  assertKnownFields(data, articleFields, sourcePath)
 
   const title = requireString(data, 'title', sourcePath)
   const slug = requireString(data, 'slug', sourcePath)
@@ -239,15 +276,16 @@ export const parseArticleFrontmatter = (data, sourcePath) => {
       `${sourcePath}: "slug" must use lowercase letters, numbers, and hyphens`,
     )
   }
-  if (data.priority !== undefined) {
-    if (!Number.isFinite(data.priority) || !Number.isInteger(data.priority)) {
+  const priorityValue = readOwnValue(data, 'priority')
+  if (priorityValue !== undefined) {
+    if (!Number.isFinite(priorityValue) || !Number.isInteger(priorityValue)) {
       throw new Error(
         `${sourcePath}: "priority" must be a finite integer when provided`,
       )
     }
-    priority = data.priority
+    priority = priorityValue
   }
-  if (data.aliases !== undefined) {
+  if (readOwnValue(data, 'aliases') !== undefined) {
     aliases = readStringArray(data, 'aliases', sourcePath, true)
   }
 

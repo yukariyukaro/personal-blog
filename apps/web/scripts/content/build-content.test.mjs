@@ -220,6 +220,28 @@ test('Frontmatter Schema 保留合法可选字段并拒绝非法值', () => {
   )
 })
 
+test('未知 Frontmatter 字段会被拒绝', () => {
+  const cases = [
+    [createFrontmatter({ darft: true }), 'darft'],
+    [createFrontmatter({ author: { name: '作者', role: 'admin' } }), 'role'],
+    [
+      createFrontmatter(
+        { source: { url: 'https://example.com/source', type: 'original' } },
+      ),
+      'type',
+    ],
+    [createFrontmatter({ license: { name: 'CC BY', spdx: 'CC-BY-4.0' } }), 'spdx'],
+    [{ ...createFrontmatter(), ...JSON.parse('{"__proto__":true}') }, '__proto__'],
+  ]
+
+  for (const [frontmatter, field] of cases) {
+    assert.throws(
+      () => parseArticleFrontmatter(frontmatter, 'schema.md'),
+      new RegExp(`unknown.*${field}`),
+    )
+  }
+})
+
 test('coverImage 缺失、null 或空字符串时均不写入字段', () => {
   for (const coverImage of [undefined, null, '']) {
     const frontmatter =
