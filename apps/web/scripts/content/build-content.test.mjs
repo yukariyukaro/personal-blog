@@ -41,6 +41,16 @@ ${extra}---
 ${content}
 `
 
+const createFrontmatter = (overrides = {}) => ({
+  title: 'Schema',
+  slug: 'schema-post',
+  summary: 'Schema 摘要',
+  publishedAt: '2026-08-29',
+  category: '工程',
+  tags: ['Node.js'],
+  ...overrides,
+})
+
 const readIndex = async (outputRoot) =>
   JSON.parse(await readFile(join(outputRoot, 'index.json'), 'utf8'))
 
@@ -94,8 +104,11 @@ test('production 排除草稿且 development 包含草稿', async (context) => {
     ),
   ])
 
-  await buildContent({ postsRoot, outputRoot: productionOutput })
-  const production = await readIndex(productionOutput)
+  const production = await buildContent({
+    postsRoot,
+    outputRoot: productionOutput,
+  })
+  assert.deepEqual(production, await readIndex(productionOutput))
   assert.deepEqual(
     production.articles.map((article) => article.slug),
     ['public-post'],
@@ -107,12 +120,12 @@ test('production 排除草稿且 development 包含草稿', async (context) => {
     access(join(productionOutput, 'articles/draft-post.md')),
   )
 
-  await buildContent({
+  const development = await buildContent({
     postsRoot,
     outputRoot: developmentOutput,
     includeDrafts: true,
   })
-  const development = await readIndex(developmentOutput)
+  assert.deepEqual(development, await readIndex(developmentOutput))
   assert.deepEqual(
     development.articles.map((article) => article.slug),
     ['draft-post', 'public-post'],
@@ -160,14 +173,8 @@ test('可选字段缺失时不写入文章对象', async (context) => {
 
 test('Frontmatter Schema 保留合法可选字段并拒绝非法值', () => {
   const parsed = parseArticleFrontmatter(
-    {
-      title: 'Schema',
-      slug: 'schema-post',
-      summary: 'Schema 摘要',
-      publishedAt: '2026-08-29',
+    createFrontmatter({
       updatedAt: '2026-09-01',
-      category: '工程',
-      tags: ['Node.js'],
       draft: false,
       pinned: true,
       priority: 0,
@@ -177,9 +184,9 @@ test('Frontmatter Schema 保留合法可选字段并拒绝非法值', () => {
       source: { title: '来源', url: 'http://example.com/source' },
       license: { name: 'CC BY', url: 'https://example.com/license' },
       aliases: ['old-schema-post'],
-      permalink: 'https://example.com/schema-post',
+      permalink: '/articles/schema-post',
       coverImage: './cover.png',
-    },
+    }),
     'schema.md',
   )
 
@@ -200,7 +207,7 @@ test('Frontmatter Schema 保留合法可选字段并拒绝非法值', () => {
     source: { title: '来源', url: 'http://example.com/source' },
     license: { name: 'CC BY', url: 'https://example.com/license' },
     aliases: ['old-schema-post'],
-    permalink: 'https://example.com/schema-post',
+    permalink: '/articles/schema-post/',
     coverImage: './cover.png',
   })
   assert.throws(
@@ -211,17 +218,103 @@ test('Frontmatter Schema 保留合法可选字段并拒绝非法值', () => {
       ),
     /priority.*finite integer/,
   )
-  assert.throws(
-    () =>
+})
+
+test('coverImage 缺失、null 或空字符串时均不写入字段', () => {
+  for (const coverImage of [undefined, null, '']) {
+    const frontmatter =
+      coverImage === undefined
+        ? createFrontmatter()
+        : createFrontmatter({ coverImage })
+    const parsed = parseArticleFrontmatter(frontmatter, 'schema.md')
+
+    assert.equal(Object.hasOwn(parsed, 'coverImage'), false)
+  }
+})
+
+test('coverImage 之外的可选文本仍拒绝空值', () => {
+  const invalidFrontmatters = [
+    createFrontmatter({ updatedAt: '' }),
+    createFrontmatter({ language: '' }),
+    createFrontmatter({ author: { name: '作者', url: '' } }),
+    createFrontmatter({
+      source: { title: '', url: 'https://example.com/source' },
+    }),
+    createFrontmatter({ license: { name: 'CC BY', url: '' } }),
+  ]
+
+  for (const frontmatter of invalidFrontmatters) {
+    assert.throws(
+      () => parseArticleFrontmatter(frontmatter, 'schema.md'),
+      /must be a non-empty string when provided/,
+    )
+  }
+})
+
+test('permalink 仅接受站内绝对路径并规范化首尾斜杠', () => {
+  for (const [permalink, expected] of [
+    ['/articles/schema-post', '/articles/schema-post/'],
+    ['/articles/schema-post///', '/articles/schema-post/'],
+  ]) {
+    assert.equal(
       parseArticleFrontmatter(
-        {
-          ...parsed,
-          author: { name: '作者', url: 'ftp://example.com/author' },
-        },
+        createFrontmatter({ permalink }),
         'schema.md',
-      ),
-    /author\.url.*http\/https/,
-  )
+      ).permalink,
+      expected,
+    )
+  }
+
+  for (const permalink of [
+    '',
+    '   ',
+    '/',
+    '///',
+    'articles/schema-post',
+    '/articles/../secret',
+    '/articles/schema-post?draft=true',
+    '/articles/schema-post#section',
+    '//example.com/schema-post',
+    'https://example.com/schema-post',
+    'custom:route',
+  ]) {
+    assert.throws(
+      () =>
+        parseArticleFrontmatter(
+          createFrontmatter({ permalink }),
+          'schema.md',
+        ),
+      /permalink/,
+    )
+  }
+})
+
+test('author、source 和 license 的 url 仅接受 http/https', () => {
+  for (const [frontmatter, errorPattern] of [
+    [
+      createFrontmatter({
+        author: { name: '作者', url: 'ftp://example.com/author' },
+      }),
+      /author\.url.*http\/https/,
+    ],
+    [
+      createFrontmatter({
+        source: { url: 'ftp://example.com/source' },
+      }),
+      /source\.url.*http\/https/,
+    ],
+    [
+      createFrontmatter({
+        license: { name: 'CC BY', url: 'ftp://example.com/license' },
+      }),
+      /license\.url.*http\/https/,
+    ],
+  ]) {
+    assert.throws(
+      () => parseArticleFrontmatter(frontmatter, 'schema.md'),
+      errorPattern,
+    )
+  }
 })
 
 test('非法日期会终止构建', async (context) => {

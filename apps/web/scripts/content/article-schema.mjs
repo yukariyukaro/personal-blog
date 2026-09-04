@@ -22,6 +22,21 @@ const readOptionalString = (data, field, sourcePath) => {
   return value.trim()
 }
 
+const readOptionalCoverImage = (data, sourcePath) => {
+  const value = data.coverImage
+  if (value === undefined || value === null) {
+    return undefined
+  }
+  if (typeof value !== 'string') {
+    throw new Error(
+      `${sourcePath}: "coverImage" must be a string when provided`,
+    )
+  }
+
+  const normalizedValue = value.trim()
+  return normalizedValue === '' ? undefined : normalizedValue
+}
+
 const readOptionalBoolean = (data, field, sourcePath) => {
   const value = data[field]
   if (value === undefined) {
@@ -88,9 +103,26 @@ const readHttpUrl = (value, field, sourcePath) => {
   return value
 }
 
-const readOptionalUrl = (data, field, sourcePath) => {
-  const value = readOptionalString(data, field, sourcePath)
-  return value === undefined ? undefined : readHttpUrl(value, field, sourcePath)
+const readOptionalPermalink = (data, sourcePath) => {
+  const value = readOptionalString(data, 'permalink', sourcePath)
+  if (value === undefined) {
+    return undefined
+  }
+
+  const invalidPath =
+    !value.startsWith('/') ||
+    value.startsWith('//') ||
+    value.includes('?') ||
+    value.includes('#') ||
+    value.split('/').includes('..')
+  const path = value.replace(/^\/|\/+$/g, '')
+  if (invalidPath || path === '') {
+    throw new Error(
+      `${sourcePath}: "permalink" must be a non-empty site-absolute path without "..", query, hash, or protocol`,
+    )
+  }
+
+  return `/${path}/`
 }
 
 const requireObject = (data, field, sourcePath) => {
@@ -169,8 +201,8 @@ export const parseArticleFrontmatter = (data, sourcePath) => {
   const author = readOptionalNamedLink(data, 'author', sourcePath)
   const source = readOptionalSource(data, sourcePath)
   const license = readOptionalNamedLink(data, 'license', sourcePath)
-  const permalink = readOptionalUrl(data, 'permalink', sourcePath)
-  const coverImage = readOptionalString(data, 'coverImage', sourcePath)
+  const permalink = readOptionalPermalink(data, sourcePath)
+  const coverImage = readOptionalCoverImage(data, sourcePath)
   let priority
   let aliases
 

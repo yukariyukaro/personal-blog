@@ -259,14 +259,15 @@ export const buildContent = async ({
     ),
     latestPublishedAt,
   }
-
-  await writeContent(outputRoot, includedPosts, {
+  const index = {
     schemaVersion: 1,
     stats,
     categories,
     tags,
     articles,
-  })
+  }
 
+  await writeContent(outputRoot, includedPosts, index)
   console.log(`Generated ${articles.length} articles in ${outputRoot}`)
+  return index
 }
