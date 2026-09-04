@@ -8,6 +8,9 @@
 
 **技术栈：** React 19、TypeScript、Vite 8、React Router 7、Playwright、Node.js 脚本、CSS Custom Properties。
 
+**完成状态：** 2026-09-04 已完成。最终验证为 `pnpm run check` 通过，
+Playwright 三端 `53 passed / 1 skipped`；跳过项仅为移动端不启用 Live2D。
+
 ---
 
 ## 文件结构
@@ -49,7 +52,7 @@ apps/web/
 - 创建：`apps/web/scripts/quality/check-file-lines.test.mjs`
 - 修改：`apps/web/package.json`
 
-- [ ] **Step 1：编写失败测试**
+- [x] **Step 1：编写失败测试**
 
 测试创建临时目录，验证 500 行通过、501 行失败，并确认 Markdown、JSON 和生成目录不参与检查：
 
@@ -75,7 +78,7 @@ test('代码文件最多允许 500 行', async () => {
 })
 ```
 
-- [ ] **Step 2：运行测试并确认失败**
+- [x] **Step 2：运行测试并确认失败**
 
 运行：
 
@@ -85,7 +88,7 @@ node --test scripts/quality/check-file-lines.test.mjs
 
 预期：因 `check-file-lines.mjs` 尚不存在而失败。
 
-- [ ] **Step 3：实现检查器**
+- [x] **Step 3：实现检查器**
 
 实现只扫描 `.js`、`.jsx`、`.ts`、`.tsx`、`.mjs`、`.cjs`、`.css`、`.scss`
 和 `.styl`，排除 `node_modules`、`dist`、`public/content` 和 `output`：
@@ -137,7 +140,7 @@ if (isCli) {
 }
 ```
 
-- [ ] **Step 4：接入项目命令**
+- [x] **Step 4：接入项目命令**
 
 在 `package.json` 中加入：
 
@@ -151,7 +154,7 @@ if (isCli) {
 }
 ```
 
-- [ ] **Step 5：运行测试**
+- [x] **Step 5：运行测试**
 
 ```bash
 pnpm run test:unit
@@ -160,7 +163,7 @@ pnpm run check:size
 
 预期：单元测试通过；行数检查指出现有 `BlogReader.css` 超限，为 Task 2 提供红灯。
 
-- [ ] **Step 6：提交**
+- [x] **Step 6：提交**
 
 ```bash
 git add apps/web/scripts/quality apps/web/package.json
@@ -178,7 +181,7 @@ git commit -m "test: 增加代码文件行数门禁"
 - 修改：`apps/web/src/components/Live2DWidget/loadLive2DWidget.ts`
 - 删除：`apps/web/public/pio/l2d-widget.min.js`
 
-- [ ] **Step 1：将入口 CSS 改为纯聚合文件**
+- [x] **Step 1：将入口 CSS 改为纯聚合文件**
 
 ```css
 @import './BlogReaderLayout.css';
@@ -187,7 +190,7 @@ git commit -m "test: 增加代码文件行数门禁"
 @import './BlogReaderTheme.css';
 ```
 
-- [ ] **Step 2：按职责迁移选择器**
+- [x] **Step 2：按职责迁移选择器**
 
 迁移规则：
 
@@ -206,7 +209,7 @@ BlogReaderTheme.css   -> token 映射、深浅主题差异、降级动效
 --reader-radius: 8px;
 ```
 
-- [ ] **Step 3：实现 Mizuki 风格响应式矩阵**
+- [x] **Step 3：实现 Mizuki 风格响应式矩阵**
 
 ```css
 @media (min-width: 1440px) {
@@ -241,7 +244,7 @@ BlogReaderTheme.css   -> token 映射、深浅主题差异、降级动效
 }
 ```
 
-- [ ] **Step 4：验证行数和构建**
+- [x] **Step 4：验证行数和构建**
 
 将第三方压缩脚本从源码目录移出。`loadLive2DWidget.ts` 使用固定版本的公共 CDN
 地址加载 `l2d-widget`，保留现有加载失败状态，不在项目内继续维护 689 行的 vendor
@@ -255,7 +258,7 @@ export const LIVE2D_WIDGET_SCRIPT_URL =
 `Live2DWidget` 只调用 `loadLive2DWidget(LIVE2D_WIDGET_SCRIPT_URL)`；脚本不可用时
 保持关闭状态，不注入替代组件或默认提示。
 
-- [ ] **Step 5：验证行数和构建**
+- [x] **Step 5：验证行数和构建**
 
 ```bash
 pnpm run check:size
@@ -265,7 +268,7 @@ pnpm run build
 
 预期：每个 CSS 文件不超过 500 行，构建成功。
 
-- [ ] **Step 6：提交**
+- [x] **Step 6：提交**
 
 ```bash
 git add apps/web/src/components/BlogReader apps/web/src/components/Live2DWidget apps/web/public/pio
@@ -280,7 +283,7 @@ git commit -m "refactor: 拆分博客阅读器样式"
 - 修改：`apps/web/src/components/BlogReader/index.tsx`
 - 修改：`apps/web/src/components/BlogReader/types.ts`
 
-- [ ] **Step 1：补充 ViewModel 契约**
+- [x] **Step 1：补充 ViewModel 契约**
 
 在 `types.ts` 中加入：
 
@@ -322,7 +325,7 @@ export type BlogReaderViewModel = {
 }
 ```
 
-- [ ] **Step 2：实现组合 ViewModel**
+- [x] **Step 2：实现组合 ViewModel**
 
 `useBlogReaderViewModel` 必须：
 
@@ -352,7 +355,7 @@ const visibleArticles = useMemo(
 )
 ```
 
-- [ ] **Step 3：实现纯 View**
+- [x] **Step 3：实现纯 View**
 
 `BlogReaderView.tsx` 只接收 `BlogReaderViewModel`，按以下结构组合：
 
@@ -373,7 +376,7 @@ const visibleArticles = useMemo(
 
 View 不允许出现 `fetch`、`localStorage`、URL 参数解析或数据聚合。
 
-- [ ] **Step 4：将入口缩减为组合层**
+- [x] **Step 4：将入口缩减为组合层**
 
 ```tsx
 import BlogReaderView from './BlogReaderView'
@@ -386,7 +389,7 @@ export default function BlogReader() {
 }
 ```
 
-- [ ] **Step 5：运行静态检查**
+- [x] **Step 5：运行静态检查**
 
 ```bash
 pnpm run check:size
@@ -396,7 +399,7 @@ pnpm run build
 
 预期：`BlogReader/index.tsx` 小于 30 行，所有代码文件小于 500 行。
 
-- [ ] **Step 6：提交**
+- [x] **Step 6：提交**
 
 ```bash
 git add apps/web/src/components/BlogReader
@@ -412,7 +415,7 @@ git commit -m "refactor: 完成博客阅读器 MVVM 分层"
 - 修改：`apps/web/src/components/BlogReader/BlogSidebar.tsx`
 - 修改：`apps/web/src/components/ThemeSwitch/index.tsx`
 
-- [ ] **Step 1：建立导航配置**
+- [x] **Step 1：建立导航配置**
 
 ```ts
 export type NavigationItem = {
@@ -429,7 +432,7 @@ export const navigationItems: NavigationItem[] = [
 ]
 ```
 
-- [ ] **Step 2：建立站点资料配置**
+- [x] **Step 2：建立站点资料配置**
 
 ```ts
 export const siteProfile = {
@@ -443,12 +446,12 @@ export const siteProfile = {
 } as const
 ```
 
-- [ ] **Step 3：改造 View**
+- [x] **Step 3：改造 View**
 
 Navbar 从 `navigationItems` 渲染；BlogSidebar 从 `siteProfile` 渲染。配置字段为空时
 不显示对应链接，不生成默认文案。
 
-- [ ] **Step 4：验证主题契约**
+- [x] **Step 4：验证主题契约**
 
 主题切换需满足：
 
@@ -457,7 +460,7 @@ Navbar 从 `navigationItems` 渲染；BlogSidebar 从 `siteProfile` 渲染。配
 - 隐私模式存储失败时只保持当前会话状态。
 - `prefers-reduced-motion` 下取消主题过渡动画。
 
-- [ ] **Step 5：运行检查并提交**
+- [x] **Step 5：运行检查并提交**
 
 ```bash
 pnpm run check
@@ -471,7 +474,7 @@ git commit -m "refactor: 收口导航与站点配置"
 - 修改：`apps/web/e2e/blog-experience.spec.ts`
 - 修改：`apps/web/playwright.config.ts`
 
-- [ ] **Step 1：核对真实产品契约**
+- [x] **Step 1：核对真实产品契约**
 
 每条失败用例先在浏览器中确认以下需求成立：
 
@@ -484,7 +487,7 @@ git commit -m "refactor: 收口导航与站点配置"
 如果页面符合需求而定位器错误，修测试；如果页面不符合需求，修实现。不得为了绿测
 删除功能断言。
 
-- [ ] **Step 2：缩短失败反馈**
+- [x] **Step 2：缩短失败反馈**
 
 将单条测试超时改为 20 秒，并让 `beforeEach` 显式等待内容索引完成：
 
@@ -500,7 +503,7 @@ test.beforeEach(async ({ page }) => {
 })
 ```
 
-- [ ] **Step 3：增加响应式断点项目**
+- [x] **Step 3：增加响应式断点项目**
 
 ```ts
 {
@@ -514,7 +517,7 @@ test.beforeEach(async ({ page }) => {
 }
 ```
 
-- [ ] **Step 4：运行核心 E2E**
+- [x] **Step 4：运行核心 E2E**
 
 ```bash
 pnpm run test:e2e
@@ -522,14 +525,14 @@ pnpm run test:e2e
 
 预期：桌面、平板、移动端全部通过；失败时保留截图和 trace。
 
-- [ ] **Step 5：运行总门禁**
+- [x] **Step 5：运行总门禁**
 
 ```bash
 pnpm run check
 pnpm run test:e2e
 ```
 
-- [ ] **Step 6：提交**
+- [x] **Step 6：提交**
 
 ```bash
 git add apps/web/e2e apps/web/playwright.config.ts
