@@ -7,6 +7,7 @@ import {
 } from 'react'
 import type { MouseEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { siteProfile } from '../../../config/siteProfile'
 import type { ArticleSummary } from '../../../utils/contentApi'
 import { resolvePublicAsset } from '../../../utils/baseUrl'
 import { filterArticles } from '../contentUtils'
@@ -14,7 +15,6 @@ import type { BlogReaderViewModel } from '../types'
 import { useArticleLibrary } from './useArticleLibrary'
 import { useArticleReading } from './useArticleReading'
 
-const EMAIL = '1981805808@qq.com'
 const COPY_STATUS_DURATION = 1800
 
 const prefersReducedMotion = () =>
@@ -141,6 +141,10 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
   )
 
   const copyEmail = useCallback(async () => {
+    if (!siteProfile.email) {
+      return
+    }
+
     const requestId = ++copyEmailRequestRef.current
     if (copyEmailTimerRef.current !== null) {
       window.clearTimeout(copyEmailTimerRef.current)
@@ -148,7 +152,7 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     }
     setCopyStatus('idle')
     try {
-      await navigator.clipboard.writeText(EMAIL)
+      await navigator.clipboard.writeText(siteProfile.email)
       if (copyEmailRequestRef.current !== requestId) {
         return
       }

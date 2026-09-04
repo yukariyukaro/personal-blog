@@ -1,4 +1,5 @@
 import { Bilibili, Github } from '@lobehub/icons'
+import { siteProfile } from '../../config/siteProfile'
 import type { ArticleIndexStats, ArticleSummary } from '../../utils/contentApi'
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { formatNumber, resolveDisplayImage } from './contentUtils'
@@ -23,12 +24,23 @@ export default function BlogSidebar({
   onCopyEmail,
   onFocusSearch,
 }: BlogSidebarProps) {
+  const profileSummary = [siteProfile.handle, siteProfile.role]
+    .filter((value): value is string => Boolean(value))
+    .join(' / ')
+  const hasSocialLinks = Boolean(
+    siteProfile.githubUrl ||
+    siteProfile.bilibiliUrl ||
+    siteProfile.email,
+  )
+
   if (side === 'right') {
     return (
       <aside className="blog-sidebar blog-sidebar--right" aria-label="站点信息">
         <section className="blog-card clock-card">
           <div className="clock-header">
-            <span>保持好奇，持续输出</span>
+            {siteProfile.statusMessage ? (
+              <span>{siteProfile.statusMessage}</span>
+            ) : null}
             <span className="weather-icon" aria-hidden="true">☼</span>
           </div>
           <div className="clock-time">
@@ -87,30 +99,44 @@ export default function BlogSidebar({
   return (
     <aside className="blog-sidebar blog-sidebar--left" aria-label="作者信息">
       <section className="blog-card profile-card">
-        <div className="profile-card__avatar">
-          <img
-            src={resolvePublicAsset('home/miku_点赞.jpg')}
-            alt="娄宿三"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <h2 className="profile-card__name">娄宿三</h2>
-        <p className="profile-card__bio">Hamal / 前端开发者</p>
-        <div className="profile-card__socials">
-          <a href="https://github.com/YukariYukaro" target="_blank" rel="noreferrer" aria-label="GitHub">
-            <Github />
-          </a>
-          <a href="https://space.bilibili.com/39374538" target="_blank" rel="noreferrer" aria-label="Bilibili">
-            <Bilibili />
-          </a>
-          <button type="button" onClick={onCopyEmail} aria-label="复制 QQ 邮箱">
-            <QQIcon />
-          </button>
-        </div>
-        <p className="profile-card__copy-status" aria-live="polite">
-          {copyStatus === 'copied' ? '邮箱已复制' : null}
-        </p>
+        {siteProfile.avatarPath ? (
+          <div className="profile-card__avatar">
+            <img
+              src={resolvePublicAsset(siteProfile.avatarPath)}
+              alt={siteProfile.name}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        ) : null}
+        <h2 className="profile-card__name">{siteProfile.name}</h2>
+        {profileSummary ? (
+          <p className="profile-card__bio">{profileSummary}</p>
+        ) : null}
+        {hasSocialLinks ? (
+          <div className="profile-card__socials">
+            {siteProfile.githubUrl ? (
+              <a href={siteProfile.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub">
+                <Github />
+              </a>
+            ) : null}
+            {siteProfile.bilibiliUrl ? (
+              <a href={siteProfile.bilibiliUrl} target="_blank" rel="noreferrer" aria-label="Bilibili">
+                <Bilibili />
+              </a>
+            ) : null}
+            {siteProfile.email ? (
+              <button type="button" onClick={onCopyEmail} aria-label="复制 QQ 邮箱">
+                <QQIcon />
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+        {siteProfile.email ? (
+          <p className="profile-card__copy-status" aria-live="polite">
+            {copyStatus === 'copied' ? '邮箱已复制' : null}
+          </p>
+        ) : null}
         {stats ? (
           <div className="profile-card__stats">
             <div className="stat-box">
@@ -125,25 +151,33 @@ export default function BlogSidebar({
         ) : null}
       </section>
 
-      <section className="blog-card welcome-card">
-        <h3 className="card-title">
-          <span className="title-icon" aria-hidden="true">+</span> 欢迎来访
-        </h3>
-        <p className="welcome-text">
-          这里是一个整理知识、记录项目和保存灵感的个人内容空间。
-        </p>
-        <button className="welcome-btn" type="button" onClick={onFocusSearch}>
-          开始阅读
-        </button>
-      </section>
+      {siteProfile.welcome ? (
+        <section className="blog-card welcome-card">
+          <h3 className="card-title">
+            <span className="title-icon" aria-hidden="true">+</span>{' '}
+            {siteProfile.welcome.title}
+          </h3>
+          <p className="welcome-text">{siteProfile.welcome.message}</p>
+          {siteProfile.welcome.actionLabel ? (
+            <button className="welcome-btn" type="button" onClick={onFocusSearch}>
+              {siteProfile.welcome.actionLabel}
+            </button>
+          ) : null}
+        </section>
+      ) : null}
 
-      <section className="blog-card quote-card">
-        <h3 className="card-title">
-          <span className="title-icon" aria-hidden="true">/</span> 今日一言
-        </h3>
-        <p className="quote-text">“纸上得来终觉浅，绝知此事要躬行。”</p>
-        <span className="quote-author">—— 陆游</span>
-      </section>
+      {siteProfile.quote ? (
+        <section className="blog-card quote-card">
+          <h3 className="card-title">
+            <span className="title-icon" aria-hidden="true">/</span>{' '}
+            {siteProfile.quote.title}
+          </h3>
+          <p className="quote-text">{siteProfile.quote.text}</p>
+          {siteProfile.quote.author ? (
+            <span className="quote-author">—— {siteProfile.quote.author}</span>
+          ) : null}
+        </section>
+      ) : null}
     </aside>
   )
 }

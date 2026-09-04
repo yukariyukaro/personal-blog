@@ -244,6 +244,65 @@ test.describe('博客核心体验', () => {
   })
 })
 
+test.describe('主题契约', () => {
+  test('首次跟随系统且只持久化用户选择', async ({ page }) => {
+    await page.emulateMedia({
+      colorScheme: 'light',
+      reducedMotion: 'reduce',
+    })
+    await page.goto('/#/Home')
+
+    const root = page.locator('html')
+    const themeButton = page.getByRole('button', { name: /切换到/ }).first()
+    await expect(root).toHaveAttribute('data-theme', 'light')
+    expect(
+      await page.evaluate(() => window.localStorage.getItem('blog-theme')),
+    ).toBeNull()
+    expect(
+      await page.locator('body').evaluate(
+        (element) => getComputedStyle(element).transitionDuration,
+      ),
+    ).toBe('0s')
+    expect(
+      await themeButton.evaluate(
+        (element) => getComputedStyle(element).transitionDuration,
+      ),
+    ).toBe('0s')
+
+    await themeButton.click()
+    await expect(root).toHaveAttribute('data-theme', 'dark')
+    expect(
+      await page.evaluate(() => window.localStorage.getItem('blog-theme')),
+    ).toBe('dark')
+
+    await page.reload()
+    await expect(root).toHaveAttribute('data-theme', 'dark')
+  })
+
+  test('localStorage 不可写时在当前会话保持用户选择', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(Storage.prototype, 'setItem', {
+        configurable: true,
+        value: () => {
+          throw new Error('storage unavailable')
+        },
+      })
+    })
+    await page.emulateMedia({ colorScheme: 'light' })
+    await page.goto('/#/Home')
+
+    const root = page.locator('html')
+    await page.getByRole('button', { name: /切换到/ }).first().click()
+    await expect(root).toHaveAttribute('data-theme', 'dark')
+
+    await page.evaluate(() => {
+      window.location.hash = '#/Information'
+    })
+    await expect(page).toHaveURL(/\/#\/Information$/)
+    await expect(root).toHaveAttribute('data-theme', 'dark')
+  })
+})
+
 test('移动端菜单展示站点导航', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#/Home')
