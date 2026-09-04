@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "check:size": "node scripts/quality/check-file-lines.mjs",
+    "test:unit": "node --test scripts/**/*.test.mjs",
+    "check": "pnpm run check:size && pnpm run lint && pnpm run test:unit && pnpm run build",
     "content:build": "node scripts/build-content.mjs",
     "dev": "pnpm run content:build && vite",
     "build": "pnpm run content:build && tsc -b && vite build",
