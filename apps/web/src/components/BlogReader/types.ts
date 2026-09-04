@@ -46,8 +46,6 @@ export type BlogReaderViewModel = {
   activeCategory: string | null
   activeTag: string | null
   searchQuery: string
-  readingProgress: number
-  isBackToTopVisible: boolean
   indexError: boolean
   contentError: boolean
   shareStatus: 'idle' | 'copied'
@@ -60,7 +58,6 @@ export type BlogReaderViewModel = {
   focusSearch: () => void
   copyEmail: () => void
   copyArticleLink: () => void
-  scrollToTop: () => void
   navigateToHeading: (
     event: MouseEvent<HTMLAnchorElement>,
     id: string,

@@ -23,6 +23,10 @@ const prefersReducedMotion = () =>
 export function useBlogReaderViewModel(): BlogReaderViewModel {
   const articleSectionRef = useRef<HTMLElement | null>(null)
   const searchInputRef = useRef<HTMLInputElement | null>(null)
+  const copyEmailTimerRef = useRef<number | null>(null)
+  const copyArticleLinkTimerRef = useRef<number | null>(null)
+  const copyEmailRequestRef = useRef(0)
+  const copyArticleLinkRequestRef = useRef(0)
   const [params, setParams] = useSearchParams()
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [activeTag, setActiveTag] = useState<string | null>(null)
@@ -32,11 +36,7 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
   const [now, setNow] = useState(() => new Date())
   const requestedSlug = params.get('post')
   const library = useArticleLibrary(requestedSlug)
-  const reading = useArticleReading(
-    library.articleContent,
-    articleSectionRef,
-    library.selectedArticle?.slug ?? null,
-  )
+  const reading = useArticleReading(library.articleContent)
   const setActiveHeadingId = reading.setActiveHeadingId
 
   const visibleArticles = useMemo(
@@ -102,14 +102,30 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     return () => window.removeEventListener('blog:focus-search', focusSearch)
   }, [focusSearch])
 
+  useEffect(
+    () => () => {
+      copyEmailRequestRef.current += 1
+      copyArticleLinkRequestRef.current += 1
+      if (copyEmailTimerRef.current !== null) {
+        window.clearTimeout(copyEmailTimerRef.current)
+      }
+      if (copyArticleLinkTimerRef.current !== null) {
+        window.clearTimeout(copyArticleLinkTimerRef.current)
+      }
+    },
+    [],
+  )
+
   const openArticle = useCallback(
     (article: ArticleSummary) => {
       setShareStatus('idle')
-      setParams((currentParams) => {
-        const nextParams = new URLSearchParams(currentParams)
-        nextParams.set('post', article.slug)
-        return nextParams
-      })
+      if (requestedSlug !== article.slug) {
+        setParams((currentParams) => {
+          const nextParams = new URLSearchParams(currentParams)
+          nextParams.set('post', article.slug)
+          return nextParams
+        })
+      }
       window.requestAnimationFrame(() => {
         articleSectionRef.current?.scrollIntoView({
           behavior: prefersReducedMotion() ? 'auto' : 'smooth',
@@ -117,28 +133,54 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
         })
       })
     },
-    [setParams],
+    [requestedSlug, setParams],
   )
 
   const copyEmail = useCallback(async () => {
+    const requestId = ++copyEmailRequestRef.current
+    if (copyEmailTimerRef.current !== null) {
+      window.clearTimeout(copyEmailTimerRef.current)
+      copyEmailTimerRef.current = null
+    }
     setCopyStatus('idle')
     try {
       await navigator.clipboard.writeText(EMAIL)
+      if (copyEmailRequestRef.current !== requestId) {
+        return
+      }
       setCopyStatus('copied')
-      window.setTimeout(() => setCopyStatus('idle'), COPY_STATUS_DURATION)
+      copyEmailTimerRef.current = window.setTimeout(() => {
+        copyEmailTimerRef.current = null
+        setCopyStatus('idle')
+      }, COPY_STATUS_DURATION)
     } catch {
-      setCopyStatus('idle')
+      if (copyEmailRequestRef.current === requestId) {
+        setCopyStatus('idle')
+      }
     }
   }, [])
 
   const copyArticleLink = useCallback(async () => {
+    const requestId = ++copyArticleLinkRequestRef.current
+    if (copyArticleLinkTimerRef.current !== null) {
+      window.clearTimeout(copyArticleLinkTimerRef.current)
+      copyArticleLinkTimerRef.current = null
+    }
     setShareStatus('idle')
     try {
       await navigator.clipboard.writeText(window.location.href)
+      if (copyArticleLinkRequestRef.current !== requestId) {
+        return
+      }
       setShareStatus('copied')
-      window.setTimeout(() => setShareStatus('idle'), COPY_STATUS_DURATION)
+      copyArticleLinkTimerRef.current = window.setTimeout(() => {
+        copyArticleLinkTimerRef.current = null
+        setShareStatus('idle')
+      }, COPY_STATUS_DURATION)
     } catch {
-      setShareStatus('idle')
+      if (copyArticleLinkRequestRef.current === requestId) {
+        setShareStatus('idle')
+      }
     }
   }, [])
 
@@ -153,13 +195,6 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     },
     [setActiveHeadingId],
   )
-
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-    })
-  }, [])
 
   return {
     articleSectionRef,
@@ -179,8 +214,6 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     activeCategory,
     activeTag,
     searchQuery,
-    readingProgress: reading.readingProgress,
-    isBackToTopVisible: reading.isBackToTopVisible,
     indexError: library.indexError,
     contentError: library.contentError,
     shareStatus,
@@ -193,7 +226,6 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
     focusSearch,
     copyEmail,
     copyArticleLink,
-    scrollToTop,
     navigateToHeading,
   }
 }

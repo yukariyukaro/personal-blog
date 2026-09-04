@@ -94,6 +94,85 @@ test.describe('博客核心体验', () => {
     await expect(documentTitle).toHaveText('抽象是什么')
   })
 
+  test('重复打开当前文章不会增加浏览历史', async ({ page }) => {
+    await page.goto('/#/Home?post=server-sent-events')
+    const documentTitle = page.locator('#blog-document-title')
+    await expect(documentTitle).toHaveText('Server-Sent Events')
+
+    await page
+      .locator('.blog-article-grid')
+      .getByRole('heading', { name: 'Server-Sent Events' })
+      .click()
+    await expect(page).toHaveURL(/\/#\/Home\?post=server-sent-events$/)
+    await expect(page.locator('.blog-document')).toBeInViewport()
+
+    await page.goBack()
+
+    await expect(page).toHaveURL(/\/#\/Home$/)
+    await expect(documentTitle).toHaveText('抽象是什么')
+  })
+
+  test('返回顶部按钮仅在滚动后进入页面', async ({ page }) => {
+    const backToTop = page.getByRole('button', { name: '返回顶部' })
+    await expect(backToTop).toHaveCount(0)
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await expect(backToTop).toBeVisible()
+
+    await backToTop.click()
+    await expect(backToTop).toHaveCount(0)
+  })
+
+  test('连续复制会刷新成功提示计时且失败时不提示', async ({ page }) => {
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: {
+          writeText: () => Promise.resolve(),
+        },
+      })
+    })
+
+    const copyEmail = page.getByRole('button', { name: '复制 QQ 邮箱' })
+    const emailStatus = page.locator('.profile-card__copy-status')
+    await copyEmail.click()
+    await expect(emailStatus).toHaveText('邮箱已复制')
+    await page.waitForTimeout(1_000)
+    await copyEmail.click()
+    await page.waitForTimeout(900)
+    await expect(emailStatus).toHaveText('邮箱已复制')
+    await expect(emailStatus).toBeEmpty({ timeout: 1_200 })
+
+    const copyArticleLink = page.getByRole('button', {
+      name: '复制文章链接',
+    })
+    const articleLinkStatus = page.locator(
+      '.blog-document__header-meta .sr-only',
+    )
+    await copyArticleLink.click()
+    await expect(articleLinkStatus).toHaveText('文章链接已复制')
+    await page.waitForTimeout(1_000)
+    await copyArticleLink.click()
+    await page.waitForTimeout(900)
+    await expect(articleLinkStatus).toHaveText('文章链接已复制')
+    await expect(articleLinkStatus).toBeEmpty({ timeout: 1_200 })
+
+    await page.evaluate(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: {
+          writeText: () => Promise.reject(new Error('clipboard unavailable')),
+        },
+      })
+    })
+
+    await copyEmail.click()
+    await copyArticleLink.click()
+    await page.waitForTimeout(50)
+    await expect(emailStatus).toBeEmpty()
+    await expect(page.getByText('文章链接已复制')).toHaveCount(0)
+  })
+
   test('首屏过渡层可见，Live2D 默认按需开启', async ({ page }) => {
     test.skip(test.info().project.name === 'mobile-chromium', '移动端默认隐藏 Live2D')
     const wave = page.locator('.home-page__waves')

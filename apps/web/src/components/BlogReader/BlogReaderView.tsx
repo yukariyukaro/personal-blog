@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import ArticleCatalog from './ArticleCatalog'
 import ArticleDocument from './ArticleDocument'
 import BlogSidebar from './BlogSidebar'
+import ReadingControls from './ReadingControls'
 import type { BlogReaderViewModel } from './types'
 
 type BlogReaderViewProps = {
@@ -27,8 +28,6 @@ export default function BlogReaderView({
     activeCategory,
     activeTag,
     searchQuery,
-    readingProgress,
-    isBackToTopVisible,
     indexError,
     contentError,
     shareStatus,
@@ -41,7 +40,6 @@ export default function BlogReaderView({
     focusSearch,
     copyEmail,
     copyArticleLink,
-    scrollToTop,
     navigateToHeading,
   },
 }: BlogReaderViewProps) {
@@ -63,11 +61,7 @@ export default function BlogReaderView({
         '--blog-reader-background': `url(${readerBackgroundImage})`,
       } as CSSProperties}
     >
-      <div
-        className="blog-reading-progress"
-        style={{ transform: `scaleX(${readingProgress})` }}
-        aria-hidden="true"
-      />
+      <ReadingControls articleSectionRef={articleSectionRef} />
 
       <div className="blog-dashboard">
         <BlogSidebar
@@ -123,18 +117,6 @@ export default function BlogReaderView({
           onHeadingNavigation={navigateToHeading}
         />
       </section>
-
-      <button
-        className={`blog-back-to-top ${
-          isBackToTopVisible ? 'is-visible' : ''
-        }`}
-        type="button"
-        aria-label="返回顶部"
-        title="返回顶部"
-        onClick={scrollToTop}
-      >
-        ↑
-      </button>
     </section>
   )
 }

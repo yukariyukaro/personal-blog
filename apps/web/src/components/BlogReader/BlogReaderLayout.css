@@ -257,16 +257,7 @@
   background: var(--reader-surface);
   box-shadow: var(--reader-shadow);
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(0.6rem);
-  pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease;
-}
-
-.blog-back-to-top.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+  transition: border-color 180ms ease;
 }
 
 .blog-back-to-top:hover {
