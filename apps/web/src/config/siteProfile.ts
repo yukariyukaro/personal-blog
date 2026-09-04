@@ -6,6 +6,8 @@ export type SiteProfile = {
   readonly githubUrl?: string
   readonly bilibiliUrl?: string
   readonly avatarPath?: string
+  readonly originDescription?: string
+  readonly bio?: string
   readonly statusMessage?: string
   readonly welcome?: {
     readonly title: string
@@ -27,6 +29,8 @@ export const siteProfile: SiteProfile = {
   githubUrl: 'https://github.com/YukariYukaro',
   bilibiliUrl: 'https://space.bilibili.com/39374538',
   avatarPath: 'home/miku_点赞.jpg',
+  originDescription: '娄宿三，又称Hamal、白羊座Alpha，是白羊座最亮星。中二病时期起这个名字，大概也有着想要变得kirakiradokidoki的愿望，但实际上，在浩瀚的星空中，娄宿三也只是一颗二等星。',
+  bio: '一个擅长自扰的庸人。二次元&游戏爱好者。',
   statusMessage: '保持好奇，持续输出',
   welcome: {
     title: '欢迎来访',

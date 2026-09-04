@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { siteProfile } from '../src/config/siteProfile'
 
 test.describe('博客核心体验', () => {
   test.beforeEach(async ({ page }) => {
@@ -146,7 +147,7 @@ test.describe('博客核心体验', () => {
       })
     })
 
-    const copyEmail = page.getByRole('button', { name: '复制 QQ 邮箱' })
+    const copyEmail = page.getByRole('button', { name: '复制邮箱' })
     const emailStatus = page.locator('.profile-card__copy-status')
     await copyEmail.click()
     await expect(emailStatus).toHaveText('邮箱已复制')
@@ -300,6 +301,50 @@ test.describe('主题契约', () => {
     })
     await expect(page).toHaveURL(/\/#\/Information$/)
     await expect(root).toHaveAttribute('data-theme', 'dark')
+  })
+})
+
+test.describe('站点资料契约', () => {
+  test('首页侧栏和介绍页统一读取站点资料', async ({ page }) => {
+    if (
+      !siteProfile.originDescription ||
+      !siteProfile.bio ||
+      !siteProfile.githubUrl ||
+      !siteProfile.bilibiliUrl
+    ) {
+      throw new Error('站点资料配置不完整')
+    }
+
+    await page.goto('/#/Home')
+
+    await expect(
+      page
+        .getByRole('complementary', { name: '作者信息' })
+        .getByRole('heading', { name: siteProfile.name }),
+    ).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: '复制邮箱' }),
+    ).toBeVisible()
+
+    await page.goto('/#/Information')
+
+    await expect(
+      page.getByRole('heading', { name: siteProfile.name }),
+    ).toBeVisible()
+    await expect(page.getByText(siteProfile.originDescription)).toBeVisible()
+    await expect(page.getByText(siteProfile.bio)).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: 'GitHub' }),
+    ).toHaveAttribute('href', siteProfile.githubUrl)
+    await expect(
+      page.getByRole('link', { name: 'Bilibili' }),
+    ).toHaveAttribute('href', siteProfile.bilibiliUrl)
+    await expect(
+      page.getByRole('button', { name: '复制邮箱' }),
+    ).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: /QQ|Copy QQ/ }),
+    ).toHaveCount(0)
   })
 })
 

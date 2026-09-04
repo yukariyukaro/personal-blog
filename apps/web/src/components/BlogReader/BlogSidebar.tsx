@@ -126,7 +126,12 @@ export default function BlogSidebar({
               </a>
             ) : null}
             {siteProfile.email ? (
-              <button type="button" onClick={onCopyEmail} aria-label="复制 QQ 邮箱">
+              <button
+                type="button"
+                onClick={onCopyEmail}
+                aria-label="复制邮箱"
+                title="复制邮箱"
+              >
                 <QQIcon />
               </button>
             ) : null}
