@@ -1,5 +1,9 @@
-import type { RefObject } from 'react'
-import type { ArticleIndexStats, ArticleSummary } from '../../utils/contentApi'
+import type { MouseEvent, RefObject } from 'react'
+import type {
+  ArticleFacetStat,
+  ArticleIndexStats,
+  ArticleSummary,
+} from '../../utils/contentApi'
 
 export type ArticleHeading = {
   id: string
@@ -10,8 +14,8 @@ export type ArticleHeading = {
 
 export type ArticleCatalogProps = {
   articles: ArticleSummary[] | null
-  categories: Array<{ name: string; count: number }>
-  tags: Array<{ name: string; count: number }>
+  categories: ArticleFacetStat[]
+  tags: ArticleFacetStat[]
   stats: ArticleIndexStats | null
   activeCategory: string | null
   activeTag: string | null
@@ -22,4 +26,43 @@ export type ArticleCatalogProps = {
   onCategoryChange: (category: string | null) => void
   onTagChange: (tag: string | null) => void
   onOpenArticle: (article: ArticleSummary) => void
+}
+
+export type BlogReaderViewModel = {
+  articleSectionRef: RefObject<HTMLElement | null>
+  searchInputRef: RefObject<HTMLInputElement | null>
+  readerBackgroundImage: string
+  articles: ArticleSummary[] | null
+  visibleArticles: ArticleSummary[]
+  selectedArticle: ArticleSummary | null
+  spotlightArticle: ArticleSummary | null
+  articleContent: string | null
+  relatedArticles: ArticleSummary[]
+  categories: ArticleFacetStat[]
+  tags: ArticleFacetStat[]
+  stats: ArticleIndexStats | null
+  articleHeadings: ArticleHeading[]
+  activeHeadingId: string | null
+  activeCategory: string | null
+  activeTag: string | null
+  searchQuery: string
+  readingProgress: number
+  isBackToTopVisible: boolean
+  indexError: boolean
+  contentError: boolean
+  shareStatus: 'idle' | 'copied'
+  copyStatus: 'idle' | 'copied'
+  now: Date
+  openArticle: (article: ArticleSummary) => void
+  setActiveCategory: (value: string | null) => void
+  setActiveTag: (value: string | null) => void
+  setSearchQuery: (value: string) => void
+  focusSearch: () => void
+  copyEmail: () => void
+  copyArticleLink: () => void
+  scrollToTop: () => void
+  navigateToHeading: (
+    event: MouseEvent<HTMLAnchorElement>,
+    id: string,
+  ) => void
 }
