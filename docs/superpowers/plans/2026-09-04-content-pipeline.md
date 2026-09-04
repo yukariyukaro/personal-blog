@@ -177,13 +177,13 @@ git commit -m "refactor: 建立内容模型与构建分层"
 - 创建：`apps/web/scripts/content/plugins/remark-controlled-mdx.mjs`
 - 修改：`apps/web/package.json`
 
-- [ ] **Step 1：安装构建期依赖**
+- [x] **Step 1：安装构建期依赖**
 
 ```bash
 pnpm add -D github-slugger hast-util-to-text katex rehype-autolink-headings rehype-katex rehype-pretty-code rehype-sanitize rehype-slug rehype-stringify remark-directive remark-math remark-mdx remark-parse remark-rehype shiki unified unist-util-visit
 ```
 
-- [ ] **Step 2：编写编译与安全失败测试**
+- [x] **Step 2：编写编译与安全失败测试**
 
 覆盖 GFM 表格、任务列表、重复标题 slug、KaTeX、原始 HTML、危险 URL 和受控
 MDX：
@@ -209,7 +209,7 @@ await assert.rejects(
 )
 ```
 
-- [ ] **Step 3：实现单次 AST 编译**
+- [x] **Step 3：实现单次 AST 编译**
 
 `compileMarkdown` 返回：
 
@@ -228,7 +228,7 @@ await assert.rejects(
 站内链接/资源解析 → remark-rehype → sanitize → slug/标题收集 → KaTeX →
 Shiki → 内容组件 → stringify。原始 HTML不启用 `rehype-raw`。
 
-- [ ] **Step 4：实现受控 MDX 白名单**
+- [x] **Step 4：实现受控 MDX 白名单**
 
 只允许：
 
@@ -242,14 +242,14 @@ Shiki → 内容组件 → stringify。原始 HTML不启用 `rehype-raw`。
 拒绝 import/export、JS 表达式、spread 属性、非字符串属性和其他 JSX 标签。允许节点
 转换为与 directive 相同的 mdast 结构，不执行作者代码。
 
-- [ ] **Step 5：定义白名单清洗策略**
+- [x] **Step 5：定义白名单清洗策略**
 
 在 `remark-rehype` 后先使用 `rehype-sanitize`。仅允许 Markdown 标准元素及
 `details/summary/figure/figcaption/picture/source`，仅允许经过校验的
 `className/id/href/src/title/alt/loading/decoding/data-*` 属性；链接协议只允许
 `http/https/mailto`，图片协议只允许 `http/https` 和站内相对路径。
 
-- [ ] **Step 6：验证并提交**
+- [x] **Step 6：验证并提交**
 
 ```bash
 node --test scripts/content/markdown-compiler.test.mjs
