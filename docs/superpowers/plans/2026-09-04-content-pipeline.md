@@ -118,8 +118,9 @@ node --test scripts/content/build-content.test.mjs
 ```
 
 日期必须是 `YYYY-MM-DD`，slug 必须匹配
-`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`，priority 必须是有限整数，URL 必须是
-`http:` 或 `https:`。不为缺失字段补默认业务值。
+`/^[a-z0-9]+(?:-[a-z0-9]+)*$/`，priority 必须是有限整数。作者、来源和许可证
+URL 只允许 `http:` 或 `https:`；permalink 只允许无查询串和片段的站内绝对路径。
+不为缺失字段补默认业务值。
 
 - [ ] **Step 4：实现文章发现和构建模式**
 
