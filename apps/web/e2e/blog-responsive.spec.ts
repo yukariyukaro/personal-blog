@@ -94,23 +94,53 @@ async function expectMobileLayout(page: Page) {
     articleFitsViewport: true,
   })
 
-  const hiddenMenuFocusableCount = await mobileMenu
-    .locator(
-      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )
-    .count()
-  expect(hiddenMenuFocusableCount).toBeGreaterThan(0)
-
   await menuButton.focus()
-  const tabPressCount = hiddenMenuFocusableCount + 3
-  for (let tabIndex = 0; tabIndex < tabPressCount; tabIndex += 1) {
-    await page.keyboard.press('Tab')
-    expect(
-      await mobileMenu.evaluate(
-        (menu) => !menu.contains(document.activeElement),
-      ),
-    ).toBe(true)
+  await expect(menuButton).toBeFocused()
+  const focusStart = await menuButton.elementHandle()
+  if (!focusStart) {
+    throw new Error('无法记录导航菜单按钮焦点')
   }
+
+  const visibleTabbableCount = await page.locator('body *').evaluateAll(
+    (elements) => elements.filter((element) => {
+      const htmlElement = element as HTMLElement
+      const style = getComputedStyle(element)
+      const isScrollable =
+        (['auto', 'scroll'].includes(style.overflowX)
+          && htmlElement.scrollWidth > htmlElement.clientWidth)
+        || (['auto', 'scroll'].includes(style.overflowY)
+          && htmlElement.scrollHeight > htmlElement.clientHeight)
+      return (htmlElement.tabIndex >= 0 || isScrollable)
+        && !element.matches(':disabled')
+        && !element.closest('[inert]')
+        && style.visibility !== 'hidden'
+        && style.display !== 'none'
+        && element.getClientRects().length > 0
+    }).length,
+  )
+  const maxTabPressCount = Math.max(visibleTabbableCount + 2, 10)
+  let focusMoved = false
+  let completedFocusLoop = false
+
+  for (let tabIndex = 0; tabIndex < maxTabPressCount; tabIndex += 1) {
+    await page.keyboard.press('Tab')
+    const focusState = await mobileMenu.evaluate((menu, start) => ({
+      isInsideHiddenMenu: menu.contains(document.activeElement),
+      isAtStart: document.activeElement === start,
+    }), focusStart)
+
+    expect(focusState.isInsideHiddenMenu).toBe(false)
+    if (!focusState.isAtStart) {
+      focusMoved = true
+    } else if (focusMoved) {
+      completedFocusLoop = true
+      break
+    }
+  }
+  expect(
+    completedFocusLoop,
+    `焦点未在 ${maxTabPressCount} 次 Tab 操作内回到导航菜单按钮`,
+  ).toBe(true)
 
   await menuButton.click()
   await expect(
@@ -126,7 +156,7 @@ async function expectMobileLayout(page: Page) {
 
   await informationLink.focus()
   await expect(informationLink).toBeFocused()
-  await informationLink.click()
+  await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/\/#\/Information$/)
 }
 
