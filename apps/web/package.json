@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "check:size": "node scripts/quality/check-file-lines.mjs",
-    "test:unit": "node --test scripts/**/*.test.mjs",
+    "test:unit": "node --test scripts/**/*.test.mjs && vitest run src",
     "check": "pnpm run check:size && pnpm run lint && pnpm run test:unit && pnpm run build",
     "content:build": "node scripts/build-content.mjs",
     "dev": "pnpm run content:build && vite",
@@ -45,6 +45,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0",
     "vite": "^8.0.1",
-    "vite-plugin-pages": "^0.33.3"
+    "vite-plugin-pages": "^0.33.3",
+    "vitest": "^5.0.0"
   }
 }

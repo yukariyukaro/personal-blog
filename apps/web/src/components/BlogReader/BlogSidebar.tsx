@@ -1,11 +1,13 @@
 import { Bilibili, Github } from '@lobehub/icons'
 import { siteProfile } from '../../config/siteProfile'
+import type { SiteProfile } from '../../config/siteProfile'
 import type { ArticleIndexStats, ArticleSummary } from '../../utils/contentApi'
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { formatNumber, resolveDisplayImage } from './contentUtils'
 import { QQIcon } from '../Icons/QQIcon'
 
 type BlogSidebarProps = {
+  profile?: SiteProfile
   side: 'left' | 'right'
   stats: ArticleIndexStats | null
   spotlightArticle: ArticleSummary | null
@@ -16,6 +18,7 @@ type BlogSidebarProps = {
 }
 
 export default function BlogSidebar({
+  profile = siteProfile,
   side,
   stats,
   spotlightArticle,
@@ -24,13 +27,13 @@ export default function BlogSidebar({
   onCopyEmail,
   onFocusSearch,
 }: BlogSidebarProps) {
-  const profileSummary = [siteProfile.handle, siteProfile.role]
+  const profileSummary = [profile.handle, profile.role]
     .filter((value): value is string => Boolean(value))
     .join(' / ')
   const hasSocialLinks = Boolean(
-    siteProfile.githubUrl ||
-    siteProfile.bilibiliUrl ||
-    siteProfile.email,
+    profile.githubUrl ||
+    profile.bilibiliUrl ||
+    profile.email,
   )
 
   if (side === 'right') {
@@ -38,8 +41,8 @@ export default function BlogSidebar({
       <aside className="blog-sidebar blog-sidebar--right" aria-label="站点信息">
         <section className="blog-card clock-card">
           <div className="clock-header">
-            {siteProfile.statusMessage ? (
-              <span>{siteProfile.statusMessage}</span>
+            {profile.statusMessage ? (
+              <span>{profile.statusMessage}</span>
             ) : null}
             <span className="weather-icon" aria-hidden="true">☼</span>
           </div>
@@ -99,33 +102,33 @@ export default function BlogSidebar({
   return (
     <aside className="blog-sidebar blog-sidebar--left" aria-label="作者信息">
       <section className="blog-card profile-card">
-        {siteProfile.avatarPath ? (
+        {profile.avatarPath ? (
           <div className="profile-card__avatar">
             <img
-              src={resolvePublicAsset(siteProfile.avatarPath)}
-              alt={siteProfile.name}
+              src={resolvePublicAsset(profile.avatarPath)}
+              alt={profile.name}
               loading="lazy"
               decoding="async"
             />
           </div>
         ) : null}
-        <h2 className="profile-card__name">{siteProfile.name}</h2>
+        <h2 className="profile-card__name">{profile.name}</h2>
         {profileSummary ? (
           <p className="profile-card__bio">{profileSummary}</p>
         ) : null}
         {hasSocialLinks ? (
           <div className="profile-card__socials">
-            {siteProfile.githubUrl ? (
-              <a href={siteProfile.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub">
+            {profile.githubUrl ? (
+              <a href={profile.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub">
                 <Github />
               </a>
             ) : null}
-            {siteProfile.bilibiliUrl ? (
-              <a href={siteProfile.bilibiliUrl} target="_blank" rel="noreferrer" aria-label="Bilibili">
+            {profile.bilibiliUrl ? (
+              <a href={profile.bilibiliUrl} target="_blank" rel="noreferrer" aria-label="Bilibili">
                 <Bilibili />
               </a>
             ) : null}
-            {siteProfile.email ? (
+            {profile.email ? (
               <button
                 type="button"
                 onClick={onCopyEmail}
@@ -137,7 +140,7 @@ export default function BlogSidebar({
             ) : null}
           </div>
         ) : null}
-        {siteProfile.email ? (
+        {profile.email ? (
           <p className="profile-card__copy-status" aria-live="polite">
             {copyStatus === 'copied' ? '邮箱已复制' : null}
           </p>
@@ -156,30 +159,30 @@ export default function BlogSidebar({
         ) : null}
       </section>
 
-      {siteProfile.welcome ? (
+      {profile.welcome ? (
         <section className="blog-card welcome-card">
           <h3 className="card-title">
             <span className="title-icon" aria-hidden="true">+</span>{' '}
-            {siteProfile.welcome.title}
+            {profile.welcome.title}
           </h3>
-          <p className="welcome-text">{siteProfile.welcome.message}</p>
-          {siteProfile.welcome.actionLabel ? (
+          <p className="welcome-text">{profile.welcome.message}</p>
+          {profile.welcome.actionLabel ? (
             <button className="welcome-btn" type="button" onClick={onFocusSearch}>
-              {siteProfile.welcome.actionLabel}
+              {profile.welcome.actionLabel}
             </button>
           ) : null}
         </section>
       ) : null}
 
-      {siteProfile.quote ? (
+      {profile.quote ? (
         <section className="blog-card quote-card">
           <h3 className="card-title">
             <span className="title-icon" aria-hidden="true">/</span>{' '}
-            {siteProfile.quote.title}
+            {profile.quote.title}
           </h3>
-          <p className="quote-text">{siteProfile.quote.text}</p>
-          {siteProfile.quote.author ? (
-            <span className="quote-author">—— {siteProfile.quote.author}</span>
+          <p className="quote-text">{profile.quote.text}</p>
+          {profile.quote.author ? (
+            <span className="quote-author">—— {profile.quote.author}</span>
           ) : null}
         </section>
       ) : null}

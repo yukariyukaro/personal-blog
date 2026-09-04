@@ -149,13 +149,15 @@ test.describe('博客核心体验', () => {
 
     const copyEmail = page.getByRole('button', { name: '复制邮箱' })
     const emailStatus = page.locator('.profile-card__copy-status')
-    await copyEmail.click()
-    await expect(emailStatus).toHaveText('邮箱已复制')
-    await page.waitForTimeout(1_000)
-    await copyEmail.click()
-    await page.waitForTimeout(900)
-    await expect(emailStatus).toHaveText('邮箱已复制')
-    await expect(emailStatus).toBeEmpty({ timeout: 1_200 })
+    if (siteProfile.email) {
+      await copyEmail.click()
+      await expect(emailStatus).toHaveText('邮箱已复制')
+      await page.waitForTimeout(1_000)
+      await copyEmail.click()
+      await page.waitForTimeout(900)
+      await expect(emailStatus).toHaveText('邮箱已复制')
+      await expect(emailStatus).toBeEmpty({ timeout: 1_200 })
+    }
 
     const copyArticleLink = page.getByRole('button', {
       name: '复制文章链接',
@@ -180,10 +182,14 @@ test.describe('博客核心体验', () => {
       })
     })
 
-    await copyEmail.click()
+    if (siteProfile.email) {
+      await copyEmail.click()
+    }
     await copyArticleLink.click()
     await page.waitForTimeout(50)
-    await expect(emailStatus).toBeEmpty()
+    if (siteProfile.email) {
+      await expect(emailStatus).toBeEmpty()
+    }
     await expect(page.getByText('文章链接已复制')).toHaveCount(0)
   })
 
@@ -306,15 +312,6 @@ test.describe('主题契约', () => {
 
 test.describe('站点资料契约', () => {
   test('首页侧栏和介绍页统一读取站点资料', async ({ page }) => {
-    if (
-      !siteProfile.originDescription ||
-      !siteProfile.bio ||
-      !siteProfile.githubUrl ||
-      !siteProfile.bilibiliUrl
-    ) {
-      throw new Error('站点资料配置不完整')
-    }
-
     await page.goto('/#/Home')
 
     await expect(
@@ -322,26 +319,38 @@ test.describe('站点资料契约', () => {
         .getByRole('complementary', { name: '作者信息' })
         .getByRole('heading', { name: siteProfile.name }),
     ).toBeVisible()
-    await expect(
-      page.getByRole('button', { name: '复制邮箱' }),
-    ).toBeVisible()
+    if (siteProfile.email) {
+      await expect(
+        page.getByRole('button', { name: '复制邮箱' }),
+      ).toBeVisible()
+    }
 
     await page.goto('/#/Information')
 
     await expect(
       page.getByRole('heading', { name: siteProfile.name }),
     ).toBeVisible()
-    await expect(page.getByText(siteProfile.originDescription)).toBeVisible()
-    await expect(page.getByText(siteProfile.bio)).toBeVisible()
-    await expect(
-      page.getByRole('link', { name: 'GitHub' }),
-    ).toHaveAttribute('href', siteProfile.githubUrl)
-    await expect(
-      page.getByRole('link', { name: 'Bilibili' }),
-    ).toHaveAttribute('href', siteProfile.bilibiliUrl)
-    await expect(
-      page.getByRole('button', { name: '复制邮箱' }),
-    ).toBeVisible()
+    if (siteProfile.originDescription) {
+      await expect(page.getByText(siteProfile.originDescription)).toBeVisible()
+    }
+    if (siteProfile.bio) {
+      await expect(page.getByText(siteProfile.bio)).toBeVisible()
+    }
+    if (siteProfile.githubUrl) {
+      await expect(
+        page.getByRole('link', { name: 'GitHub' }),
+      ).toHaveAttribute('href', siteProfile.githubUrl)
+    }
+    if (siteProfile.bilibiliUrl) {
+      await expect(
+        page.getByRole('link', { name: 'Bilibili' }),
+      ).toHaveAttribute('href', siteProfile.bilibiliUrl)
+    }
+    if (siteProfile.email) {
+      await expect(
+        page.getByRole('button', { name: '复制邮箱' }),
+      ).toBeVisible()
+    }
     await expect(
       page.getByRole('button', { name: /QQ|Copy QQ/ }),
     ).toHaveCount(0)

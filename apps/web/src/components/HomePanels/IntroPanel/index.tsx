@@ -2,29 +2,34 @@ import { useState } from 'react'
 import { resolvePublicAsset } from '../../../utils/baseUrl'
 import { Github, Bilibili } from '@lobehub/icons'
 import { siteProfile } from '../../../config/siteProfile'
+import type { SiteProfile } from '../../../config/siteProfile'
 import { QQIcon } from '../../Icons/QQIcon'
 import './IntroPanel.css'
 
-function IntroPanel() {
+type IntroPanelProps = {
+  profile?: SiteProfile
+}
+
+function IntroPanel({ profile = siteProfile }: IntroPanelProps) {
   const bgImage = resolvePublicAsset('information/background.webp')
-  const avatarImage = siteProfile.avatarPath
-    ? resolvePublicAsset(siteProfile.avatarPath)
+  const avatarImage = profile.avatarPath
+    ? resolvePublicAsset(profile.avatarPath)
     : null
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle')
   const hasSocialLinks = Boolean(
-    siteProfile.githubUrl ||
-    siteProfile.bilibiliUrl ||
-    siteProfile.email,
+    profile.githubUrl ||
+    profile.bilibiliUrl ||
+    profile.email,
   )
 
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault()
-    if (!siteProfile.email) {
+    if (!profile.email) {
       return
     }
 
     navigator.clipboard
-      .writeText(siteProfile.email)
+      .writeText(profile.email)
       .then(() => {
         setCopyStatus('copied')
         setTimeout(() => {
@@ -49,16 +54,16 @@ function IntroPanel() {
           <div className="intro-panel__header">
             <div className="intro-panel__header-top">
               <span className="intro-panel__label">PROFILE ://</span>
-              <h2 className="intro-panel__title">{siteProfile.name}</h2>
-              {siteProfile.handle ? (
-                <span className="intro-panel__subtitle">{siteProfile.handle}</span>
+              <h2 className="intro-panel__title">{profile.name}</h2>
+              {profile.handle ? (
+                <span className="intro-panel__subtitle">{profile.handle}</span>
               ) : null}
             </div>
             {avatarImage ? (
               <div className="intro-panel__avatar-container">
                 <div className="intro-panel__avatar-orbit"></div>
                 <div className="intro-panel__avatar">
-                  <img src={avatarImage} alt={siteProfile.name} />
+                  <img src={avatarImage} alt={profile.name} />
                 </div>
                 <div className="intro-panel__avatar-planet"></div>
               </div>
@@ -66,25 +71,25 @@ function IntroPanel() {
           </div>
 
           <div className="intro-panel__content">
-            {siteProfile.originDescription ? (
+            {profile.originDescription ? (
               <div className="intro-panel__section">
                 <div className="intro-panel__section-title">
                   <span className="intro-panel__icon">✦</span>
                   <h3>ID ORIGIN</h3>
                 </div>
                 <p className="intro-panel__text">
-                  {siteProfile.originDescription}
+                  {profile.originDescription}
                 </p>
               </div>
             ) : null}
 
-            {siteProfile.bio ? (
+            {profile.bio ? (
               <div className="intro-panel__section">
                 <div className="intro-panel__section-title">
                   <span className="intro-panel__icon">✦</span>
                   <h3>INTERESTS & PATH</h3>
                 </div>
-                <p className="intro-panel__text">{siteProfile.bio}</p>
+                <p className="intro-panel__text">{profile.bio}</p>
               </div>
             ) : null}
           </div>
@@ -92,19 +97,19 @@ function IntroPanel() {
           {hasSocialLinks ? (
             <div className="intro-panel__footer">
               <div className="intro-panel__social-links">
-                {siteProfile.githubUrl ? (
-                  <a href={siteProfile.githubUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
+                {profile.githubUrl ? (
+                  <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
                     <span className="social-icon"><Github /></span>
                     <span className="social-text">GitHub</span>
                   </a>
                 ) : null}
-                {siteProfile.bilibiliUrl ? (
-                  <a href={siteProfile.bilibiliUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
+                {profile.bilibiliUrl ? (
+                  <a href={profile.bilibiliUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
                     <span className="social-icon"><Bilibili /></span>
                     <span className="social-text">Bilibili</span>
                   </a>
                 ) : null}
-                {siteProfile.email ? (
+                {profile.email ? (
                   <button
                     onClick={handleCopyEmail}
                     className="social-link social-button"
