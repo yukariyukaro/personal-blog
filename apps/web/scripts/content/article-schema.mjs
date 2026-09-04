@@ -116,6 +116,9 @@ const isUnsafePermalinkSegment = (segment) => {
     decodedSegment === '' ||
     decodedSegment === '.' ||
     decodedSegment === '..' ||
+    decodedSegment.includes('%') ||
+    decodedSegment.includes('?') ||
+    decodedSegment.includes('#') ||
     decodedSegment.includes(':') ||
     decodedSegment.includes('/') ||
     decodedSegment.includes('\\') ||
