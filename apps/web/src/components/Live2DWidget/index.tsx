@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { BASE_URL } from '../../utils/baseUrl'
 import {
+  destroyLive2DWidget,
   loadLive2DWidget,
+  startLive2DLoadAttempt,
   type Live2DWidgetInstance,
+  waitForLive2DModel,
 } from './loadLive2DWidget'
 import './Live2DWidget.css'
 
@@ -38,7 +41,10 @@ const readEnabledState = () => {
 export default function Live2DWidget() {
   const widgetRef = useRef<Live2DWidgetInstance | null>(null)
   const [enabled, setEnabled] = useState(readEnabledState)
-  const [loadState, setLoadState] = useState<Live2DLoadState>('loading')
+  const [loadState, setLoadState] = useState<Live2DLoadState>(
+    enabled ? 'loading' : 'idle',
+  )
+  const [loadAttempt, setLoadAttempt] = useState(0)
   const [isMobile, setIsMobile] = useState(
     () => window.innerWidth <= MOBILE_BREAKPOINT,
   )
@@ -58,49 +64,58 @@ export default function Live2DWidget() {
 
     let isActive = true
     let widget: Live2DWidgetInstance | null = null
+    const previousWidget = widgetRef.current
+    widgetRef.current = null
 
-    void loadLive2DWidget()
-      .then((api) => {
+    void startLive2DLoadAttempt(previousWidget, async () => {
+      const api = await loadLive2DWidget()
+      if (!isActive) {
+        return null
+      }
+
+      widget = api.createWidget({
+        model: {
+          path: `${BASE_URL}pio/models/NOIR/noir.model3.json`,
+        },
+        position: 'bottom-left',
+        size: 250,
+        transitionDuration: 900,
+        transitionType: 'slide',
+        _hideAbout: true,
+        menus: {
+          items: [
+            {
+              icon: 'mdi:home-outline',
+              label: '返回首页',
+              onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+            },
+            {
+              icon: 'mdi:bed-outline',
+              label: '休眠',
+              onClick: (instance) => instance.sleep(),
+            },
+          ],
+        },
+      })
+      widgetRef.current = widget
+      setWidgetLayer(widget)
+      await waitForLive2DModel(widget)
+      return widget
+    })
+      .then((loadedWidget) => {
+        if (isActive && loadedWidget) {
+          setLoadState('loaded')
+        }
+      })
+      .catch((error: unknown) => {
+        if (widgetRef.current === widget) {
+          widgetRef.current = null
+        }
         if (!isActive) {
           return
         }
 
-        widget = api.createWidget({
-          model: {
-            path: `${BASE_URL}pio/models/NOIR/noir.model3.json`,
-          },
-          position: 'bottom-left',
-          size: 250,
-          transitionDuration: 900,
-          transitionType: 'slide',
-          _hideAbout: true,
-          menus: {
-            items: [
-              {
-                icon: 'mdi:home-outline',
-                label: '返回首页',
-                onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-              },
-              {
-                icon: 'mdi:bed-outline',
-                label: '休眠',
-                onClick: (instance) => instance.sleep(),
-              },
-            ],
-          },
-        })
-        widgetRef.current = widget
-        setWidgetLayer(widget)
-        widget.l2d.on('loaded', () => {
-          if (isActive) {
-            setLoadState('loaded')
-          }
-        })
-      })
-      .catch((error: unknown) => {
-        if (isActive) {
-          setLoadState('failed')
-        }
+        setLoadState('failed')
         console.error('Live2D 加载失败：', error)
       })
 
@@ -109,11 +124,9 @@ export default function Live2DWidget() {
       if (widgetRef.current === widget) {
         widgetRef.current = null
       }
-      if (widget) {
-        void Promise.resolve(widget.destroy()).catch(() => {})
-      }
+      void destroyLive2DWidget(widget)
     }
-  }, [enabled, isMobile])
+  }, [enabled, isMobile, loadAttempt])
 
   const setWidgetEnabled = (nextEnabled: boolean) => {
     setEnabled(nextEnabled)
@@ -123,6 +136,11 @@ export default function Live2DWidget() {
     } catch {
       // 隐私模式下无法持久化时，当前会话仍然支持切换。
     }
+  }
+
+  const retryLoading = () => {
+    setLoadState('loading')
+    setLoadAttempt((attempt) => attempt + 1)
   }
 
   if (isMobile) {
@@ -155,6 +173,15 @@ export default function Live2DWidget() {
       >
         <span>LIVE2D</span>
       </div>
+      {loadState === 'failed' && (
+        <div className="live2d-widget__error" role="alert">
+          <strong>Live2D 加载失败</strong>
+          <span>脚本或模型加载失败。</span>
+          <button type="button" onClick={retryLoading}>
+            重试
+          </button>
+        </div>
+      )}
       <button
         className="live2d-widget__close"
         type="button"

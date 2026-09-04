@@ -37,7 +37,7 @@
 
 .profile-card__bio {
   margin: 0.4rem 0 1.1rem;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-size: 0.78rem;
   text-align: center;
 }
@@ -100,7 +100,7 @@
 .stat-label,
 .stat-name {
   min-width: 0;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-size: 0.7rem;
 }
 
@@ -125,7 +125,7 @@
 }
 
 .stat-value--pending {
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-size: 0.78rem;
 }
 
@@ -161,13 +161,13 @@
 }
 
 .quote-text {
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-style: italic;
 }
 
 .quote-author {
   display: block;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-size: 0.75rem;
   text-align: right;
 }
@@ -264,7 +264,7 @@
   padding: 0.25rem 0.5rem;
   overflow: hidden;
   border-radius: 6px;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   background: var(--reader-control);
   font-size: 0.68rem;
   text-overflow: ellipsis;
@@ -293,7 +293,7 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: auto;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-family: var(--mono);
   font-size: 0.65rem;
   font-variant-numeric: tabular-nums;
@@ -347,7 +347,7 @@
   display: grid;
   gap: 0.25rem;
   overflow: hidden;
-  color: var(--text-muted);
+  color: var(--reader-text-muted);
   font-family: var(--mono);
   font-size: 0.6rem;
   text-overflow: ellipsis;
