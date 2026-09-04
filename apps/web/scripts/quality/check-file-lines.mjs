@@ -75,7 +75,8 @@ const scriptPath = fileURLToPath(import.meta.url)
 const isCli = process.argv[1] && resolve(process.argv[1]) === scriptPath
 
 if (isCli) {
-  const appRoot = fileURLToPath(new URL('../..', import.meta.url))
+  const appRoot =
+    process.argv[2] ?? fileURLToPath(new URL('../..', import.meta.url))
   const oversizedFiles = await findOversizedCodeFiles(appRoot)
 
   for (const file of oversizedFiles) {
