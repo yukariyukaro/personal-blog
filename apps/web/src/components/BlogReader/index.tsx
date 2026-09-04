@@ -13,7 +13,6 @@ import {
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { QQIcon } from '../Icons/QQIcon'
 import './BlogReader.css'
-import './BlogReaderTheme.css'
 
 const formatNumber = (value: number) => new Intl.NumberFormat('zh-CN').format(value)
 

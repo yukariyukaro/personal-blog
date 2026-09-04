@@ -29,6 +29,11 @@ type Live2DWidgetApi = {
   createWidget: (config: Live2DWidgetConfig) => Live2DWidgetInstance
 }
 
+const LIVE2D_WIDGET_SCRIPT_URL =
+  'https://cdn.jsdelivr.net/npm/l2d-widget@0.1.2/dist/index.min.js'
+const LIVE2D_WIDGET_SCRIPT_INTEGRITY =
+  'sha384-dknqoOM7eR2i1au1iXdwuzkYibjVLkiSOVrqdgJcxGIymJnbLbh8RiLgb6IcLJur'
+
 declare global {
   interface Window {
     L2D_WIDGET?: Live2DWidgetApi
@@ -37,7 +42,7 @@ declare global {
 
 let scriptPromise: Promise<Live2DWidgetApi> | null = null
 
-export const loadLive2DWidget = (src: string) => {
+export const loadLive2DWidget = () => {
   if (window.L2D_WIDGET) {
     return Promise.resolve(window.L2D_WIDGET)
   }
@@ -54,22 +59,32 @@ export const loadLive2DWidget = (src: string) => {
 
     const handleLoad = () => {
       if (window.L2D_WIDGET) {
+        script.dataset.live2dWidgetState = 'loaded'
         resolve(window.L2D_WIDGET)
         return
       }
+      script.remove()
       reject(new Error('Live2D 脚本未暴露初始化接口'))
     }
 
+    const handleError = () => {
+      script.remove()
+      reject(new Error('Live2D 脚本加载失败'))
+    }
+
     script.addEventListener('load', handleLoad, { once: true })
-    script.addEventListener('error', () => reject(new Error('Live2D 脚本加载失败')), {
-      once: true,
-    })
+    script.addEventListener('error', handleError, { once: true })
 
     if (!existing) {
       script.async = true
-      script.src = src
+      script.crossOrigin = 'anonymous'
+      script.integrity = LIVE2D_WIDGET_SCRIPT_INTEGRITY
+      script.referrerPolicy = 'no-referrer'
+      script.src = LIVE2D_WIDGET_SCRIPT_URL
       script.dataset.live2dWidget = 'true'
       document.head.appendChild(script)
+    } else if (existing.dataset.live2dWidgetState === 'loaded') {
+      handleLoad()
     }
   }).catch((error: unknown) => {
     scriptPromise = null

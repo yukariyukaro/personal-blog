@@ -41,7 +41,7 @@
   transition: opacity 180ms ease;
 }
 
-.live2d-widget.is-loaded .live2d-widget__loading {
+.live2d-widget:not([data-load-state='loading']) .live2d-widget__loading {
   opacity: 0;
 }
 

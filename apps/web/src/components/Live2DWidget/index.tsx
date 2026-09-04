@@ -8,6 +8,7 @@ import './Live2DWidget.css'
 
 const STORAGE_KEY = 'blog-live2d-enabled'
 const MOBILE_BREAKPOINT = 768
+type Live2DLoadState = 'idle' | 'loading' | 'loaded' | 'failed'
 
 const setWidgetLayer = (widget: Live2DWidgetInstance) => {
   const canvas = widget.l2d.getCanvas()
@@ -37,7 +38,7 @@ const readEnabledState = () => {
 export default function Live2DWidget() {
   const widgetRef = useRef<Live2DWidgetInstance | null>(null)
   const [enabled, setEnabled] = useState(readEnabledState)
-  const [loaded, setLoaded] = useState(false)
+  const [loadState, setLoadState] = useState<Live2DLoadState>('loading')
   const [isMobile, setIsMobile] = useState(
     () => window.innerWidth <= MOBILE_BREAKPOINT,
   )
@@ -58,7 +59,7 @@ export default function Live2DWidget() {
     let isActive = true
     let widget: Live2DWidgetInstance | null = null
 
-    void loadLive2DWidget(`${BASE_URL}pio/l2d-widget.min.js`)
+    void loadLive2DWidget()
       .then((api) => {
         if (!isActive) {
           return
@@ -92,11 +93,14 @@ export default function Live2DWidget() {
         setWidgetLayer(widget)
         widget.l2d.on('loaded', () => {
           if (isActive) {
-            setLoaded(true)
+            setLoadState('loaded')
           }
         })
       })
       .catch((error: unknown) => {
+        if (isActive) {
+          setLoadState('failed')
+        }
         console.error('Live2D 加载失败：', error)
       })
 
@@ -113,7 +117,7 @@ export default function Live2DWidget() {
 
   const setWidgetEnabled = (nextEnabled: boolean) => {
     setEnabled(nextEnabled)
-    setLoaded(false)
+    setLoadState(nextEnabled ? 'loading' : 'idle')
     try {
       window.localStorage.setItem(STORAGE_KEY, String(nextEnabled))
     } catch {
@@ -140,8 +144,15 @@ export default function Live2DWidget() {
   }
 
   return (
-    <div className={`live2d-widget ${loaded ? 'is-loaded' : ''}`}>
-      <div className="live2d-widget__loading" aria-hidden={loaded}>
+    <div
+      className={`live2d-widget ${loadState === 'loaded' ? 'is-loaded' : ''}`}
+      data-load-state={loadState}
+      aria-busy={loadState === 'loading'}
+    >
+      <div
+        className="live2d-widget__loading"
+        aria-hidden={loadState !== 'loading'}
+      >
         <span>LIVE2D</span>
       </div>
       <button
