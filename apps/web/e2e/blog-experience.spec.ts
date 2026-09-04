@@ -94,6 +94,19 @@ test.describe('博客核心体验', () => {
     await expect(documentTitle).toHaveText('抽象是什么')
   })
 
+  test('打开默认首篇会补全 URL 且不增加浏览历史', async ({ page }) => {
+    const historyLength = await page.evaluate(() => window.history.length)
+
+    await page
+      .locator('.blog-article-grid')
+      .getByRole('heading', { name: '抽象是什么' })
+      .click()
+
+    await expect(page).toHaveURL(/\/#\/Home\?post=abstraction$/)
+    expect(await page.evaluate(() => window.history.length)).toBe(historyLength)
+    await expect(page.locator('.blog-document')).toBeInViewport()
+  })
+
   test('重复打开当前文章不会增加浏览历史', async ({ page }) => {
     await page.goto('/#/Home?post=server-sent-events')
     const documentTitle = page.locator('#blog-document-title')

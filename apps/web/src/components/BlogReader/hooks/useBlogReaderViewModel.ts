@@ -124,6 +124,10 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
           const nextParams = new URLSearchParams(currentParams)
           nextParams.set('post', article.slug)
           return nextParams
+        }, {
+          replace:
+            requestedSlug === null &&
+            library.selectedArticle?.slug === article.slug,
         })
       }
       window.requestAnimationFrame(() => {
@@ -133,7 +137,7 @@ export function useBlogReaderViewModel(): BlogReaderViewModel {
         })
       })
     },
-    [requestedSlug, setParams],
+    [library.selectedArticle?.slug, requestedSlug, setParams],
   )
 
   const copyEmail = useCallback(async () => {
