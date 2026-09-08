@@ -1,0 +1,80 @@
+.live2d-toggle {
+  position: fixed;
+  left: 1rem;
+  bottom: 1.25rem;
+  z-index: 30;
+  width: 2.8rem;
+  height: 2.8rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-color);
+  border-radius: 0.8rem;
+  color: var(--accent);
+  background: var(--surface-bg);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.live2d-toggle:hover {
+  color: var(--accent-contrast);
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.live2d-widget {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 29;
+  pointer-events: none;
+}
+
+.live2d-widget__loading {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  transition: opacity 180ms ease;
+}
+
+.live2d-widget.is-loaded .live2d-widget__loading {
+  opacity: 0;
+}
+
+.live2d-widget__close {
+  position: fixed;
+  left: 0.8rem;
+  bottom: calc(250px - 2.8rem);
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-color);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  background: var(--surface-bg);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.live2d-widget__close:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .live2d-toggle,
+  .live2d-widget {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live2d-toggle {
+    transition: none;
+  }
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN" data-scenario-mock-automation-flat-report="2026-08-04.1">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>自动化测试平铺报告</title>
+  <style>
+    :root { --bg:#f5f7fb; --card:#ffffff; --text:#172033; --muted:#667085; --line:#e7ebf3; --primary:#3153ff; --soft-primary:#eef2ff; --danger:#d92d20; --soft-danger:#fff1f0; --success:#027a48; --soft-success:#ecfdf3; --warning:#b54708; --soft-warning:#fffaeb; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; padding:24px; color:var(--text); background:radial-gradient(circle at top left, rgba(49,83,255,.12), transparent 32%), linear-gradient(180deg,#f9fbff 0%,var(--bg) 100%); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    .page { max-width:1720px; margin:0 auto; } .flat-stats, .flat-case, .flat-detail { background:rgba(255,255,255,.94); border:1px solid var(--line); border-radius:20px; box-shadow:0 18px 50px rgba(15,23,42,.08); } h1,h2,h3,p { margin-top:0; } p { color:var(--muted); line-height:1.7; }
+    .flat-stats { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; padding:16px 18px; } .flat-stats span { padding:8px 12px; color:#344054; background:#f8fafc; border:1px solid var(--line); border-radius:999px; font-size:13px; font-weight:700; }
+    .flat-workspace { display:grid; grid-template-columns:minmax(260px,360px) minmax(0,1fr); gap:18px; align-items:start; } .flat-list-panel { min-width:0; } .flat-list { display:grid; gap:10px; } .flat-case { display:flex; align-items:center; width:100%; min-width:0; padding:12px 14px; overflow:hidden; cursor:pointer; } .flat-case:focus-visible { outline:3px solid rgba(49,83,255,.28); outline-offset:2px; } .flat-case.active { border-color:rgba(49,83,255,.36); box-shadow:0 14px 34px rgba(49,83,255,.12); } .flat-case-summary { display:flex; align-items:center; gap:8px; min-width:0; } .flat-case-summary h2 { min-width:0; margin:0; overflow:hidden; color:var(--text); font-size:14px; line-height:1.4; text-overflow:ellipsis; white-space:nowrap; }
+    .status-badge { display:inline-flex; width:fit-content; align-items:center; padding:3px 8px; border-radius:999px; font-size:11px; font-weight:900; white-space:nowrap; } .status-badge.status-passed { color:var(--success); background:var(--soft-success); } .status-badge.status-flaky { color:var(--warning); background:var(--soft-warning); } .status-badge.status-failed, .status-badge.status-timed-out, .status-badge.status-interrupted { color:var(--danger); background:var(--soft-danger); } .status-badge.status-skipped { color:#475467; background:#f2f4f7; } .status-badge.status-visual { color:#5b21b6; background:#f4efff; }
+    .empty { margin:0; padding:18px; color:var(--muted); background:#f8fafc; border:1px dashed var(--line); border-radius:16px; font-size:13px; font-weight:800; }
+    .flat-detail { position:sticky; top:18px; min-width:0; overflow:hidden; } .flat-detail-frame { display:block; width:100%; height:calc(100vh - 150px); min-height:720px; border:0; background:#fff; }
+    @media (max-width:1180px) { body { padding:14px; } .flat-workspace { display:grid; grid-template-columns:1fr; } .flat-detail { position:static; } .flat-detail-frame { height:78vh; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="flat-stats"><span>生成时间：2026/8/24 00:07:07</span><span>3 个自动化 case</span><span>0 个图片 Diff 异常</span></section>
+    <section class="flat-workspace">
+      <section class="flat-list-panel"><div class="flat-list">
+<article class="flat-case" id="unified-e2e-spec-xx3os" data-flat-case-card data-case-id="unified-e2e-spec-xx3os" data-detail-src="index.html?embed=1#flow/tests-web-blog-pages-unified-e2e-spec-json-fdfagz/unified-e2e-spec-xx3os" role="button" tabindex="0">
+  <div class="flat-case-summary"><span class="status-badge status-passed">通过</span><h2>介绍页：个人信息与布局完整</h2></div>
+</article>
+<article class="flat-case" id="unified-e2e-spec-g3aj9m" data-flat-case-card data-case-id="unified-e2e-spec-g3aj9m" data-detail-src="index.html?embed=1#flow/tests-web-blog-pages-unified-e2e-spec-json-fdfagz/unified-e2e-spec-g3aj9m" role="button" tabindex="0">
+  <div class="flat-case-summary"><span class="status-badge status-passed">通过</span><h2>首页：首屏内容与布局完整</h2></div>
+</article>
+<article class="flat-case" id="unified-e2e-spec-gux99n" data-flat-case-card data-case-id="unified-e2e-spec-gux99n" data-detail-src="index.html?embed=1#flow/tests-web-blog-pages-unified-e2e-spec-json-fdfagz/unified-e2e-spec-gux99n" role="button" tabindex="0">
+  <div class="flat-case-summary"><span class="status-badge status-passed">通过</span><h2>作品页：项目列表与详情完整</h2></div>
+</article>
+      </div></section>
+      <section class="flat-detail">
+        <iframe class="flat-detail-frame" title="自动化测试 case 详情" src="index.html?embed=1#flow/tests-web-blog-pages-unified-e2e-spec-json-fdfagz/unified-e2e-spec-xx3os" data-flat-detail-frame></iframe>
+      </section>
+    </section>
+  </main>
+  <script>
+    const cards = Array.from(document.querySelectorAll("[data-flat-case-card]"));
+    const frame = document.querySelector("[data-flat-detail-frame]");
+    const openCase = (card, pushHash = true) => { if (!card || !frame) return; cards.forEach((item) => item.classList.toggle("active", item === card)); if (frame.getAttribute("src") !== card.dataset.detailSrc) frame.setAttribute("src", card.dataset.detailSrc); if (pushHash) window.location.hash = "case/" + encodeURIComponent(card.dataset.caseId || ""); };
+    const syncHash = () => { const raw = window.location.hash.replace(/^#case\//, ""); const caseId = raw ? decodeURIComponent(raw) : ""; openCase(cards.find((card) => card.dataset.caseId === caseId) || cards[0], false); };
+    cards.forEach((card) => { card.addEventListener("click", () => openCase(card, true)); card.addEventListener("keydown", (event) => { if (event.key !== "Enter" && event.key !== " ") return; event.preventDefault(); openCase(card, true); }); });
+    window.addEventListener("hashchange", syncHash);
+    syncHash();
+  </script>
+</body>
+</html>

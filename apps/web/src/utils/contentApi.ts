@@ -7,7 +7,7 @@ export type ArticleSummary = {
   publishedAt: string
   category: string
   tags: string[]
-  coverImage: string
+  coverImage?: string
   wordCount: number
   readingMinutes: number
   contentPath: string
@@ -37,32 +37,55 @@ export type ArticleIndex = {
 export const resolveContentAsset = (assetPath: string) =>
   `${BASE_URL}${assetPath.replace(/^\/+/, '')}`
 
-export const fetchArticleIndex = async (): Promise<ArticleIndex> => {
-  const response = await fetch(resolveContentAsset('content/index.json'), {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
+let articleIndexPromise: Promise<ArticleIndex> | null = null
+const articleContentPromises = new Map<string, Promise<string>>()
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch article index: ${response.status}`)
+export const fetchArticleIndex = async (): Promise<ArticleIndex> => {
+  if (!articleIndexPromise) {
+    articleIndexPromise = fetch(resolveContentAsset('content/index.json'), {
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch article index: ${response.status}`)
+        }
+        return response.json() as Promise<ArticleIndex>
+      })
+      .catch((error) => {
+        articleIndexPromise = null
+        throw error
+      })
   }
 
-  return response.json() as Promise<ArticleIndex>
+  return articleIndexPromise
 }
 
 export const fetchArticleContent = async (
   contentPath: string,
 ): Promise<string> => {
-  const response = await fetch(resolveContentAsset(contentPath), {
+  const cachedPromise = articleContentPromises.get(contentPath)
+  if (cachedPromise) {
+    return cachedPromise
+  }
+
+  const contentPromise = fetch(resolveContentAsset(contentPath), {
     headers: {
       Accept: 'text/markdown',
     },
   })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch article content: ${response.status}`)
+      }
+      return response.text()
+    })
+    .catch((error) => {
+      articleContentPromises.delete(contentPath)
+      throw error
+    })
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch article content: ${response.status}`)
-  }
-
-  return response.text()
+  articleContentPromises.set(contentPath, contentPromise)
+  return contentPromise
 }

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-08-23T16:07:06.173Z",
+  "testName": "blog-pages__portfolio-rendering",
+  "caseName": "作品页：项目列表与详情完整",
+  "project": "current",
+  "summary": {
+    "total": 3,
+    "visible": 3,
+    "summarized": 0,
+    "categories": {
+      "business-api": 3
+    }
+  },
+  "requests": [
+    {
+      "id": "request-001",
+      "url": "http://127.0.0.1:5173/",
+      "host": "127.0.0.1:5173",
+      "path": "/",
+      "method": "GET",
+      "status": 200,
+      "resourceType": "document",
+      "startedAt": "2026-08-23T16:06:14.744Z",
+      "capturedAt": "2026-08-23T16:06:14.760Z",
+      "durationMs": 16,
+      "query": {},
+      "category": "business-api",
+      "label": "业务接口",
+      "defaultVisible": true,
+      "contentType": "text/html",
+      "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+      "responseBytes": 6738,
+      "responseTruncated": false,
+      "responseSummary": null
+    },
+    {
+      "id": "request-002",
+      "url": "http://127.0.0.1:5173/api/health",
+      "host": "127.0.0.1:5173",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 404,
+      "resourceType": "fetch",
+      "startedAt": "2026-08-23T16:06:15.348Z",
+      "capturedAt": "2026-08-23T16:06:15.434Z",
+      "durationMs": 86,
+      "query": {},
+      "category": "business-api",
+      "label": "业务接口",
+      "defaultVisible": true,
+      "contentType": "",
+      "responseBodyText": "",
+      "responseBytes": 0,
+      "responseTruncated": false,
+      "responseSummary": null
+    },
+    {
+      "id": "request-003",
+      "url": "http://127.0.0.1:5173/api/health",
+      "host": "127.0.0.1:5173",
+      "path": "/api/health",
+      "method": "GET",
+      "status": 404,
+      "resourceType": "fetch",
+      "startedAt": "2026-08-23T16:06:15.348Z",
+      "capturedAt": "2026-08-23T16:06:15.486Z",
+      "durationMs": 138,
+      "query": {},
+      "category": "business-api",
+      "label": "业务接口",
+      "defaultVisible": true,
+      "contentType": "",
+      "responseBodyText": "",
+      "responseBytes": 0,
+      "responseTruncated": false,
+      "responseSummary": null
+    }
+  ]
+}

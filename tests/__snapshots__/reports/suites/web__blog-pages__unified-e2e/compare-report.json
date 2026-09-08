@@ -1,0 +1,188 @@
+{
+  "generatedAt": "2026-08-23T16:07:08.309Z",
+  "suiteId": "web/blog-pages/unified-e2e",
+  "suiteTitle": "个人博客三页面渲染与视觉回归",
+  "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json",
+  "auth": null,
+  "summary": {
+    "totalScenes": 3,
+    "passedScenes": 3,
+    "failedScenes": 0,
+    "totalActions": 3,
+    "passedActions": 0,
+    "failedActions": 0,
+    "missingProdActions": 0,
+    "missingCurrentActions": 0,
+    "errorActions": 0,
+    "singleProjectActions": 3,
+    "skippedActions": 0,
+    "passRate": null
+  },
+  "scenes": [
+    {
+      "sceneName": "blog-pages__home-rendering",
+      "sceneTitle": "验证 Home 只渲染 HeroPanel，首页标题、侧边页码和当前 Panel 样式正常。",
+      "sceneDescription": "验证 Home 只渲染 HeroPanel，首页标题、侧边页码和当前 Panel 样式正常。",
+      "logIds": null,
+      "currentTtEnv": null,
+      "currentPageUrl": "http://127.0.0.1:5173/#/Home",
+      "prodPageUrl": "http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Home",
+      "midsceneReport": null,
+      "runtimeMeta": {
+        "current": {
+          "testName": "blog-pages__home-rendering",
+          "caseName": "首页：首屏内容与布局完整",
+          "project": "current",
+          "finalUrl": "http://127.0.0.1:5173/#/Home",
+          "attachments": {
+            "final-url": "http://127.0.0.1:5173/#/Home",
+            "automation-request-report-file": "snapshot-meta/blog-pages__home-rendering/requests-current.json"
+          },
+          "reporters": {
+            "finalUrl": true
+          },
+          "updatedAt": "2026-08-23T16:07:06.182Z"
+        },
+        "prod": null
+      },
+      "reporterConfig": {
+        "finalUrl": true
+      },
+      "passed": true,
+      "actionCount": 1,
+      "passedActionCount": 1,
+      "failedActionCount": 0,
+      "actions": [
+        {
+          "stepName": "1-home.png",
+          "stepNum": 1,
+          "caseDescription": null,
+          "status": "single_project",
+          "passed": true,
+          "runProject": "current",
+          "skip": null,
+          "differentPixels": 0,
+          "totalPixels": 0,
+          "diffBounds": null,
+          "diffClusters": [],
+          "ignoredTargets": [],
+          "ignoredRegions": [],
+          "currentImage": "../../../current/blog-pages__home-rendering/1-home.png",
+          "prodImage": null,
+          "diffImage": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "sceneName": "blog-pages__information-rendering",
+      "sceneTitle": "验证 Information 独立路由渲染 IntroPanel，人物信息、社交入口和当前 Panel 样式正常。",
+      "sceneDescription": "验证 Information 独立路由渲染 IntroPanel，人物信息、社交入口和当前 Panel 样式正常。",
+      "logIds": null,
+      "currentTtEnv": null,
+      "currentPageUrl": "http://127.0.0.1:5173/#/Information",
+      "prodPageUrl": "http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Information",
+      "midsceneReport": null,
+      "runtimeMeta": {
+        "current": {
+          "testName": "blog-pages__information-rendering",
+          "caseName": "介绍页：个人信息与布局完整",
+          "project": "current",
+          "finalUrl": "http://127.0.0.1:5173/#/Information",
+          "attachments": {
+            "final-url": "http://127.0.0.1:5173/#/Information",
+            "automation-request-report-file": "snapshot-meta/blog-pages__information-rendering/requests-current.json"
+          },
+          "reporters": {
+            "finalUrl": true
+          },
+          "updatedAt": "2026-08-23T16:06:27.957Z"
+        },
+        "prod": null
+      },
+      "reporterConfig": {
+        "finalUrl": true
+      },
+      "passed": true,
+      "actionCount": 1,
+      "passedActionCount": 1,
+      "failedActionCount": 0,
+      "actions": [
+        {
+          "stepName": "1-information.png",
+          "stepNum": 1,
+          "caseDescription": null,
+          "status": "single_project",
+          "passed": true,
+          "runProject": "current",
+          "skip": null,
+          "differentPixels": 0,
+          "totalPixels": 0,
+          "diffBounds": null,
+          "diffClusters": [],
+          "ignoredTargets": [],
+          "ignoredRegions": [],
+          "currentImage": "../../../current/blog-pages__information-rendering/1-information.png",
+          "prodImage": null,
+          "diffImage": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "sceneName": "blog-pages__portfolio-rendering",
+      "sceneTitle": "验证 Portfolio 独立路由渲染 DetailPanel，项目列表、默认项目详情和当前 Panel 样式正常。",
+      "sceneDescription": "验证 Portfolio 独立路由渲染 DetailPanel，项目列表、默认项目详情和当前 Panel 样式正常。",
+      "logIds": null,
+      "currentTtEnv": null,
+      "currentPageUrl": "http://127.0.0.1:5173/#/Portfolio",
+      "prodPageUrl": "http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Portfolio",
+      "midsceneReport": null,
+      "runtimeMeta": {
+        "current": {
+          "testName": "blog-pages__portfolio-rendering",
+          "caseName": "作品页：项目列表与详情完整",
+          "project": "current",
+          "finalUrl": "http://127.0.0.1:5173/#/Portfolio",
+          "attachments": {
+            "final-url": "http://127.0.0.1:5173/#/Portfolio",
+            "automation-request-report-file": "snapshot-meta/blog-pages__portfolio-rendering/requests-current.json"
+          },
+          "reporters": {
+            "finalUrl": true
+          },
+          "updatedAt": "2026-08-23T16:07:06.180Z"
+        },
+        "prod": null
+      },
+      "reporterConfig": {
+        "finalUrl": true
+      },
+      "passed": true,
+      "actionCount": 1,
+      "passedActionCount": 1,
+      "failedActionCount": 0,
+      "actions": [
+        {
+          "stepName": "1-portfolio.png",
+          "stepNum": 1,
+          "caseDescription": null,
+          "status": "single_project",
+          "passed": true,
+          "runProject": "current",
+          "skip": null,
+          "differentPixels": 0,
+          "totalPixels": 0,
+          "diffBounds": null,
+          "diffClusters": [],
+          "ignoredTargets": [],
+          "ignoredRegions": [],
+          "currentImage": "../../../current/blog-pages__portfolio-rendering/1-portfolio.png",
+          "prodImage": null,
+          "diffImage": null,
+          "error": null
+        }
+      ]
+    }
+  ]
+}

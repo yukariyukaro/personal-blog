@@ -1,0 +1,37 @@
+.theme-switch {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--line-color);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  background: var(--control-bg);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.theme-switch:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--control-bg-hover);
+  transform: translateY(-1px);
+}
+
+.theme-switch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-switch {
+    transition: none;
+  }
+}

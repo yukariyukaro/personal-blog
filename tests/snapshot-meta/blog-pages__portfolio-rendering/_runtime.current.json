@@ -1,0 +1,14 @@
+{
+  "testName": "blog-pages__portfolio-rendering",
+  "caseName": "作品页：项目列表与详情完整",
+  "project": "current",
+  "finalUrl": "http://127.0.0.1:5173/#/Portfolio",
+  "attachments": {
+    "final-url": "http://127.0.0.1:5173/#/Portfolio",
+    "automation-request-report-file": "snapshot-meta/blog-pages__portfolio-rendering/requests-current.json"
+  },
+  "reporters": {
+    "finalUrl": true
+  },
+  "updatedAt": "2026-08-23T16:07:06.180Z"
+}

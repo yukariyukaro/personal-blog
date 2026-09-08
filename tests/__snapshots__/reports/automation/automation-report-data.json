@@ -1,0 +1,2224 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026/8/24 00:07:07",
+  "totalDuration": 118158,
+  "playwrightStatus": "passed",
+  "summary": {
+    "totalCases": 3,
+    "problemCases": 0,
+    "visualIssueCount": 0,
+    "passed": 3,
+    "flaky": 0,
+    "failed": 0,
+    "timedOut": 0,
+    "interrupted": 0,
+    "skipped": 0
+  },
+  "counts": {
+    "passed": 3,
+    "flaky": 0,
+    "failed": 0,
+    "timedOut": 0,
+    "interrupted": 0,
+    "skipped": 0
+  },
+  "cases": [
+    {
+      "id": "unified-e2e-spec-xx3os",
+      "testName": "blog-pages__information-rendering",
+      "flowId": "tests-web-blog-pages-unified-e2e-spec-json-fdfagz",
+      "flowTitle": "个人博客三页面渲染与视觉回归",
+      "title": "介绍页：个人信息与布局完整",
+      "fullTitle": "个人博客三页面渲染与视觉回归 > 介绍页：个人信息与布局完整",
+      "projectName": "current",
+      "status": "passed",
+      "duration": 13937,
+      "retry": 0,
+      "attempts": [
+        {
+          "retry": 0,
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 13937,
+          "errors": [],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 5,
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "个人介绍标题可见",
+                  "summary": "展示“//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "介绍页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          }
+        }
+      ],
+      "runtimeEvidence": {
+        "routes": {
+          "configured": [],
+          "required": [],
+          "hit": [],
+          "missed": [],
+          "asserted": [],
+          "optionalMissed": [],
+          "gateMode": "none",
+          "gatePassed": true
+        },
+        "steps": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "failures": []
+        },
+        "assertions": {
+          "total": 2,
+          "api": 0,
+          "positiveUi": 2,
+          "negativeUi": 0,
+          "navigation": 0,
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0,
+          "promotionEligible": 0,
+          "observationalOnly": 2,
+          "missingBusinessOracle": 1,
+          "gaps": [
+            "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+          ],
+          "details": [
+            {
+              "name": "个人介绍标题可见",
+              "summary": "展示“//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']” / Shows target",
+              "mode": "visible",
+              "target": "//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "hasExpected": false,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            },
+            {
+              "name": "介绍页 Panel 保持激活样式",
+              "summary": "“//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+              "mode": "css",
+              "target": "//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "expected": {
+                "opacity": "1",
+                "pointer-events": "auto"
+              },
+              "hasExpected": true,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            }
+          ]
+        },
+        "transientSignals": [],
+        "bridgeNavigations": []
+      },
+      "errors": [],
+      "pageGroupName": "web",
+      "pageName": "web / blog pages",
+      "flowTestType": "business",
+      "provenance": {
+        "generationOrigin": "unknown",
+        "dataOrigins": []
+      },
+      "businessSummary": {
+        "title": "介绍页：个人信息与布局完整",
+        "technicalTitle": "介绍页：个人信息与布局完整",
+        "semanticStatus": "unidentified",
+        "precondition": "",
+        "action": "",
+        "dataState": "",
+        "expectedEffect": "",
+        "source": "",
+        "confidence": "",
+        "semanticEvidence": [],
+        "sourceFile": "",
+        "sourceSymbol": "",
+        "coverageTargets": [],
+        "technicalFacts": []
+      },
+      "generationDecision": {
+        "status": "",
+        "title": "",
+        "trigger": "",
+        "dataSource": "",
+        "targetEvidence": "",
+        "terminalEvidence": "",
+        "stability": "",
+        "stateChanges": [],
+        "technicalFacts": []
+      },
+      "finalUrl": "http://127.0.0.1:5173/#/Information",
+      "tracePath": "automation-traces/unified-e2e-spec-xx3os.zip",
+      "btmPointCount": 0,
+      "visual": {
+        "snapshotCount": 0,
+        "diffCount": 0,
+        "missingBaselineCount": 0,
+        "failedCount": 0,
+        "issueCount": 0
+      },
+      "requestCount": 3,
+      "requestSummary": {
+        "total": 3,
+        "visible": 3,
+        "summarized": 0,
+        "categories": {
+          "business-api": 3
+        }
+      },
+      "requests": [
+        {
+          "id": "request-001",
+          "url": "http://127.0.0.1:5173/",
+          "host": "127.0.0.1:5173",
+          "path": "/",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "document",
+          "startedAt": "2026-08-23T16:06:14.750Z",
+          "capturedAt": "2026-08-23T16:06:14.768Z",
+          "durationMs": 18,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "text/html",
+          "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+          "responseBytes": 6738,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-002",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:17.096Z",
+          "capturedAt": "2026-08-23T16:06:17.108Z",
+          "durationMs": 12,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-003",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:17.096Z",
+          "capturedAt": "2026-08-23T16:06:17.108Z",
+          "durationMs": 12,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        }
+      ],
+      "visualSteps": [
+        {
+          "id": "snapshot-1-information",
+          "title": "页面状态",
+          "description": "技术步骤：介绍页首屏",
+          "src": "../../current/blog-pages__information-rendering/1-information.png",
+          "source": "snapshot",
+          "order": 4
+        }
+      ],
+      "interactionSteps": [
+        {
+          "id": "snapshot-1-information",
+          "type": "snapshot",
+          "title": "页面状态",
+          "description": "技术步骤：介绍页首屏",
+          "order": 4,
+          "mode": "",
+          "target": "",
+          "value": null,
+          "snapshotId": "1-information",
+          "src": "../../current/blog-pages__information-rendering/1-information.png",
+          "targetArea": null
+        }
+      ],
+      "midsceneReports": []
+    },
+    {
+      "id": "unified-e2e-spec-g3aj9m",
+      "testName": "blog-pages__home-rendering",
+      "flowId": "tests-web-blog-pages-unified-e2e-spec-json-fdfagz",
+      "flowTitle": "个人博客三页面渲染与视觉回归",
+      "title": "首页：首屏内容与布局完整",
+      "fullTitle": "个人博客三页面渲染与视觉回归 > 首页：首屏内容与布局完整",
+      "projectName": "current",
+      "status": "passed",
+      "duration": 52394,
+      "retry": 0,
+      "attempts": [
+        {
+          "retry": 0,
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 52394,
+          "errors": [],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 4,
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "首页标题可见",
+                  "summary": "展示“//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "首页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          }
+        }
+      ],
+      "runtimeEvidence": {
+        "routes": {
+          "configured": [],
+          "required": [],
+          "hit": [],
+          "missed": [],
+          "asserted": [],
+          "optionalMissed": [],
+          "gateMode": "none",
+          "gatePassed": true
+        },
+        "steps": {
+          "total": 4,
+          "passed": 4,
+          "failed": 0,
+          "skipped": 0,
+          "failures": []
+        },
+        "assertions": {
+          "total": 2,
+          "api": 0,
+          "positiveUi": 2,
+          "negativeUi": 0,
+          "navigation": 0,
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0,
+          "promotionEligible": 0,
+          "observationalOnly": 2,
+          "missingBusinessOracle": 1,
+          "gaps": [
+            "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+          ],
+          "details": [
+            {
+              "name": "首页标题可见",
+              "summary": "展示“//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']” / Shows target",
+              "mode": "visible",
+              "target": "//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "hasExpected": false,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            },
+            {
+              "name": "首页 Panel 保持激活样式",
+              "summary": "“//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+              "mode": "css",
+              "target": "//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "expected": {
+                "opacity": "1",
+                "pointer-events": "auto"
+              },
+              "hasExpected": true,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            }
+          ]
+        },
+        "transientSignals": [],
+        "bridgeNavigations": []
+      },
+      "errors": [],
+      "pageGroupName": "web",
+      "pageName": "web / blog pages",
+      "flowTestType": "business",
+      "provenance": {
+        "generationOrigin": "unknown",
+        "dataOrigins": []
+      },
+      "businessSummary": {
+        "title": "首页：首屏内容与布局完整",
+        "technicalTitle": "首页：首屏内容与布局完整",
+        "semanticStatus": "unidentified",
+        "precondition": "",
+        "action": "",
+        "dataState": "",
+        "expectedEffect": "",
+        "source": "",
+        "confidence": "",
+        "semanticEvidence": [],
+        "sourceFile": "",
+        "sourceSymbol": "",
+        "coverageTargets": [],
+        "technicalFacts": []
+      },
+      "generationDecision": {
+        "status": "",
+        "title": "",
+        "trigger": "",
+        "dataSource": "",
+        "targetEvidence": "",
+        "terminalEvidence": "",
+        "stability": "",
+        "stateChanges": [],
+        "technicalFacts": []
+      },
+      "finalUrl": "http://127.0.0.1:5173/#/Home",
+      "tracePath": "automation-traces/unified-e2e-spec-g3aj9m.zip",
+      "btmPointCount": 0,
+      "visual": {
+        "snapshotCount": 0,
+        "diffCount": 0,
+        "missingBaselineCount": 0,
+        "failedCount": 0,
+        "issueCount": 0
+      },
+      "requestCount": 6,
+      "requestSummary": {
+        "total": 6,
+        "visible": 6,
+        "summarized": 1,
+        "categories": {
+          "business-api": 6
+        }
+      },
+      "requests": [
+        {
+          "id": "request-001",
+          "url": "http://127.0.0.1:5173/",
+          "host": "127.0.0.1:5173",
+          "path": "/",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "document",
+          "startedAt": "2026-08-23T16:06:14.745Z",
+          "capturedAt": "2026-08-23T16:06:14.763Z",
+          "durationMs": 18,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "text/html",
+          "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+          "responseBytes": 6738,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-002",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.373Z",
+          "capturedAt": "2026-08-23T16:06:15.451Z",
+          "durationMs": 78,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-003",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.373Z",
+          "capturedAt": "2026-08-23T16:06:15.485Z",
+          "durationMs": 112,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-004",
+          "url": "http://127.0.0.1:5173/home/hls/index.m3u8",
+          "host": "127.0.0.1:5173",
+          "path": "/home/hls/index.m3u8",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.382Z",
+          "capturedAt": "2026-08-23T16:06:15.486Z",
+          "durationMs": 104,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "#EXTM3U\n#EXT-X-VERSION:7\n#EXT-X-TARGETDURATION:2\n#EXT-X-MEDIA-SEQUENCE:0\n#EXT-X-PLAYLIST-TYPE:VOD\n#EXT-X-MAP:URI=\"init.mp4\"\n#EXTINF:2.002000,\nsegment_000.m4s\n#EXTINF:2.002000,\nsegment_001.m4s\n#EXTINF:2.002000,\nsegment_002.m4s\n#EXTINF:2.002000,\nsegment_003.m4s\n#EXTINF:2.002000,\nsegment_004.m4s\n#EXT-X-ENDLIST\n",
+          "responseBytes": 309,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-005",
+          "url": "http://127.0.0.1:5173/home/hls/init.mp4",
+          "host": "127.0.0.1:5173",
+          "path": "/home/hls/init.mp4",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.383Z",
+          "capturedAt": "2026-08-23T16:06:15.508Z",
+          "durationMs": 125,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "video/mp4",
+          "responseBodyText": "\u0000\u0000\u0000\u001cftypiso5\u0000\u0000\u0002\u0000iso5iso6mp41\u0000\u0000\u0003\u000fmoov\u0000\u0000\u0000lmvhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0003�\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0002\u0000\u0000\u0002\u0011trak\u0000\u0000\u0000\\tkhd\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0007�\u0000\u0000\u00048\u0000\u0000\u0000\u0000\u0000$edts\u0000\u0000\u0000\u001celst\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0001�mdia\u0000\u0000\u0000 mdhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000]�\u0000\u0000\u0000\u0000\u0015�\u0000\u0000\u0000\u0000\u0000Ahdlr\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000vide\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001fMainconcept Video Media Handler\u0000\u0000\u0000\u0001 minf\u0000\u0000\u0000\u0014vmhd\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000$dinf\u0000\u0000\u0000\u001cdref\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\furl \u0000\u0000\u0000\u0001\u0000\u0000\u0000�stbl\u0000\u0000\u0000�stsd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000�vp09\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0007�\u00048\u0000H\u0000\u0000\u0000H\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0018Lavc62.28.100 libvpx-vp9\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018��\u0000\u0000\u0000\u0014vpcC\u0001\u0000\u0000\u0000\u0000(�\u0002\u0002\u0002\u0000\u0000\u0000\u0000\u0000\nfiel\u0001\u0000\u0000\u0000\u0000\u0010pasp\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0010stts\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010stsc\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0014stsz\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010stco\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(mvex\u0000\u0000\u0000 trex\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000budta\u0000\u0000\u0000Zmeta\u0000\u0000\u0000\u0000\u0000\u0000\u0000!hdlr\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000mdirappl\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000-ilst\u0000\u0000\u0000%�too\u0000\u0000\u0000\u001ddata\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000Lavf62.12.100",
+          "responseBytes": 837,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-006",
+          "url": "http://127.0.0.1:5173/home/hls/segment_000.m4s",
+          "host": "127.0.0.1:5173",
+          "path": "/home/hls/segment_000.m4s",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.383Z",
+          "capturedAt": "2026-08-23T16:06:15.551Z",
+          "durationMs": 168,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "video/iso.segment",
+          "responseBodyText": "",
+          "responseBytes": 857686,
+          "responseTruncated": true,
+          "responseSummary": {
+            "kind": "text",
+            "contentType": "video/iso.segment",
+            "bytes": 857686,
+            "sha256": "a81534af3bba05fdb3e356a4766f74451fc194220f82ee5407972c58c196c728",
+            "type": "string",
+            "arrayLength": null,
+            "topLevelKeys": [],
+            "preview": "\u0000\u0000\u0000\u0018stypmsdh\u0000\u0000\u0000\u0000msdhmsix\u0000\u0000\u00004sidx\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000]�\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u00076\n\u0000\u0000���\u0000\u0000\u0000\u0000\u0000\u0001(moof\u0000\u0000\u0000\u0010mfhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0001\u0010traf\u0000\u0000\u0000\u001ctfhd\u0000\u0002\u00008\u0000\u0000\u0000\u0001\u0000\u0000\u0003�\u0000\u0001�\u0007\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0014tfdt\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�trun\u0000\u0000\u0002\u0005\u0000\u0000\u00000\u0000\u0000\u00010\u0002\u0000\u0000\u0000\u0000\u0001�\u0007\u0000\u0000\u0000N\u0000\u0000\u0015\u0014\u0000\u0000\u0015a\u0000\u0000\u0005_\u0000\u0000\u0014�\u0000\u0000,�\u0000\u0000\u0001�\u0000\u0000G*\u0000\u0000\u0016�\u0000\u0000\u001b�\u0000\u0000 n\u0000\u0000\"�\u0000\u0000\u0000�\u0000\u0000'�\u0000\u0000\u001f�\u0000\u0000E�\u0000\u0000\u001dM\u0000\u0000)\u0016\u0000\u0000\u0000�\u0000\u0000R�\u0000\u0000\u0014e\u0000\u0000\u0002�\u0000\u0000\u001e\u001d\u0000\u0000Uf\u0000\u0000\u0000�\u0000\u0000!]\u0000\u0000\u0013q\u0000\u0000\b�\u0000\u0000\ri\u0000\u0000��\u0000\u0000\u0000�\u0000\u0000-�\u0000\u0000\u0012:\u0000\u0000\u0001�\u0000\u0000\u001d`\u0000\u0000#�\u0000\u0000\u0000�\u0000\u0000 �\u0000\u0000\u001e\u0010\u0000\u0000>!\u0000\u0000\u0013�\u0000\u0000$�\u0000\u0000\u0000�\u0000\u000057\u0000\u0000\u001b�\u0000\u0000\u0002�\u0000\u0000\u001en\u0000\u00074�mdat�I�B\u0000w�Cv\u00008$\u001c\u0018>\u0018\u0006�o�w�����?�?\u0017���}���}��O�_�������/������~����?����������������G��\u0017���\u000f�|\u0017������?�_�ދ�����b�?��O������\u0017�\u0012�G{O�?��?��ϥ�>���wz�����/�������/����}����Ǥ{܇��׫�>���>\u0000鸍m����\u001a~\u0007N���\u001e��z�W뼬�o�~����i�|���zw�ꞣ�����������'뽧N�};��\u001b\u0001���=�N�\u000e��,Y�7�g]��wzv\u000fiٺw��~ǭ}\u0017��.\u0013�{\u0007��7���C�XQ�}/T��Kֽ_��^���c�O�����o����������o�}/��E���oo�o��ޯ�z�{�z_���S�\u0013�z���i�����z��\u0011�zv�a�_˷\u001e�ž�\u0017\n�w�\u0005�\u001c>[�}\u001dַ��߷;�{N��:�����u� &moR\u0000\u0000\u0000HCy����Q\u001f�ŞvG�q�1������ �\u0004��\u001a7�7\f\u0001魌��cPݏ�\u0010���\r\u0002��P�_է\\Ϡ���\"�-���\f�S�B�)P�Y;C/�\u0002�`���yw%-�*\"R�D\u000b\u001e7^�\"��F��\u0001�R��5�m�����3_^�B*�\u00054��2+E4�F�Y�\r����1{?�\u0018�!���r�\u001c!���u*\u0004p����8*O�%�X\u000f��@s2��*�j\n�̣\u001a�b|a\n\u0006}\u0002ሹ�>'e<\u0002�c�/�ñRr�J%\u0005������G[h���f\u0005�EtO�5_�f�{���)ne�%�6O�\u0014\u0013-p,]�r�\u0005>*\u0015W\\\u001e�p��s֕�8��\t�\u0018f�[\u000bI\u0004���U��\u0010G��2�j�\u0013�8��@b�2���\u0011�\u001aq��\u00052����ff\u0000���\u0006��\u0000޲Ǽ��ERd�۠�z��\u0012\u0010%K\u0014|�\u001d\u0018\u0016��� ��j�.T�9��ō�\u001c����������Ѩ��n4��A�ʳ�",
+            "omittedBytes": 855510,
+            "reason": "response-body-limit"
+          }
+        }
+      ],
+      "visualSteps": [
+        {
+          "id": "snapshot-1-home",
+          "title": "页面状态",
+          "description": "技术步骤：首页首屏",
+          "src": "../../current/blog-pages__home-rendering/1-home.png",
+          "source": "snapshot",
+          "order": 3
+        }
+      ],
+      "interactionSteps": [
+        {
+          "id": "snapshot-1-home",
+          "type": "snapshot",
+          "title": "页面状态",
+          "description": "技术步骤：首页首屏",
+          "order": 3,
+          "mode": "",
+          "target": "",
+          "value": null,
+          "snapshotId": "1-home",
+          "src": "../../current/blog-pages__home-rendering/1-home.png",
+          "targetArea": null
+        }
+      ],
+      "midsceneReports": []
+    },
+    {
+      "id": "unified-e2e-spec-gux99n",
+      "testName": "blog-pages__portfolio-rendering",
+      "flowId": "tests-web-blog-pages-unified-e2e-spec-json-fdfagz",
+      "flowTitle": "个人博客三页面渲染与视觉回归",
+      "title": "作品页：项目列表与详情完整",
+      "fullTitle": "个人博客三页面渲染与视觉回归 > 作品页：项目列表与详情完整",
+      "projectName": "current",
+      "status": "passed",
+      "duration": 51827,
+      "retry": 0,
+      "attempts": [
+        {
+          "retry": 0,
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 51827,
+          "errors": [],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 5,
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "默认项目详情可见",
+                  "summary": "展示“//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "作品页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          }
+        }
+      ],
+      "runtimeEvidence": {
+        "routes": {
+          "configured": [],
+          "required": [],
+          "hit": [],
+          "missed": [],
+          "asserted": [],
+          "optionalMissed": [],
+          "gateMode": "none",
+          "gatePassed": true
+        },
+        "steps": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "failures": []
+        },
+        "assertions": {
+          "total": 2,
+          "api": 0,
+          "positiveUi": 2,
+          "negativeUi": 0,
+          "navigation": 0,
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0,
+          "promotionEligible": 0,
+          "observationalOnly": 2,
+          "missingBusinessOracle": 1,
+          "gaps": [
+            "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+          ],
+          "details": [
+            {
+              "name": "默认项目详情可见",
+              "summary": "展示“//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']” / Shows target",
+              "mode": "visible",
+              "target": "//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "hasExpected": false,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            },
+            {
+              "name": "作品页 Panel 保持激活样式",
+              "summary": "“//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+              "mode": "css",
+              "target": "//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+              "jsonPath": "",
+              "endpoint": "",
+              "matcher": "",
+              "expected": {
+                "opacity": "1",
+                "pointer-events": "auto"
+              },
+              "hasExpected": true,
+              "status": "passed",
+              "kind": "",
+              "role": "supporting-check",
+              "promotionEligible": false,
+              "requiredForPromotion": false,
+              "requiresPositiveAnchor": false,
+              "reasons": []
+            }
+          ]
+        },
+        "transientSignals": [],
+        "bridgeNavigations": []
+      },
+      "errors": [],
+      "pageGroupName": "web",
+      "pageName": "web / blog pages",
+      "flowTestType": "business",
+      "provenance": {
+        "generationOrigin": "unknown",
+        "dataOrigins": []
+      },
+      "businessSummary": {
+        "title": "作品页：项目列表与详情完整",
+        "technicalTitle": "作品页：项目列表与详情完整",
+        "semanticStatus": "unidentified",
+        "precondition": "",
+        "action": "",
+        "dataState": "",
+        "expectedEffect": "",
+        "source": "",
+        "confidence": "",
+        "semanticEvidence": [],
+        "sourceFile": "",
+        "sourceSymbol": "",
+        "coverageTargets": [],
+        "technicalFacts": []
+      },
+      "generationDecision": {
+        "status": "",
+        "title": "",
+        "trigger": "",
+        "dataSource": "",
+        "targetEvidence": "",
+        "terminalEvidence": "",
+        "stability": "",
+        "stateChanges": [],
+        "technicalFacts": []
+      },
+      "finalUrl": "http://127.0.0.1:5173/#/Portfolio",
+      "tracePath": "automation-traces/unified-e2e-spec-gux99n.zip",
+      "btmPointCount": 0,
+      "visual": {
+        "snapshotCount": 0,
+        "diffCount": 0,
+        "missingBaselineCount": 0,
+        "failedCount": 0,
+        "issueCount": 0
+      },
+      "requestCount": 3,
+      "requestSummary": {
+        "total": 3,
+        "visible": 3,
+        "summarized": 0,
+        "categories": {
+          "business-api": 3
+        }
+      },
+      "requests": [
+        {
+          "id": "request-001",
+          "url": "http://127.0.0.1:5173/",
+          "host": "127.0.0.1:5173",
+          "path": "/",
+          "method": "GET",
+          "status": 200,
+          "resourceType": "document",
+          "startedAt": "2026-08-23T16:06:14.744Z",
+          "capturedAt": "2026-08-23T16:06:14.760Z",
+          "durationMs": 16,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "text/html",
+          "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+          "responseBytes": 6738,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-002",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.348Z",
+          "capturedAt": "2026-08-23T16:06:15.434Z",
+          "durationMs": 86,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        },
+        {
+          "id": "request-003",
+          "url": "http://127.0.0.1:5173/api/health",
+          "host": "127.0.0.1:5173",
+          "path": "/api/health",
+          "method": "GET",
+          "status": 404,
+          "resourceType": "fetch",
+          "startedAt": "2026-08-23T16:06:15.348Z",
+          "capturedAt": "2026-08-23T16:06:15.486Z",
+          "durationMs": 138,
+          "query": {},
+          "category": "business-api",
+          "label": "业务接口",
+          "defaultVisible": true,
+          "contentType": "",
+          "responseBodyText": "",
+          "responseBytes": 0,
+          "responseTruncated": false,
+          "responseSummary": null
+        }
+      ],
+      "visualSteps": [
+        {
+          "id": "snapshot-1-portfolio",
+          "title": "页面状态",
+          "description": "技术步骤：作品页首屏",
+          "src": "../../current/blog-pages__portfolio-rendering/1-portfolio.png",
+          "source": "snapshot",
+          "order": 4
+        }
+      ],
+      "interactionSteps": [
+        {
+          "id": "snapshot-1-portfolio",
+          "type": "snapshot",
+          "title": "页面状态",
+          "description": "技术步骤：作品页首屏",
+          "order": 4,
+          "mode": "",
+          "target": "",
+          "value": null,
+          "snapshotId": "1-portfolio",
+          "src": "../../current/blog-pages__portfolio-rendering/1-portfolio.png",
+          "targetArea": null
+        }
+      ],
+      "midsceneReports": []
+    }
+  ],
+  "flows": [
+    {
+      "id": "tests-web-blog-pages-unified-e2e-spec-json-fdfagz",
+      "file": "tests/web/blog-pages/unified-e2e.spec.json",
+      "fileName": "unified-e2e.spec.json",
+      "fileRelativePath": "tests/web/blog-pages/unified-e2e.spec.json",
+      "title": "个人博客三页面渲染与视觉回归",
+      "pageGroupKey": "web",
+      "pageGroupName": "web",
+      "pageKey": "web/blog-pages",
+      "pageName": "web / blog pages",
+      "flowTestType": "business",
+      "status": "passed",
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "timedOut": 0,
+        "interrupted": 0,
+        "skipped": 0
+      },
+      "total": 3,
+      "duration": 118158,
+      "records": [
+        {
+          "id": "unified-e2e-spec-xx3os",
+          "file": "tests/web/blog-pages/unified-e2e.spec.json",
+          "fileName": "unified-e2e.spec.json",
+          "fileRelativePath": "tests/web/blog-pages/unified-e2e.spec.json",
+          "title": "介绍页：个人信息与布局完整",
+          "fullTitle": "个人博客三页面渲染与视觉回归 > 介绍页：个人信息与布局完整",
+          "describeTitle": "个人博客三页面渲染与视觉回归",
+          "titlePath": [
+            "个人博客三页面渲染与视觉回归",
+            "介绍页：个人信息与布局完整"
+          ],
+          "testName": "blog-pages__information-rendering",
+          "projectName": "current",
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 13937,
+          "retry": 0,
+          "attempts": [
+            {
+              "retry": 0,
+              "status": "passed",
+              "effectiveStatus": "passed",
+              "duration": 13937,
+              "errors": [],
+              "runtimeEvidence": {
+                "routes": {
+                  "configured": [],
+                  "required": [],
+                  "hit": [],
+                  "missed": [],
+                  "asserted": [],
+                  "optionalMissed": [],
+                  "gateMode": "none",
+                  "gatePassed": true
+                },
+                "steps": {
+                  "total": 5,
+                  "passed": 5,
+                  "failed": 0,
+                  "skipped": 0,
+                  "failures": []
+                },
+                "assertions": {
+                  "total": 2,
+                  "api": 0,
+                  "positiveUi": 2,
+                  "negativeUi": 0,
+                  "navigation": 0,
+                  "passed": 2,
+                  "failed": 0,
+                  "skipped": 0,
+                  "promotionEligible": 0,
+                  "observationalOnly": 2,
+                  "missingBusinessOracle": 1,
+                  "gaps": [
+                    "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+                  ],
+                  "details": [
+                    {
+                      "name": "个人介绍标题可见",
+                      "summary": "展示“//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']” / Shows target",
+                      "mode": "visible",
+                      "target": "//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "hasExpected": false,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    },
+                    {
+                      "name": "介绍页 Panel 保持激活样式",
+                      "summary": "“//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                      "mode": "css",
+                      "target": "//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "expected": {
+                        "opacity": "1",
+                        "pointer-events": "auto"
+                      },
+                      "hasExpected": true,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    }
+                  ]
+                },
+                "transientSignals": [],
+                "bridgeNavigations": []
+              }
+            }
+          ],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 5,
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "个人介绍标题可见",
+                  "summary": "展示“//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "介绍页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          },
+          "errors": [],
+          "pageGroupKey": "web",
+          "pageGroupName": "web",
+          "pageKey": "web/blog-pages",
+          "pageName": "web / blog pages",
+          "flowTestType": "business",
+          "source": {
+            "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json"
+          },
+          "provenance": {
+            "generationOrigin": "unknown",
+            "dataOrigins": []
+          },
+          "businessSummary": {
+            "title": "介绍页：个人信息与布局完整",
+            "technicalTitle": "介绍页：个人信息与布局完整",
+            "semanticStatus": "unidentified",
+            "precondition": "",
+            "action": "",
+            "dataState": "",
+            "expectedEffect": "",
+            "source": "",
+            "confidence": "",
+            "semanticEvidence": [],
+            "sourceFile": "",
+            "sourceSymbol": "",
+            "coverageTargets": [],
+            "technicalFacts": []
+          },
+          "generationDecision": {
+            "status": "",
+            "title": "",
+            "trigger": "",
+            "dataSource": "",
+            "targetEvidence": "",
+            "terminalEvidence": "",
+            "stability": "",
+            "stateChanges": [],
+            "technicalFacts": []
+          },
+          "finalUrl": "http://127.0.0.1:5173/#/Information",
+          "traceSourcePath": "",
+          "tracePath": "automation-traces/unified-e2e-spec-xx3os.zip",
+          "traceViewerUrl": "../playwright/trace/index.html?trace=..%2F..%2Fautomation%2Fautomation-traces%2Funified-e2e-spec-xx3os.zip",
+          "isTeaTest": false,
+          "btmReportSourcePath": "",
+          "btmReportPath": "",
+          "btmReportHtml": "",
+          "btmPointCount": 0,
+          "visualReportSourcePaths": [],
+          "visualReportPath": "",
+          "visualDiffHtml": "",
+          "visualSnapshotCount": 0,
+          "visualDiffCount": 0,
+          "visualMissingBaselineCount": 0,
+          "visualFailedCount": 0,
+          "snapshotSteps": [
+            {
+              "id": "1-information",
+              "title": "页面状态",
+              "description": "技术步骤：介绍页首屏",
+              "order": 4
+            }
+          ],
+          "visualSteps": [
+            {
+              "id": "snapshot-1-information",
+              "title": "页面状态",
+              "description": "技术步骤：介绍页首屏",
+              "src": "../../current/blog-pages__information-rendering/1-information.png",
+              "source": "snapshot",
+              "order": 4
+            }
+          ],
+          "interactionSteps": [
+            {
+              "id": "snapshot-1-information",
+              "type": "snapshot",
+              "title": "页面状态",
+              "description": "技术步骤：介绍页首屏",
+              "order": 4,
+              "mode": "",
+              "target": "",
+              "value": null,
+              "snapshotId": "1-information",
+              "src": "../../current/blog-pages__information-rendering/1-information.png",
+              "targetArea": null
+            }
+          ],
+          "isMainFlowVisual": false,
+          "requestReportSourcePath": "snapshot-meta/blog-pages__information-rendering/requests-current.json",
+          "requestSummary": {
+            "total": 3,
+            "visible": 3,
+            "summarized": 0,
+            "categories": {
+              "business-api": 3
+            }
+          },
+          "requests": [
+            {
+              "id": "request-001",
+              "url": "http://127.0.0.1:5173/",
+              "host": "127.0.0.1:5173",
+              "path": "/",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "document",
+              "startedAt": "2026-08-23T16:06:14.750Z",
+              "capturedAt": "2026-08-23T16:06:14.768Z",
+              "durationMs": 18,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "text/html",
+              "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+              "responseBytes": 6738,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-002",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:17.096Z",
+              "capturedAt": "2026-08-23T16:06:17.108Z",
+              "durationMs": 12,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-003",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:17.096Z",
+              "capturedAt": "2026-08-23T16:06:17.108Z",
+              "durationMs": 12,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            }
+          ],
+          "midsceneReports": [],
+          "midsceneReportHtml": ""
+        },
+        {
+          "id": "unified-e2e-spec-g3aj9m",
+          "file": "tests/web/blog-pages/unified-e2e.spec.json",
+          "fileName": "unified-e2e.spec.json",
+          "fileRelativePath": "tests/web/blog-pages/unified-e2e.spec.json",
+          "title": "首页：首屏内容与布局完整",
+          "fullTitle": "个人博客三页面渲染与视觉回归 > 首页：首屏内容与布局完整",
+          "describeTitle": "个人博客三页面渲染与视觉回归",
+          "titlePath": [
+            "个人博客三页面渲染与视觉回归",
+            "首页：首屏内容与布局完整"
+          ],
+          "testName": "blog-pages__home-rendering",
+          "projectName": "current",
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 52394,
+          "retry": 0,
+          "attempts": [
+            {
+              "retry": 0,
+              "status": "passed",
+              "effectiveStatus": "passed",
+              "duration": 52394,
+              "errors": [],
+              "runtimeEvidence": {
+                "routes": {
+                  "configured": [],
+                  "required": [],
+                  "hit": [],
+                  "missed": [],
+                  "asserted": [],
+                  "optionalMissed": [],
+                  "gateMode": "none",
+                  "gatePassed": true
+                },
+                "steps": {
+                  "total": 4,
+                  "passed": 4,
+                  "failed": 0,
+                  "skipped": 0,
+                  "failures": []
+                },
+                "assertions": {
+                  "total": 2,
+                  "api": 0,
+                  "positiveUi": 2,
+                  "negativeUi": 0,
+                  "navigation": 0,
+                  "passed": 2,
+                  "failed": 0,
+                  "skipped": 0,
+                  "promotionEligible": 0,
+                  "observationalOnly": 2,
+                  "missingBusinessOracle": 1,
+                  "gaps": [
+                    "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+                  ],
+                  "details": [
+                    {
+                      "name": "首页标题可见",
+                      "summary": "展示“//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']” / Shows target",
+                      "mode": "visible",
+                      "target": "//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "hasExpected": false,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    },
+                    {
+                      "name": "首页 Panel 保持激活样式",
+                      "summary": "“//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                      "mode": "css",
+                      "target": "//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "expected": {
+                        "opacity": "1",
+                        "pointer-events": "auto"
+                      },
+                      "hasExpected": true,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    }
+                  ]
+                },
+                "transientSignals": [],
+                "bridgeNavigations": []
+              }
+            }
+          ],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 4,
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "首页标题可见",
+                  "summary": "展示“//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "首页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          },
+          "errors": [],
+          "pageGroupKey": "web",
+          "pageGroupName": "web",
+          "pageKey": "web/blog-pages",
+          "pageName": "web / blog pages",
+          "flowTestType": "business",
+          "source": {
+            "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json"
+          },
+          "provenance": {
+            "generationOrigin": "unknown",
+            "dataOrigins": []
+          },
+          "businessSummary": {
+            "title": "首页：首屏内容与布局完整",
+            "technicalTitle": "首页：首屏内容与布局完整",
+            "semanticStatus": "unidentified",
+            "precondition": "",
+            "action": "",
+            "dataState": "",
+            "expectedEffect": "",
+            "source": "",
+            "confidence": "",
+            "semanticEvidence": [],
+            "sourceFile": "",
+            "sourceSymbol": "",
+            "coverageTargets": [],
+            "technicalFacts": []
+          },
+          "generationDecision": {
+            "status": "",
+            "title": "",
+            "trigger": "",
+            "dataSource": "",
+            "targetEvidence": "",
+            "terminalEvidence": "",
+            "stability": "",
+            "stateChanges": [],
+            "technicalFacts": []
+          },
+          "finalUrl": "http://127.0.0.1:5173/#/Home",
+          "traceSourcePath": "",
+          "tracePath": "automation-traces/unified-e2e-spec-g3aj9m.zip",
+          "traceViewerUrl": "../playwright/trace/index.html?trace=..%2F..%2Fautomation%2Fautomation-traces%2Funified-e2e-spec-g3aj9m.zip",
+          "isTeaTest": false,
+          "btmReportSourcePath": "",
+          "btmReportPath": "",
+          "btmReportHtml": "",
+          "btmPointCount": 0,
+          "visualReportSourcePaths": [],
+          "visualReportPath": "",
+          "visualDiffHtml": "",
+          "visualSnapshotCount": 0,
+          "visualDiffCount": 0,
+          "visualMissingBaselineCount": 0,
+          "visualFailedCount": 0,
+          "snapshotSteps": [
+            {
+              "id": "1-home",
+              "title": "页面状态",
+              "description": "技术步骤：首页首屏",
+              "order": 3
+            }
+          ],
+          "visualSteps": [
+            {
+              "id": "snapshot-1-home",
+              "title": "页面状态",
+              "description": "技术步骤：首页首屏",
+              "src": "../../current/blog-pages__home-rendering/1-home.png",
+              "source": "snapshot",
+              "order": 3
+            }
+          ],
+          "interactionSteps": [
+            {
+              "id": "snapshot-1-home",
+              "type": "snapshot",
+              "title": "页面状态",
+              "description": "技术步骤：首页首屏",
+              "order": 3,
+              "mode": "",
+              "target": "",
+              "value": null,
+              "snapshotId": "1-home",
+              "src": "../../current/blog-pages__home-rendering/1-home.png",
+              "targetArea": null
+            }
+          ],
+          "isMainFlowVisual": false,
+          "requestReportSourcePath": "snapshot-meta/blog-pages__home-rendering/requests-current.json",
+          "requestSummary": {
+            "total": 6,
+            "visible": 6,
+            "summarized": 1,
+            "categories": {
+              "business-api": 6
+            }
+          },
+          "requests": [
+            {
+              "id": "request-001",
+              "url": "http://127.0.0.1:5173/",
+              "host": "127.0.0.1:5173",
+              "path": "/",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "document",
+              "startedAt": "2026-08-23T16:06:14.745Z",
+              "capturedAt": "2026-08-23T16:06:14.763Z",
+              "durationMs": 18,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "text/html",
+              "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+              "responseBytes": 6738,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-002",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.373Z",
+              "capturedAt": "2026-08-23T16:06:15.451Z",
+              "durationMs": 78,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-003",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.373Z",
+              "capturedAt": "2026-08-23T16:06:15.485Z",
+              "durationMs": 112,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-004",
+              "url": "http://127.0.0.1:5173/home/hls/index.m3u8",
+              "host": "127.0.0.1:5173",
+              "path": "/home/hls/index.m3u8",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.382Z",
+              "capturedAt": "2026-08-23T16:06:15.486Z",
+              "durationMs": 104,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "#EXTM3U\n#EXT-X-VERSION:7\n#EXT-X-TARGETDURATION:2\n#EXT-X-MEDIA-SEQUENCE:0\n#EXT-X-PLAYLIST-TYPE:VOD\n#EXT-X-MAP:URI=\"init.mp4\"\n#EXTINF:2.002000,\nsegment_000.m4s\n#EXTINF:2.002000,\nsegment_001.m4s\n#EXTINF:2.002000,\nsegment_002.m4s\n#EXTINF:2.002000,\nsegment_003.m4s\n#EXTINF:2.002000,\nsegment_004.m4s\n#EXT-X-ENDLIST\n",
+              "responseBytes": 309,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-005",
+              "url": "http://127.0.0.1:5173/home/hls/init.mp4",
+              "host": "127.0.0.1:5173",
+              "path": "/home/hls/init.mp4",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.383Z",
+              "capturedAt": "2026-08-23T16:06:15.508Z",
+              "durationMs": 125,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "video/mp4",
+              "responseBodyText": "\u0000\u0000\u0000\u001cftypiso5\u0000\u0000\u0002\u0000iso5iso6mp41\u0000\u0000\u0003\u000fmoov\u0000\u0000\u0000lmvhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0003�\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0002\u0000\u0000\u0002\u0011trak\u0000\u0000\u0000\\tkhd\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0007�\u0000\u0000\u00048\u0000\u0000\u0000\u0000\u0000$edts\u0000\u0000\u0000\u001celst\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0001�mdia\u0000\u0000\u0000 mdhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000]�\u0000\u0000\u0000\u0000\u0015�\u0000\u0000\u0000\u0000\u0000Ahdlr\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000vide\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001fMainconcept Video Media Handler\u0000\u0000\u0000\u0001 minf\u0000\u0000\u0000\u0014vmhd\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000$dinf\u0000\u0000\u0000\u001cdref\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\furl \u0000\u0000\u0000\u0001\u0000\u0000\u0000�stbl\u0000\u0000\u0000�stsd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000�vp09\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0007�\u00048\u0000H\u0000\u0000\u0000H\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0018Lavc62.28.100 libvpx-vp9\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018��\u0000\u0000\u0000\u0014vpcC\u0001\u0000\u0000\u0000\u0000(�\u0002\u0002\u0002\u0000\u0000\u0000\u0000\u0000\nfiel\u0001\u0000\u0000\u0000\u0000\u0010pasp\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0010stts\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010stsc\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0014stsz\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010stco\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000(mvex\u0000\u0000\u0000 trex\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000budta\u0000\u0000\u0000Zmeta\u0000\u0000\u0000\u0000\u0000\u0000\u0000!hdlr\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000mdirappl\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000-ilst\u0000\u0000\u0000%�too\u0000\u0000\u0000\u001ddata\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000Lavf62.12.100",
+              "responseBytes": 837,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-006",
+              "url": "http://127.0.0.1:5173/home/hls/segment_000.m4s",
+              "host": "127.0.0.1:5173",
+              "path": "/home/hls/segment_000.m4s",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.383Z",
+              "capturedAt": "2026-08-23T16:06:15.551Z",
+              "durationMs": 168,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "video/iso.segment",
+              "responseBodyText": "",
+              "responseBytes": 857686,
+              "responseTruncated": true,
+              "responseSummary": {
+                "kind": "text",
+                "contentType": "video/iso.segment",
+                "bytes": 857686,
+                "sha256": "a81534af3bba05fdb3e356a4766f74451fc194220f82ee5407972c58c196c728",
+                "type": "string",
+                "arrayLength": null,
+                "topLevelKeys": [],
+                "preview": "\u0000\u0000\u0000\u0018stypmsdh\u0000\u0000\u0000\u0000msdhmsix\u0000\u0000\u00004sidx\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000]�\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u00076\n\u0000\u0000���\u0000\u0000\u0000\u0000\u0000\u0001(moof\u0000\u0000\u0000\u0010mfhd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0001\u0010traf\u0000\u0000\u0000\u001ctfhd\u0000\u0002\u00008\u0000\u0000\u0000\u0001\u0000\u0000\u0003�\u0000\u0001�\u0007\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0014tfdt\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000�trun\u0000\u0000\u0002\u0005\u0000\u0000\u00000\u0000\u0000\u00010\u0002\u0000\u0000\u0000\u0000\u0001�\u0007\u0000\u0000\u0000N\u0000\u0000\u0015\u0014\u0000\u0000\u0015a\u0000\u0000\u0005_\u0000\u0000\u0014�\u0000\u0000,�\u0000\u0000\u0001�\u0000\u0000G*\u0000\u0000\u0016�\u0000\u0000\u001b�\u0000\u0000 n\u0000\u0000\"�\u0000\u0000\u0000�\u0000\u0000'�\u0000\u0000\u001f�\u0000\u0000E�\u0000\u0000\u001dM\u0000\u0000)\u0016\u0000\u0000\u0000�\u0000\u0000R�\u0000\u0000\u0014e\u0000\u0000\u0002�\u0000\u0000\u001e\u001d\u0000\u0000Uf\u0000\u0000\u0000�\u0000\u0000!]\u0000\u0000\u0013q\u0000\u0000\b�\u0000\u0000\ri\u0000\u0000��\u0000\u0000\u0000�\u0000\u0000-�\u0000\u0000\u0012:\u0000\u0000\u0001�\u0000\u0000\u001d`\u0000\u0000#�\u0000\u0000\u0000�\u0000\u0000 �\u0000\u0000\u001e\u0010\u0000\u0000>!\u0000\u0000\u0013�\u0000\u0000$�\u0000\u0000\u0000�\u0000\u000057\u0000\u0000\u001b�\u0000\u0000\u0002�\u0000\u0000\u001en\u0000\u00074�mdat�I�B\u0000w�Cv\u00008$\u001c\u0018>\u0018\u0006�o�w�����?�?\u0017���}���}��O�_�������/������~����?����������������G��\u0017���\u000f�|\u0017������?�_�ދ�����b�?��O������\u0017�\u0012�G{O�?��?��ϥ�>���wz�����/�������/����}����Ǥ{܇��׫�>���>\u0000鸍m����\u001a~\u0007N���\u001e��z�W뼬�o�~����i�|���zw�ꞣ�����������'뽧N�};��\u001b\u0001���=�N�\u000e��,Y�7�g]��wzv\u000fiٺw��~ǭ}\u0017��.\u0013�{\u0007��7���C�XQ�}/T��Kֽ_��^���c�O�����o����������o�}/��E���oo�o��ޯ�z�{�z_���S�\u0013�z���i�����z��\u0011�zv�a�_˷\u001e�ž�\u0017\n�w�\u0005�\u001c>[�}\u001dַ��߷;�{N��:�����u� &moR\u0000\u0000\u0000HCy����Q\u001f�ŞvG�q�1������ �\u0004��\u001a7�7\f\u0001魌��cPݏ�\u0010���\r\u0002��P�_է\\Ϡ���\"�-���\f�S�B�)P�Y;C/�\u0002�`���yw%-�*\"R�D\u000b\u001e7^�\"��F��\u0001�R��5�m�����3_^�B*�\u00054��2+E4�F�Y�\r����1{?�\u0018�!���r�\u001c!���u*\u0004p����8*O�%�X\u000f��@s2��*�j\n�̣\u001a�b|a\n\u0006}\u0002ሹ�>'e<\u0002�c�/�ñRr�J%\u0005������G[h���f\u0005�EtO�5_�f�{���)ne�%�6O�\u0014\u0013-p,]�r�\u0005>*\u0015W\\\u001e�p��s֕�8��\t�\u0018f�[\u000bI\u0004���U��\u0010G��2�j�\u0013�8��@b�2���\u0011�\u001aq��\u00052����ff\u0000���\u0006��\u0000޲Ǽ��ERd�۠�z��\u0012\u0010%K\u0014|�\u001d\u0018\u0016��� ��j�.T�9��ō�\u001c����������Ѩ��n4��A�ʳ�",
+                "omittedBytes": 855510,
+                "reason": "response-body-limit"
+              }
+            }
+          ],
+          "midsceneReports": [],
+          "midsceneReportHtml": ""
+        },
+        {
+          "id": "unified-e2e-spec-gux99n",
+          "file": "tests/web/blog-pages/unified-e2e.spec.json",
+          "fileName": "unified-e2e.spec.json",
+          "fileRelativePath": "tests/web/blog-pages/unified-e2e.spec.json",
+          "title": "作品页：项目列表与详情完整",
+          "fullTitle": "个人博客三页面渲染与视觉回归 > 作品页：项目列表与详情完整",
+          "describeTitle": "个人博客三页面渲染与视觉回归",
+          "titlePath": [
+            "个人博客三页面渲染与视觉回归",
+            "作品页：项目列表与详情完整"
+          ],
+          "testName": "blog-pages__portfolio-rendering",
+          "projectName": "current",
+          "status": "passed",
+          "effectiveStatus": "passed",
+          "duration": 51827,
+          "retry": 0,
+          "attempts": [
+            {
+              "retry": 0,
+              "status": "passed",
+              "effectiveStatus": "passed",
+              "duration": 51827,
+              "errors": [],
+              "runtimeEvidence": {
+                "routes": {
+                  "configured": [],
+                  "required": [],
+                  "hit": [],
+                  "missed": [],
+                  "asserted": [],
+                  "optionalMissed": [],
+                  "gateMode": "none",
+                  "gatePassed": true
+                },
+                "steps": {
+                  "total": 5,
+                  "passed": 5,
+                  "failed": 0,
+                  "skipped": 0,
+                  "failures": []
+                },
+                "assertions": {
+                  "total": 2,
+                  "api": 0,
+                  "positiveUi": 2,
+                  "negativeUi": 0,
+                  "navigation": 0,
+                  "passed": 2,
+                  "failed": 0,
+                  "skipped": 0,
+                  "promotionEligible": 0,
+                  "observationalOnly": 2,
+                  "missingBusinessOracle": 1,
+                  "gaps": [
+                    "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+                  ],
+                  "details": [
+                    {
+                      "name": "默认项目详情可见",
+                      "summary": "展示“//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']” / Shows target",
+                      "mode": "visible",
+                      "target": "//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "hasExpected": false,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    },
+                    {
+                      "name": "作品页 Panel 保持激活样式",
+                      "summary": "“//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                      "mode": "css",
+                      "target": "//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                      "jsonPath": "",
+                      "endpoint": "",
+                      "matcher": "",
+                      "expected": {
+                        "opacity": "1",
+                        "pointer-events": "auto"
+                      },
+                      "hasExpected": true,
+                      "status": "passed",
+                      "kind": "",
+                      "role": "supporting-check",
+                      "promotionEligible": false,
+                      "requiredForPromotion": false,
+                      "requiresPositiveAnchor": false,
+                      "reasons": []
+                    }
+                  ]
+                },
+                "transientSignals": [],
+                "bridgeNavigations": []
+              }
+            }
+          ],
+          "runtimeEvidence": {
+            "routes": {
+              "configured": [],
+              "required": [],
+              "hit": [],
+              "missed": [],
+              "asserted": [],
+              "optionalMissed": [],
+              "gateMode": "none",
+              "gatePassed": true
+            },
+            "steps": {
+              "total": 5,
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0,
+              "failures": []
+            },
+            "assertions": {
+              "total": 2,
+              "api": 0,
+              "positiveUi": 2,
+              "negativeUi": 0,
+              "navigation": 0,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 0,
+              "promotionEligible": 0,
+              "observationalOnly": 2,
+              "missingBusinessOracle": 1,
+              "gaps": [
+                "缺少业务 Oracle / Missing business oracle：断言仅用于观测，或缺少独立且高置信的业务终态证据"
+              ],
+              "details": [
+                {
+                  "name": "默认项目详情可见",
+                  "summary": "展示“//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']” / Shows target",
+                  "mode": "visible",
+                  "target": "//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "hasExpected": false,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                },
+                {
+                  "name": "作品页 Panel 保持激活样式",
+                  "summary": "“//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]”样式满足预期 / Style matches expectation",
+                  "mode": "css",
+                  "target": "//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]",
+                  "jsonPath": "",
+                  "endpoint": "",
+                  "matcher": "",
+                  "expected": {
+                    "opacity": "1",
+                    "pointer-events": "auto"
+                  },
+                  "hasExpected": true,
+                  "status": "passed",
+                  "kind": "",
+                  "role": "supporting-check",
+                  "promotionEligible": false,
+                  "requiredForPromotion": false,
+                  "requiresPositiveAnchor": false,
+                  "reasons": []
+                }
+              ]
+            },
+            "transientSignals": [],
+            "bridgeNavigations": []
+          },
+          "errors": [],
+          "pageGroupKey": "web",
+          "pageGroupName": "web",
+          "pageKey": "web/blog-pages",
+          "pageName": "web / blog pages",
+          "flowTestType": "business",
+          "source": {
+            "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json"
+          },
+          "provenance": {
+            "generationOrigin": "unknown",
+            "dataOrigins": []
+          },
+          "businessSummary": {
+            "title": "作品页：项目列表与详情完整",
+            "technicalTitle": "作品页：项目列表与详情完整",
+            "semanticStatus": "unidentified",
+            "precondition": "",
+            "action": "",
+            "dataState": "",
+            "expectedEffect": "",
+            "source": "",
+            "confidence": "",
+            "semanticEvidence": [],
+            "sourceFile": "",
+            "sourceSymbol": "",
+            "coverageTargets": [],
+            "technicalFacts": []
+          },
+          "generationDecision": {
+            "status": "",
+            "title": "",
+            "trigger": "",
+            "dataSource": "",
+            "targetEvidence": "",
+            "terminalEvidence": "",
+            "stability": "",
+            "stateChanges": [],
+            "technicalFacts": []
+          },
+          "finalUrl": "http://127.0.0.1:5173/#/Portfolio",
+          "traceSourcePath": "",
+          "tracePath": "automation-traces/unified-e2e-spec-gux99n.zip",
+          "traceViewerUrl": "../playwright/trace/index.html?trace=..%2F..%2Fautomation%2Fautomation-traces%2Funified-e2e-spec-gux99n.zip",
+          "isTeaTest": false,
+          "btmReportSourcePath": "",
+          "btmReportPath": "",
+          "btmReportHtml": "",
+          "btmPointCount": 0,
+          "visualReportSourcePaths": [],
+          "visualReportPath": "",
+          "visualDiffHtml": "",
+          "visualSnapshotCount": 0,
+          "visualDiffCount": 0,
+          "visualMissingBaselineCount": 0,
+          "visualFailedCount": 0,
+          "snapshotSteps": [
+            {
+              "id": "1-portfolio",
+              "title": "页面状态",
+              "description": "技术步骤：作品页首屏",
+              "order": 4
+            }
+          ],
+          "visualSteps": [
+            {
+              "id": "snapshot-1-portfolio",
+              "title": "页面状态",
+              "description": "技术步骤：作品页首屏",
+              "src": "../../current/blog-pages__portfolio-rendering/1-portfolio.png",
+              "source": "snapshot",
+              "order": 4
+            }
+          ],
+          "interactionSteps": [
+            {
+              "id": "snapshot-1-portfolio",
+              "type": "snapshot",
+              "title": "页面状态",
+              "description": "技术步骤：作品页首屏",
+              "order": 4,
+              "mode": "",
+              "target": "",
+              "value": null,
+              "snapshotId": "1-portfolio",
+              "src": "../../current/blog-pages__portfolio-rendering/1-portfolio.png",
+              "targetArea": null
+            }
+          ],
+          "isMainFlowVisual": false,
+          "requestReportSourcePath": "snapshot-meta/blog-pages__portfolio-rendering/requests-current.json",
+          "requestSummary": {
+            "total": 3,
+            "visible": 3,
+            "summarized": 0,
+            "categories": {
+              "business-api": 3
+            }
+          },
+          "requests": [
+            {
+              "id": "request-001",
+              "url": "http://127.0.0.1:5173/",
+              "host": "127.0.0.1:5173",
+              "path": "/",
+              "method": "GET",
+              "status": 200,
+              "resourceType": "document",
+              "startedAt": "2026-08-23T16:06:14.744Z",
+              "capturedAt": "2026-08-23T16:06:14.760Z",
+              "durationMs": 16,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "text/html",
+              "responseBodyText": "<!doctype html>\n<html lang=\"zh-CN\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/miku.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <!-- SEO Meta Tags -->\n    <title>娄宿三的个人博客</title>\n    <meta name=\"description\" content=\"个人博客，二次元游戏官网风格。高质量图片与视频，渐进式加载体验。\" />\n    <meta name=\"keywords\" content=\"初音未来,Miku,个人博客,二次元,ACG,少女吃葱中\" />\n    <meta name=\"author\" content=\"少女吃葱中\" />\n    <meta name=\"robots\" content=\"index, follow\" />\n\n    <!-- Open Graph (Facebook, 微信等) -->\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:title\" content=\"娄宿三的个人博客\" />\n    <meta property=\"og:description\" content=\"个人博客，二次元游戏官网风格。\" />\n    <meta property=\"og:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n    <meta property=\"og:url\" content=\"\" />\n    <meta property=\"og:locale\" content=\"zh_CN\" />\n\n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />\n    <meta name=\"twitter:title\" content=\"个人博客\" />\n    <meta name=\"twitter:description\" content=\"娄宿三的个人博客，二次元游戏官网风格。\" />\n    <meta name=\"twitter:image\" content=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\" />\n\n    <!-- 主题色 (浏览器地址栏颜色) -->\n    <meta name=\"theme-color\" content=\"#39C5BB\" />\n    <meta name=\"msapplication-TileColor\" content=\"#39C5BB\" />\n\n    <link rel=\"preconnect\" href=\"https://cdn.jsdmirror.com\" crossorigin=\"anonymous\">\n    <link\n      rel=\"preload\"\n      as=\"image\"\n      href=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/home/home.webp\"\n      fetchpriority=\"high\"\n    >\n\n    <!-- 预加载自定义字体，赋予最高优先级 -->\n    <link rel=\"preload\" href=\"https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf\" as=\"font\" type=\"font/ttf\" crossorigin=\"anonymous\">\n    <style>\n      /* 全局 Loading 关键样式 */\n      @font-face {\n        font-family: 'SmileySans';\n        src: url('https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');\n        font-display: block; /* 改为 block 防止首屏字体突变 (FOUT) */\n      }\n\n      body {\n        margin: 0;\n        font-family: 'SmileySans', system-ui, sans-serif; /* 全局使用得意黑体 */\n      }\n\n      #global-loading {\n        position: fixed;\n        inset: 0;\n        background-color: #ffffff;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-end;\n        justify-content: flex-end;\n        padding: 5vw;\n        transition: opacity 0.5s ease, visibility 0.5s ease;\n        font-family: 'SmileySans', system-ui, sans-serif;\n      }\n\n      #global-loading.is-hidden {\n        opacity: 0;\n        visibility: hidden;\n        pointer-events: none;\n      }\n\n      .loading-container {\n        display: flex;\n        align-items: flex-end;\n        gap: 1rem;\n      }\n\n      .loading-image {\n        width: 10rem;\n        height: auto;\n        object-fit: contain;\n      }\n\n      .loading-text-container {\n        display: flex;\n        flex-direction: column;\n        color: #39C5BB; /* miku色 */\n      }\n\n      .loading-title-wrapper {\n        display: flex;\n        align-items: flex-end;\n        border-bottom: 4px solid #39C5BB;\n        padding-bottom: 4px;\n        border-radius: 2px;\n      }\n\n      .loading-title {\n        display: flex;\n        align-items: baseline;\n        font-size: 3rem;\n        line-height: 1;\n        font-weight: bold;\n        letter-spacing: 0.05em;\n        margin: 0;\n        /* 可爱的字体描边和阴影效果 (贴纸风格) */\n        color: #39C5BB;\n        -webkit-text-stroke: 1px #020202;\n        text-shadow: \n          3px 3px 0 #2ca097, \n          4px 4px 5px rgba(0, 0, 0, 0.15);\n      }\n\n      /* 错落有致的文字排版 */\n      .loading-title span {\n        display: inline-block;\n        transform-origin: bottom center;\n      }\n\n      /* 第一、三个文字同高度、大小稍大 */\n      .loading-title .char-1,\n      .loading-title .char-3 {\n        font-size: 1.1em;\n        transform: translateY(-0.2em);\n      }\n\n      /* 第四个文字大小稍大，高度与二、五一致（贴底） */\n      .loading-title .char-4 {\n        font-size: 1.1em;\n      }\n\n      /* 第二、五个文字稍小，高度偏低（贴底） */\n      .loading-title .char-2,\n      .loading-title .char-5 {\n        font-size: 0.85em;\n      }\n\n      .loading-subtitle {\n        font-size: 1.5rem;\n        line-height: 1.5;\n        align-self: flex-end;\n        padding-top: 4px;\n        margin: 0;\n        animation: loading-blink 1.5s infinite;\n        /* 副标题同样增加微弱的描边使其更清晰 */\n        color: #39C5BB;\n        text-shadow: 1px 1px 0 #2ca097;\n      }\n\n      @keyframes loading-blink {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n      }\n\n      @media (prefers-reduced-motion: reduce) {\n        .loading-subtitle {\n          animation: none;\n        }\n      }\n\n      @media (max-width: 768px) {\n        .loading-image {\n          width: 80px;\n        }\n        .loading-title {\n          font-size: 2rem;\n        }\n        .loading-subtitle {\n          font-size: 1.2rem;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <!-- 全局 Loading DOM -->\n    <div id=\"global-loading\" aria-label=\"Loading\" role=\"status\" aria-live=\"polite\">\n      <div class=\"loading-container\">\n        <img class=\"loading-image\" src=\"https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/loading-chicong.webp\" alt=\"loading\" />\n        <div class=\"loading-text-container\">\n          <div class=\"loading-title-wrapper\">\n            <h1 class=\"loading-title\">\n              <span class=\"char-1\">少</span>\n              <span class=\"char-2\">女</span>\n              <span class=\"char-3\">吃</span>\n              <span class=\"char-4\">葱</span>\n              <span class=\"char-5\">中</span>\n            </h1>\n          </div>\n          <p class=\"loading-subtitle\">Now Loading...</p>\n        </div>\n      </div>\n    </div>\n    \n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n",
+              "responseBytes": 6738,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-002",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.348Z",
+              "capturedAt": "2026-08-23T16:06:15.434Z",
+              "durationMs": 86,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            },
+            {
+              "id": "request-003",
+              "url": "http://127.0.0.1:5173/api/health",
+              "host": "127.0.0.1:5173",
+              "path": "/api/health",
+              "method": "GET",
+              "status": 404,
+              "resourceType": "fetch",
+              "startedAt": "2026-08-23T16:06:15.348Z",
+              "capturedAt": "2026-08-23T16:06:15.486Z",
+              "durationMs": 138,
+              "query": {},
+              "category": "business-api",
+              "label": "业务接口",
+              "defaultVisible": true,
+              "contentType": "",
+              "responseBodyText": "",
+              "responseBytes": 0,
+              "responseTruncated": false,
+              "responseSummary": null
+            }
+          ],
+          "midsceneReports": [],
+          "midsceneReportHtml": ""
+        }
+      ]
+    }
+  ],
+  "groupSummaries": [
+    {
+      "key": "web",
+      "name": "web",
+      "flowCount": 1,
+      "caseCount": 3,
+      "duration": 118158,
+      "counts": {
+        "passed": 3,
+        "flaky": 0,
+        "failed": 0,
+        "timedOut": 0,
+        "interrupted": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "officialReportHref": "../playwright/index.html"
+}

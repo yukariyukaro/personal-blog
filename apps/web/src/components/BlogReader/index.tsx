@@ -1,5 +1,6 @@
 import { Bilibili, Github } from '@lobehub/icons'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {
@@ -12,6 +13,7 @@ import {
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import { QQIcon } from '../Icons/QQIcon'
 import './BlogReader.css'
+import './BlogReaderTheme.css'
 
 const formatNumber = (value: number) => new Intl.NumberFormat('zh-CN').format(value)
 
@@ -149,7 +151,11 @@ function BlogReader() {
   }
 
   return (
-    <section className="blog-reader" aria-label="博客内容" style={{ backgroundImage: `linear-gradient(rgba(18, 22, 28, 0.85), rgba(18, 22, 28, 0.95)), url(${bannerImage})` }}>
+    <section
+      className="blog-reader"
+      aria-label="博客内容"
+      style={{ '--blog-reader-background': `url(${bannerImage})` } as CSSProperties}
+    >
       <div className="blog-dashboard">
         <aside className="blog-sidebar blog-sidebar--left" aria-label="作者信息">
           <section className="blog-card profile-card">
@@ -240,13 +246,15 @@ function BlogReader() {
                 key={article.slug}
                 onClick={() => openArticle(article)}
               >
-                <div className="featured-article__cover">
-                  <img
-                    src={resolveDisplayImage(article.coverImage)}
-                    alt={article.title}
-                    loading="lazy"
-                  />
-                </div>
+                {article.coverImage ? (
+                  <div className="featured-article__cover">
+                    <img
+                      src={resolveDisplayImage(article.coverImage)}
+                      alt={article.title}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : null}
                 <div className="featured-article__content">
                   <h2 className="featured-article__title">{article.title}</h2>
                   <div className="featured-article__tags">
@@ -283,29 +291,35 @@ function BlogReader() {
                 key={article.slug}
                 onClick={() => openArticle(article)}
               >
-                 <div className="featured-article__cover">
-                   <img src={resolveDisplayImage(article.coverImage)} alt={article.title} loading="lazy" />
-                 </div>
-                 <div className="featured-article__content">
-                   <h2 className="featured-article__title">{article.title}</h2>
-                   <div className="featured-article__tags">
-                     <span className="tag-pill tag-pill--primary">{article.category}</span>
-                     {article.tags.map((t) => (
-                       <span className="tag-pill" key={t}># {t}</span>
-                     ))}
-                   </div>
-                   <p className="featured-article__summary">{article.summary}</p>
-                   <div className="featured-article__meta">
-                     <span>
-                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                       {article.publishedAt}
-                     </span>
-                     <span>
-                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                       {formatNumber(article.wordCount)} 字
-                     </span>
-                   </div>
-                 </div>
+                {article.coverImage ? (
+                  <div className="featured-article__cover">
+                    <img
+                      src={resolveDisplayImage(article.coverImage)}
+                      alt={article.title}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : null}
+                <div className="featured-article__content">
+                  <h2 className="featured-article__title">{article.title}</h2>
+                  <div className="featured-article__tags">
+                    <span className="tag-pill tag-pill--primary">{article.category}</span>
+                    {article.tags.map((t) => (
+                      <span className="tag-pill" key={t}># {t}</span>
+                    ))}
+                  </div>
+                  <p className="featured-article__summary">{article.summary}</p>
+                  <div className="featured-article__meta">
+                    <span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                      {article.publishedAt}
+                    </span>
+                    <span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2 2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                      {formatNumber(article.wordCount)} 字
+                    </span>
+                  </div>
+                </div>
               </article>
             ))}
           </div>
@@ -343,7 +357,7 @@ function BlogReader() {
             </div>
           </section>
 
-          {spotlightArticle ? (
+          {spotlightArticle?.coverImage ? (
             <section className="blog-card image-card">
               <img
                 src={resolveDisplayImage(spotlightArticle.coverImage)}

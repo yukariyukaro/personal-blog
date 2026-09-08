@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import HeroPanel from '../../components/HomePanels/HeroPanel'
 import ScrollIndicator from '../../components/ScrollIndicator'
 import { resolvePublicAsset } from '../../utils/baseUrl'
+import HomePageWave from './HomePageWave'
 import './HomePage.css'
 
 const BlogReader = lazy(() => import('../../components/BlogReader'))
@@ -125,8 +126,9 @@ function Home() {
           canUseVideo={isVideoEnabled}
           imageSrc={homeImageSrc}
           hlsManifestSrc={homeHlsManifestSrc}
-        fallbackVideoSrc={homeFallbackVideoSrc}
+          fallbackVideoSrc={homeFallbackVideoSrc}
         />
+        <HomePageWave />
         <ScrollIndicator
           visible={isScrollPromptVisible}
           onActivate={scrollToArticles}

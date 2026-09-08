@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-08-23T16:07:08.312Z",
+  "summary": {
+    "totalScenes": 3,
+    "passedScenes": 3,
+    "failedScenes": 0,
+    "totalActions": 3,
+    "passedActions": 0,
+    "failedActions": 0,
+    "missingProdActions": 0,
+    "missingCurrentActions": 0,
+    "errorActions": 0,
+    "singleProjectActions": 3,
+    "skippedActions": 0,
+    "passRate": null
+  },
+  "suites": [
+    {
+      "suiteId": "web/blog-pages/unified-e2e",
+      "suiteTitle": "个人博客三页面渲染与视觉回归",
+      "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json",
+      "summary": {
+        "totalScenes": 3,
+        "passedScenes": 3,
+        "failedScenes": 0,
+        "totalActions": 3,
+        "passedActions": 0,
+        "failedActions": 0,
+        "missingProdActions": 0,
+        "missingCurrentActions": 0,
+        "errorActions": 0,
+        "singleProjectActions": 3,
+        "skippedActions": 0,
+        "passRate": null
+      },
+      "htmlPath": "suites/web__blog-pages__unified-e2e/compare-report.html",
+      "jsonPath": "suites/web__blog-pages__unified-e2e/compare-report.json"
+    }
+  ]
+}

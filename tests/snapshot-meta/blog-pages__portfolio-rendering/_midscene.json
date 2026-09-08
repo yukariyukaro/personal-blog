@@ -1,0 +1,7 @@
+{
+  "testName": "blog-pages__portfolio-rendering",
+  "caseName": "作品页：项目列表与详情完整",
+  "testTitle": "portfolio-rendering",
+  "reportFilePrefix": "playwright-portfolio-rendering",
+  "updatedAt": "2026-08-23T16:06:14.703Z"
+}

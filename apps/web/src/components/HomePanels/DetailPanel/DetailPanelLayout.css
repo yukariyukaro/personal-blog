@@ -1,0 +1,259 @@
+/* -------------------------------------
+   DetailPanel 容器与全局变量
+------------------------------------- */
+.detail-panel {
+  --detail-theme: #d4ff00; /* 高对比黄 */
+  --detail-dark: #111111;
+  --detail-gray: #222222;
+  --detail-text-gray: #888888;
+  
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--detail-dark);
+  display: flex;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* -------------------------------------
+   背景层 (根据选中的项目切换)
+------------------------------------- */
+.detail-panel__bg-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.detail-panel__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.3);
+  transform: scale(1.05); /* 隐藏由于blur产生的白边 */
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-panel__bg.is-active {
+  opacity: 1;
+}
+
+/* 背景几何装饰网格 */
+.detail-panel__bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* -------------------------------------
+   左侧抽屉 / 作品列表
+------------------------------------- */
+.detail-panel__left {
+  position: relative;
+  z-index: 2;
+  width: 45%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* 几何切割效果 */
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  border-right: 4px solid var(--detail-theme);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: max(5%, 4rem);
+  padding-right: 15%;
+}
+
+/* 装饰边缘亮线 */
+.detail-panel__left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  background: rgba(212, 255, 0, 0.15);
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+.detail-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  z-index: 20; /* 确保标题在预览图之上 */
+}
+
+.detail-menu__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.8rem;
+  cursor: pointer;
+  group: hover;
+}
+
+.detail-menu__item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+/* 底部下划线动画 */
+.detail-menu__item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.detail-menu__item::before {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--detail-theme);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.detail-menu__item:hover::before,
+.detail-menu__item.is-active::before {
+  width: 100%;
+}
+
+/* 菱形图标 */
+.detail-menu__icon {
+  font-size: 1.5rem;
+  color: var(--detail-theme);
+  opacity: 0;
+  transform: translateX(-15px) rotate(45deg);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.detail-menu__item:hover .detail-menu__icon,
+.detail-menu__item.is-active .detail-menu__icon {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+}
+
+.detail-menu__title {
+  font-family: 'SmileySans', system-ui, sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  transition: color 0.3s ease;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.detail-menu__item:hover .detail-menu__title,
+.detail-menu__item.is-active .detail-menu__title {
+  color: var(--detail-theme);
+}
+
+/* -------------------------------------
+   左侧悬浮预览图 (Preview Image)
+------------------------------------- */
+.detail-menu__preview-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  /* 移除 transform 过渡，因为我们要用 JS 实时更新 transform，保留其他属性的过渡 */
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 添加毛玻璃边框和阴影 */
+  border-radius: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(212, 255, 0, 0.1);
+  border: 1px solid rgba(212, 255, 0, 0.2);
+  will-change: transform, opacity;
+}
+
+.detail-menu__preview-container.is-visible {
+  opacity: 1;
+  z-index: 10; /* 显示时提升层级 */
+}
+
+.detail-menu__preview-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--detail-dark);
+}
+
+/* 遮罩层，增加一点暗角效果让图片更融入环境 */
+.detail-menu__preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.detail-menu__preview-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 3s ease-out;
+}
+
+.detail-menu__preview-container.is-visible .detail-menu__preview-img {
+  transform: scale(1.05);
+}
+
+/* 针对不同类型的预览图设定尺寸 */
+.detail-menu__preview-container.type-landscape {
+  width: 400px;
+  height: 225px; /* 16:9 比例 */
+}
+
+.detail-menu__preview-container.type-portrait {
+  width: 240px;
+  height: 426px; /* 9:16 比例 */
+}
+
+.detail-menu__preview-container.type-logo {
+  width: 280px;
+  height: 120px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.detail-menu__preview-container.type-logo .detail-menu__preview-img {
+  object-fit: contain;
+  padding: 1.5rem;
+}
+

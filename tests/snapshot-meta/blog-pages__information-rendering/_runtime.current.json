@@ -1,0 +1,14 @@
+{
+  "testName": "blog-pages__information-rendering",
+  "caseName": "介绍页：个人信息与布局完整",
+  "project": "current",
+  "finalUrl": "http://127.0.0.1:5173/#/Information",
+  "attachments": {
+    "final-url": "http://127.0.0.1:5173/#/Information",
+    "automation-request-report-file": "snapshot-meta/blog-pages__information-rendering/requests-current.json"
+  },
+  "reporters": {
+    "finalUrl": true
+  },
+  "updatedAt": "2026-08-23T16:06:27.957Z"
+}

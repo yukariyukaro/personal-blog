@@ -1,0 +1,14 @@
+{
+  "testName": "blog-pages__home-rendering",
+  "caseName": "首页：首屏内容与布局完整",
+  "project": "current",
+  "finalUrl": "http://127.0.0.1:5173/#/Home",
+  "attachments": {
+    "final-url": "http://127.0.0.1:5173/#/Home",
+    "automation-request-report-file": "snapshot-meta/blog-pages__home-rendering/requests-current.json"
+  },
+  "reporters": {
+    "finalUrl": true
+  },
+  "updatedAt": "2026-08-23T16:07:06.182Z"
+}

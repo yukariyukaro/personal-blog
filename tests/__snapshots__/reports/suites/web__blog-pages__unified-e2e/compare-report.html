@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>个人博客三页面渲染与视觉回归 - Snapshot Comparison Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 15px 25px; background: #f0f2f5; color: #333; font-size: 13px; margin: 0; }
+    h1 { color: #2c3e50; font-size: 22px; margin: 0 0 8px 0; padding-top: 15px; }
+    .subtitle { color: #5f6b7a; font-size: 12px; margin-bottom: 15px; }
+
+    .top-panel { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 12px; }
+    .summary { display: flex; gap: 20px; align-items: center; margin: 0; padding: 0; background: transparent; box-shadow: none; border-radius: 0; flex-wrap: wrap; }
+    .summary span { font-size: 14px; font-weight: 600; margin: 0; }
+    .status-pass { color: #27ae60; }
+    .status-fail { color: #e74c3c; }
+    .status-missing { color: #f39c12; }
+    .status-info { color: #2c5fb1; }
+
+    .nav-back { font-size: 13px; color: #2c5fb1; text-decoration: none; }
+    .nav-back:hover { text-decoration: underline; }
+
+    .filter-container { margin: 0; padding: 0; background: transparent; box-shadow: none; border-radius: 0; }
+    .filter-container label { font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; margin: 0; user-select: none; color: #444; }
+    .filter-container input { margin-right: 8px; transform: scale(1.1); cursor: pointer; }
+
+    .test-group { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; border: none; border-left: 5px solid #3498db; }
+    .group-title { margin: 0 0 15px 0; color: #2c3e50; font-size: 15px; font-weight: 700; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; word-break: break-all; }
+    .group-key { margin: -8px 0 6px 0; color: #95a5a6; font-size: 11px; font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+    .group-desc { margin: -8px 0 15px 0; color: #5f6b7a; font-size: 12px; line-height: 1.6; word-break: break-all; }
+    .group-logids { margin: -8px 0 15px 0; padding: 8px 12px; background: #f5f7fa; border: 1px solid #e0e6ef; border-radius: 6px; font-size: 12px; line-height: 1.8; color: #34495e; }
+    .group-logids .logid-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .group-logids .logid-label { font-weight: 600; color: #2c3e50; min-width: 70px; }
+    .group-logids .logid-value { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; color: #1f2d3d; }
+    .group-logids .logid-link { display: inline-block; padding: 2px 8px; font-size: 11px; color: #fff; background: #3498db; border-radius: 4px; text-decoration: none; transition: background 0.15s; }
+    .group-logids .logid-link:hover { background: #2980b9; }
+
+    .suite-auth-panel { margin: 0 0 15px 0; padding: 10px 14px; background: #fffaeb; border: 1px solid #f7d774; border-radius: 6px; font-size: 12px; line-height: 1.8; color: #5a4a17; }
+    .suite-auth-title { font-weight: 600; color: #8a6d1a; margin-bottom: 4px; font-size: 12px; }
+    .suite-auth-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .suite-auth-label { font-weight: 600; color: #5a4a17; min-width: 70px; }
+    .suite-auth-value { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; color: #2c1f00; }
+
+    .group-cases { display: flex; flex-wrap: wrap; gap: 15px; }
+
+    .test-case { background: #fafbfc; border: 1px solid #eaeaea; padding: 12px; border-radius: 6px; margin: 0; display: flex; flex-direction: column; flex: 0 0 auto; box-shadow: none; width: max-content; transition: border-color 0.2s, box-shadow 0.2s; }
+    .test-case:hover { border-color: #d0d0d0; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .test-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #e0e0e0; padding-bottom: 8px; margin-bottom: 10px; gap: 20px; }
+    .test-title { font-size: 13px; font-weight: 600; margin: 0; color: #444; max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .test-header strong { font-size: 12px; padding: 2px 6px; border-radius: 4px; background: #fff; border: 1px solid currentColor; }
+
+    .images { display: flex; gap: 12px; overflow-x: visible; }
+    .img-box { display: flex; flex-direction: column; align-items: center; min-width: auto; }
+    .img-box h4 { margin: 0 0 6px 0; color: #7f8c8d; font-size: 12px; font-weight: 500; }
+    .img-box img { width: auto; height: 260px; border: 1px solid #ddd; border-radius: 4px; object-fit: contain; background: #fff; cursor: pointer; transition: transform 0.2s; }
+    .img-box img:hover { transform: scale(1.02); }
+    .images.enlargeable { cursor: zoom-in; }
+
+    .image-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(15, 23, 42, 0.82); z-index: 9999; box-sizing: border-box; }
+    .image-modal.is-open { display: flex; }
+    .image-modal-content { position: relative; width: min(60vw, 960px); max-height: 92vh; overflow: auto; background: #fff; border-radius: 12px; padding: 20px 20px 16px; box-shadow: 0 18px 48px rgba(0,0,0,0.28); }
+    .image-modal-close { position: sticky; top: 0; float: right; margin: -8px -8px 12px 0; width: 36px; height: 36px; border: none; border-radius: 999px; background: rgba(15, 23, 42, 0.08); color: #334155; font-size: 22px; line-height: 1; cursor: pointer; }
+    .image-modal-close:hover { background: rgba(15, 23, 42, 0.16); }
+    .image-modal-title { margin: 0 48px 16px 0; color: #1f2937; font-size: 15px; font-weight: 700; word-break: break-all; }
+    .image-modal .images { flex-wrap: nowrap; align-items: flex-start; gap: 20px; }
+    .image-modal .img-box { flex: 1 1 0; }
+    .image-modal .img-box h4 { margin-bottom: 10px; font-size: 13px; }
+    .image-modal .img-box img { width: 100%; height: auto; max-height: none; object-fit: contain; cursor: default; }
+    .diff-meta { margin-top: 12px; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: #fff; color: #475569; font-size: 12px; line-height: 1.6; max-width: 820px; }
+    .diff-meta-title { margin-bottom: 6px; color: #1f2937; font-size: 13px; font-weight: 700; }
+    .diff-meta-row strong { color: #334155; }
+    .diff-meta-list { margin: 4px 0 0 18px; padding: 0; }
+    .diff-meta-list li { margin: 2px 0; }
+
+    p.missing-text { color: #95a5a6 !important; font-size: 12px !important; margin: 0 !important; max-width: 260px; line-height: 1.5; padding: 10px; background: #f9f9f9; border-radius: 4px; text-align: center; }
+    .img-box.missing-box { justify-content: center; min-width: 220px; }
+    .img-box.missing-box p.missing-text { width: 100%; box-sizing: border-box; max-width: none; height: 260px; display: flex; align-items: center; justify-content: center; border: 1px dashed #d0d0d0; background: #fafafa; }
+
+    .suite-grid { display: flex; flex-direction: column; gap: 12px; }
+    .suite-card { background: white; padding: 14px 18px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 5px solid #3498db; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .suite-card.has-fail { border-left-color: #e74c3c; }
+    .suite-card .suite-name { font-size: 15px; font-weight: 700; color: #2c3e50; word-break: break-all; }
+    .suite-card .suite-meta { font-size: 12px; color: #5f6b7a; margin-top: 2px; word-break: break-all; }
+    .suite-card .suite-stats { display: flex; gap: 14px; font-size: 13px; font-weight: 600; align-items: center; flex-wrap: wrap; }
+    .suite-card .suite-link { display: inline-block; padding: 6px 14px; border-radius: 4px; background: #2c5fb1; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; }
+    .suite-card .suite-link:hover { background: #1d4a91; }
+</style>
+</head>
+<body>
+  <h1>个人博客三页面渲染与视觉回归</h1>
+  <div class="subtitle">
+    <a class="nav-back" href="../../compare-report.html">← 返回汇总</a>
+    &nbsp;·&nbsp;source: tests/web/blog-pages/unified-e2e.spec.json
+  </div>
+  
+  <div class="top-panel">
+    <div class="summary">
+      <span class="status-pass">Passed: 0</span>
+      <span class="status-fail">Failed: 0</span>
+      <span class="status-missing">Missing Prod: 0</span>
+      <span class="status-missing">Missing Current: 0</span>
+      <span class="status-fail">Error: 0</span>
+      <span class="status-info">Only-One-Project: 3</span>
+      
+      <span>Cases: 3</span>
+      <span>Snapshots: 3</span>
+      <span>Similarity Rate: N/A</span>
+    </div>
+    <div class="filter-container">
+      <label>
+        <input type="checkbox" id="filter-fail" onchange="filterCases(this.checked)" />
+        只展示未通过/缺失截图的 Case
+      </label>
+    </div>
+  </div>
+
+  <script>
+  function filterCases(showOnlyFail) {
+    const groups = document.querySelectorAll('.test-group');
+    groups.forEach(group => {
+      if (showOnlyFail) {
+        const hasFail = group.getAttribute('data-has-fail') === 'true';
+        group.style.display = hasFail ? 'block' : 'none';
+
+        const cases = group.querySelectorAll('.test-case');
+        let visibleCases = 0;
+        cases.forEach(c => {
+          const isCaseFail = c.getAttribute('data-fail') === 'true';
+          c.style.display = isCaseFail ? 'flex' : 'none';
+          if (isCaseFail) visibleCases++;
+        });
+        if (visibleCases === 0) group.style.display = 'none';
+      } else {
+        group.style.display = 'block';
+        const cases = group.querySelectorAll('.test-case');
+        cases.forEach(c => {
+          c.style.display = 'flex';
+        });
+      }
+    });
+  }
+
+  function closeImageModal() {
+    const modal = document.getElementById('image-modal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function openImageModal(imagesNode, title) {
+    const modal = document.getElementById('image-modal');
+    const modalBody = document.getElementById('image-modal-body');
+    const modalTitle = document.getElementById('image-modal-title');
+    if (!modal || !modalBody || !modalTitle) return;
+
+    modalBody.innerHTML = '';
+    modalBody.appendChild(imagesNode.cloneNode(true));
+    modalTitle.textContent = title || '图片预览';
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.addEventListener('click', event => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const closeButton = target.closest('[data-close-image-modal]');
+    if (closeButton) {
+      closeImageModal();
+      return;
+    }
+
+    const modal = document.getElementById('image-modal');
+    if (target === modal) {
+      closeImageModal();
+      return;
+    }
+
+    const image = target.closest('.images img');
+    if (!image) return;
+
+    const images = image.closest('.images');
+    const testCase = image.closest('.test-case');
+    const titleNode = testCase ? testCase.querySelector('.test-title') : null;
+
+    if (images) {
+      openImageModal(images, titleNode ? titleNode.textContent : '');
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      closeImageModal();
+    }
+  });
+</script>
+  <div class="image-modal" id="image-modal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" type="button" data-close-image-modal aria-label="关闭预览">×</button>
+      <h3 class="image-modal-title" id="image-modal-title">图片预览</h3>
+      <div id="image-modal-body"></div>
+    </div>
+  </div>
+<div class="test-group" data-has-fail="false">
+        <h2 class="group-title">验证 Home 只渲染 HeroPanel，首页标题、侧边页码和当前 Panel 样式正常。</h2>
+        <div class="group-key">key: blog-pages__home-rendering</div>
+        
+        <div class="group-logids">
+        <div class="logid-row">
+          <span class="logid-label">Current 页面:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Home</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Home" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Prod 页面:</span>
+          <span class="logid-value">http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Home</span>
+          <a class="logid-link" href="http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Home" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Current Final URL:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Home</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Home" target="_blank" rel="noopener noreferrer">打开</a>
+        </div></div>
+        <div class="group-cases"><div class="test-case" data-fail="false">
+          <div class="test-header">
+            <h3 class="test-title">1-home.png</h3>
+            <strong class="status-info">ONLY CURRENT</strong>
+          </div>
+          <div class="images">
+            <div class="img-box">
+              <h4>Current Environment</h4>
+              <img src="../../../current/blog-pages__home-rendering/1-home.png" alt="Current Environment" loading="lazy" />
+            </div>
+          </div>
+          </div></div></div><div class="test-group" data-has-fail="false">
+        <h2 class="group-title">验证 Information 独立路由渲染 IntroPanel，人物信息、社交入口和当前 Panel 样式正常。</h2>
+        <div class="group-key">key: blog-pages__information-rendering</div>
+        
+        <div class="group-logids">
+        <div class="logid-row">
+          <span class="logid-label">Current 页面:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Information</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Information" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Prod 页面:</span>
+          <span class="logid-value">http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Information</span>
+          <a class="logid-link" href="http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Information" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Current Final URL:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Information</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Information" target="_blank" rel="noopener noreferrer">打开</a>
+        </div></div>
+        <div class="group-cases"><div class="test-case" data-fail="false">
+          <div class="test-header">
+            <h3 class="test-title">1-information.png</h3>
+            <strong class="status-info">ONLY CURRENT</strong>
+          </div>
+          <div class="images">
+            <div class="img-box">
+              <h4>Current Environment</h4>
+              <img src="../../../current/blog-pages__information-rendering/1-information.png" alt="Current Environment" loading="lazy" />
+            </div>
+          </div>
+          </div></div></div><div class="test-group" data-has-fail="false">
+        <h2 class="group-title">验证 Portfolio 独立路由渲染 DetailPanel，项目列表、默认项目详情和当前 Panel 样式正常。</h2>
+        <div class="group-key">key: blog-pages__portfolio-rendering</div>
+        
+        <div class="group-logids">
+        <div class="logid-row">
+          <span class="logid-label">Current 页面:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Portfolio</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Portfolio" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Prod 页面:</span>
+          <span class="logid-value">http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Portfolio</span>
+          <a class="logid-link" href="http://f-cpay.snssdk.com.boe-gateway.byted.org/.html#/Portfolio" target="_blank" rel="noopener noreferrer">打开</a>
+        </div>
+        <div class="logid-row">
+          <span class="logid-label">Current Final URL:</span>
+          <span class="logid-value">http://127.0.0.1:5173/#/Portfolio</span>
+          <a class="logid-link" href="http://127.0.0.1:5173/#/Portfolio" target="_blank" rel="noopener noreferrer">打开</a>
+        </div></div>
+        <div class="group-cases"><div class="test-case" data-fail="false">
+          <div class="test-header">
+            <h3 class="test-title">1-portfolio.png</h3>
+            <strong class="status-info">ONLY CURRENT</strong>
+          </div>
+          <div class="images">
+            <div class="img-box">
+              <h4>Current Environment</h4>
+              <img src="../../../current/blog-pages__portfolio-rendering/1-portfolio.png" alt="Current Environment" loading="lazy" />
+            </div>
+          </div>
+          </div></div></div></body></html>

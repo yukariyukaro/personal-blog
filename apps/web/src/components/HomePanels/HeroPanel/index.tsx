@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Hls from 'hls.js'
+import type Hls from 'hls.js'
 import EasterEggHint from '../../EasterEggHint'
 import './HeroPanel.css'
 
@@ -115,42 +115,49 @@ function HeroPanel({
       return
     }
 
-    if (!Hls.isSupported()) {
-      const fallbackTimer = window.setTimeout(() => {
-        setVideoMode('file')
-      }, 0)
-      return () => {
-        window.clearTimeout(fallbackTimer)
+    let isCancelled = false
+    let hls: Hls | null = null
+
+    const loadHls = async () => {
+      const { default: HlsConstructor } = await import('hls.js')
+      if (isCancelled || !HlsConstructor.isSupported()) {
+        if (!isCancelled) {
+          setVideoMode('file')
+        }
+        return
       }
+
+      hls = new HlsConstructor({
+        enableWorker: true,
+        maxBufferLength: 8,
+        maxMaxBufferLength: 12,
+        startFragPrefetch: true,
+      })
+
+      hlsRef.current = hls
+      hls.attachMedia(videoElement)
+      hls.on(HlsConstructor.Events.MEDIA_ATTACHED, () => {
+        hls?.loadSource(hlsManifestSrc)
+      })
+      hls.on(HlsConstructor.Events.ERROR, (_, data) => {
+        if (!data.fatal || !hls) {
+          return
+        }
+        hls.destroy()
+        hlsRef.current = null
+        if (videoMode === 'hls') {
+          setVideoMode('file')
+          return
+        }
+        setHasVideoError(true)
+      })
     }
 
-    const hls = new Hls({
-      enableWorker: true,
-      maxBufferLength: 8,
-      maxMaxBufferLength: 12,
-      startFragPrefetch: true,
-    })
-
-    hlsRef.current = hls
-    hls.attachMedia(videoElement)
-    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      hls.loadSource(hlsManifestSrc)
-    })
-    hls.on(Hls.Events.ERROR, (_, data) => {
-      if (!data.fatal) {
-        return
-      }
-      hls.destroy()
-      hlsRef.current = null
-      if (videoMode === 'hls') {
-        setVideoMode('file')
-        return
-      }
-      setHasVideoError(true)
-    })
+    void loadHls()
 
     return () => {
-      hls.destroy()
+      isCancelled = true
+      hls?.destroy()
       if (hlsRef.current === hls) {
         hlsRef.current = null
       }

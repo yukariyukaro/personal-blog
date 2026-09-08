@@ -1,0 +1,314 @@
+{
+  "generatedAt": "2026-08-23T16:06:13.130Z",
+  "runProjects": [
+    "current"
+  ],
+  "baseUrls": {
+    "current": "http://127.0.0.1:5173",
+    "prod": "http://f-cpay.snssdk.com.boe-gateway.byted.org/feoffline/cpay/"
+  },
+  "suites": [
+    {
+      "suiteId": "web/blog-pages/unified-e2e",
+      "key": "blog-pages",
+      "description": null,
+      "specJsonPath": "tests/web/blog-pages/unified-e2e.spec.json",
+      "title": "个人博客三页面渲染与视觉回归",
+      "metadata": {
+        "title": "个人博客三页面渲染与视觉回归",
+        "managedBy": "pia-vrt-test/unified-e2e"
+      },
+      "reporters": {
+        "finalUrl": true
+      },
+      "auth": null,
+      "env": null,
+      "cases": [
+        {
+          "id": "home-rendering",
+          "name": "首页：首屏内容与布局完整",
+          "testName": "blog-pages__home-rendering",
+          "description": "验证 Home 只渲染 HeroPanel，首页标题、侧边页码和当前 Panel 样式正常。",
+          "pathUrl": "/#/Home",
+          "reporters": null,
+          "skip": null,
+          "source": null,
+          "metadata": null,
+          "routes": [],
+          "steps": [
+            {
+              "index": 0,
+              "type": "wait",
+              "name": "等待首页渲染稳定",
+              "wait": {
+                "mode": "page_ready",
+                "durationMs": 15000,
+                "selector": "",
+                "requiredRouteIds": [],
+                "routeMatch": "",
+                "rejectTransient": false,
+                "settleAfterRouteMs": null,
+                "terminalSignals": [],
+                "transientSignals": [],
+                "allowRuntimeTerminalSignals": false,
+                "stableMs": null,
+                "minTerminalSignalCount": null,
+                "requireProgressSinceLastAction": false,
+                "progressPolicy": "",
+                "progressRouteIds": []
+              }
+            },
+            {
+              "index": 1,
+              "type": "assert",
+              "name": "首页标题可见",
+              "assertion": {
+                "mode": "visible",
+                "target": "",
+                "selector": "",
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='home hero panel']//h1[normalize-space()='娄宿三的小站']"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 2,
+              "type": "assert",
+              "name": "首页 Panel 保持激活样式",
+              "assertion": {
+                "mode": "css",
+                "target": "",
+                "selector": "",
+                "expected": {
+                  "opacity": "1",
+                  "pointer-events": "auto"
+                },
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='home hero panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 3,
+              "type": "snapshot",
+              "name": "首页首屏",
+              "snapshot": {
+                "id": "1-home"
+              }
+            }
+          ]
+        },
+        {
+          "id": "information-rendering",
+          "name": "介绍页：个人信息与布局完整",
+          "testName": "blog-pages__information-rendering",
+          "description": "验证 Information 独立路由渲染 IntroPanel，人物信息、社交入口和当前 Panel 样式正常。",
+          "pathUrl": "/#/Information",
+          "reporters": null,
+          "skip": null,
+          "source": null,
+          "metadata": null,
+          "routes": [],
+          "steps": [
+            {
+              "index": 0,
+              "type": "wait",
+              "name": "等待介绍页渲染稳定",
+              "wait": {
+                "mode": "page_ready",
+                "durationMs": 15000,
+                "selector": "",
+                "requiredRouteIds": [],
+                "routeMatch": "",
+                "rejectTransient": false,
+                "settleAfterRouteMs": null,
+                "terminalSignals": [],
+                "transientSignals": [],
+                "allowRuntimeTerminalSignals": false,
+                "stableMs": null,
+                "minTerminalSignalCount": null,
+                "requireProgressSinceLastAction": false,
+                "progressPolicy": "",
+                "progressRouteIds": []
+              }
+            },
+            {
+              "index": 1,
+              "type": "wait",
+              "name": "等待路由组件挂载",
+              "wait": {
+                "mode": "time",
+                "durationMs": 2000,
+                "selector": "",
+                "requiredRouteIds": [],
+                "routeMatch": "",
+                "rejectTransient": false,
+                "settleAfterRouteMs": null,
+                "terminalSignals": [],
+                "transientSignals": [],
+                "allowRuntimeTerminalSignals": false,
+                "stableMs": null,
+                "minTerminalSignalCount": null,
+                "requireProgressSinceLastAction": false,
+                "progressPolicy": "",
+                "progressRouteIds": []
+              }
+            },
+            {
+              "index": 2,
+              "type": "assert",
+              "name": "个人介绍标题可见",
+              "assertion": {
+                "mode": "visible",
+                "target": "",
+                "selector": "",
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='introduction panel']//h2[normalize-space()='娄宿三']"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 3,
+              "type": "assert",
+              "name": "介绍页 Panel 保持激活样式",
+              "assertion": {
+                "mode": "css",
+                "target": "",
+                "selector": "",
+                "expected": {
+                  "opacity": "1",
+                  "pointer-events": "auto"
+                },
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='home intro panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 4,
+              "type": "snapshot",
+              "name": "介绍页首屏",
+              "snapshot": {
+                "id": "1-information"
+              }
+            }
+          ]
+        },
+        {
+          "id": "portfolio-rendering",
+          "name": "作品页：项目列表与详情完整",
+          "testName": "blog-pages__portfolio-rendering",
+          "description": "验证 Portfolio 独立路由渲染 DetailPanel，项目列表、默认项目详情和当前 Panel 样式正常。",
+          "pathUrl": "/#/Portfolio",
+          "reporters": null,
+          "skip": null,
+          "source": null,
+          "metadata": null,
+          "routes": [],
+          "steps": [
+            {
+              "index": 0,
+              "type": "wait",
+              "name": "等待作品页渲染稳定",
+              "wait": {
+                "mode": "page_ready",
+                "durationMs": 15000,
+                "selector": "",
+                "requiredRouteIds": [],
+                "routeMatch": "",
+                "rejectTransient": false,
+                "settleAfterRouteMs": null,
+                "terminalSignals": [],
+                "transientSignals": [],
+                "allowRuntimeTerminalSignals": false,
+                "stableMs": null,
+                "minTerminalSignalCount": null,
+                "requireProgressSinceLastAction": false,
+                "progressPolicy": "",
+                "progressRouteIds": []
+              }
+            },
+            {
+              "index": 1,
+              "type": "wait",
+              "name": "等待路由组件挂载",
+              "wait": {
+                "mode": "time",
+                "durationMs": 2000,
+                "selector": "",
+                "requiredRouteIds": [],
+                "routeMatch": "",
+                "rejectTransient": false,
+                "settleAfterRouteMs": null,
+                "terminalSignals": [],
+                "transientSignals": [],
+                "allowRuntimeTerminalSignals": false,
+                "stableMs": null,
+                "minTerminalSignalCount": null,
+                "requireProgressSinceLastAction": false,
+                "progressPolicy": "",
+                "progressRouteIds": []
+              }
+            },
+            {
+              "index": 2,
+              "type": "assert",
+              "name": "默认项目详情可见",
+              "assertion": {
+                "mode": "visible",
+                "target": "",
+                "selector": "",
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='portfolio detail panel']//h3[normalize-space()='Triple Uni']"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 3,
+              "type": "assert",
+              "name": "作品页 Panel 保持激活样式",
+              "assertion": {
+                "mode": "css",
+                "target": "",
+                "selector": "",
+                "expected": {
+                  "opacity": "1",
+                  "pointer-events": "auto"
+                },
+                "timeoutMs": 10000,
+                "locator": {
+                  "xpath": "//section[@aria-label='home detail panel' and contains(concat(' ', normalize-space(@class), ' '), ' home-panel--current ')]"
+                },
+                "contract": null,
+                "api": null
+              }
+            },
+            {
+              "index": 4,
+              "type": "snapshot",
+              "name": "作品页首屏",
+              "snapshot": {
+                "id": "1-portfolio"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

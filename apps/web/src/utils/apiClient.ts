@@ -1,6 +1,12 @@
-export const fetchHealth = async (): Promise<unknown | null> => {
+export const fetchHealth = async (
+  endpoint = import.meta.env.VITE_HEALTHCHECK_URL,
+): Promise<unknown | null> => {
+  if (!endpoint) {
+    return null
+  }
+
   try {
-    const response = await fetch('/api/health', {
+    const response = await fetch(endpoint, {
       method: 'GET',
       headers: {
         Accept: 'application/json',

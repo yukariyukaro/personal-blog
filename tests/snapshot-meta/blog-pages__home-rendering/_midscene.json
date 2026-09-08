@@ -1,0 +1,7 @@
+{
+  "testName": "blog-pages__home-rendering",
+  "caseName": "首页：首屏内容与布局完整",
+  "testTitle": "home-rendering",
+  "reportFilePrefix": "playwright-home-rendering",
+  "updatedAt": "2026-08-23T16:06:14.703Z"
+}
