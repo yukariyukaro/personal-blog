@@ -1,14 +1,3 @@
----
-title: AI 友好前端架构
-slug: ai-friendly-frontend-architecture
-summary: 面向 AI 辅助开发的前端上下文组织、模块边界与工程约束。
-publishedAt: '2026-08-29'
-category: 前端架构
-tags:
-  - AI
-  - 前端架构
----
-
 # AI 友好前端架构
 
 资料来源：[AI 友好前端架构的 16 个原则](https://bytetech.info/articles/7630824916388708379#LvbhdBimioqpuKxnywFcYwNcnpb)
@@ -94,3 +83,4 @@ AI 写代码时依赖三类线索：
 - 是否有标准样板文件供 AI 模仿。
 - 是否有 Lint、Build、Test 的明确命令。
 - 文档中引用的路径和命令是否有自动校验。
+

@@ -1,0 +1,9 @@
+## JSX
+### 首先：JSX是什么？
+- 简单来讲，就是javascript的语法糖
+- 它允许你在javascript中写html（还可以在html里写javascript），
+- 而且，你可以在JSX中嵌入javascript表达式，而不需要使用字符串拼接
+### 为什么react要使用JSX？
+- 本质上，react使用声明式UI。
+- 声明式UI是指，你描述了UI的状态，而不是如何实现。所以，你不需要手动操作DOM，
+- 而JSX就包含了对DOM的操作。

@@ -1,14 +1,3 @@
----
-title: Server-Sent Events
-slug: server-sent-events
-summary: SSE 的通信模型、协议格式、浏览器接入方式与适用边界。
-publishedAt: '2026-08-29'
-category: JavaScript
-tags:
-  - JavaScript
-  - 网络
----
-
 # SSE
 
 SSE，全称是 **Server-Sent Events**，中文通常叫 **服务器发送事件**。
