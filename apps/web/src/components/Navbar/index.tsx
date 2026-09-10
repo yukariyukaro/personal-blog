@@ -1,21 +1,20 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+  navigationItems,
+  type NavigationItemId,
+} from '../../app/navigation/navigationConfig'
+import { siteProfile } from '../../config/siteProfile'
 import ThemeSwitch from '../ThemeSwitch'
 import './Navbar.css'
 
 interface NavbarProps {
   visible?: boolean
-  activeIndex?: number
+  activeItemId?: NavigationItemId
 }
 
-const NAV_ITEMS = [
-  { en: 'INDEX', zh: '首页', to: '/Home' },
-  { en: 'INFORMATION', zh: '介绍', to: '/Information' },
-  { en: 'PORTFOLIO', zh: '作品', to: '/Portfolio' },
-]
-
-export default function Navbar({ visible = true, activeIndex = 0 }: NavbarProps) {
+export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -109,22 +108,22 @@ export default function Navbar({ visible = true, activeIndex = 0 }: NavbarProps)
       />
 
       <div className="site-nav__logo-container">
-        <Link to="/Home" className="site-nav__logo">娄宿三</Link>
+        <Link to="/Home" className="site-nav__logo">{siteProfile.name}</Link>
       </div>
 
       <NavigationMenu.List className="site-nav__list">
-        {NAV_ITEMS.map((item, index) => {
-          const isActive = activeIndex === index
+        {navigationItems.map((item) => {
+          const isActive = activeItemId === item.id
           return (
-            <NavigationMenu.Item key={item.en} className="site-nav__item">
+            <NavigationMenu.Item key={item.id} className="site-nav__item">
               <NavigationMenu.Link asChild>
                 <Link
                   className={`site-nav__link ${isActive ? 'site-nav__link--active' : ''}`}
-                  to={item.to}
+                  to={item.path}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <span className="site-nav__text-en">{item.en}</span>
-                  <span className="site-nav__text-zh">{item.zh}</span>
+                  <span className="site-nav__text-en">{item.label}</span>
+                  <span className="site-nav__text-zh">{item.shortLabel}</span>
                 </Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>
@@ -165,15 +164,15 @@ export default function Navbar({ visible = true, activeIndex = 0 }: NavbarProps)
             <span aria-hidden="true">⌕</span>
             搜索文章
           </button>
-          {NAV_ITEMS.map((item, index) => (
+          {navigationItems.map((item) => (
             <Link
-              key={item.en}
-              className={`site-nav__mobile-link ${activeIndex === index ? 'is-active' : ''}`}
-              to={item.to}
+              key={item.id}
+              className={`site-nav__mobile-link ${activeItemId === item.id ? 'is-active' : ''}`}
+              to={item.path}
               onClick={() => setIsMenuOpen(false)}
             >
-              <span>{item.en}</span>
-              <strong>{item.zh}</strong>
+              <span>{item.label}</span>
+              <strong>{item.shortLabel}</strong>
             </Link>
           ))}
         </div>

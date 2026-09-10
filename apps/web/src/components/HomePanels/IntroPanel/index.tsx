@@ -1,18 +1,35 @@
 import { useState } from 'react'
 import { resolvePublicAsset } from '../../../utils/baseUrl'
 import { Github, Bilibili } from '@lobehub/icons'
+import { siteProfile } from '../../../config/siteProfile'
+import type { SiteProfile } from '../../../config/siteProfile'
 import { QQIcon } from '../../Icons/QQIcon'
 import './IntroPanel.css'
 
-function IntroPanel() {
-  const bgImage = resolvePublicAsset('information/background.webp')
-  const avatarImage = resolvePublicAsset('home/miku_点赞.jpg')
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle')
+type IntroPanelProps = {
+  profile?: SiteProfile
+}
 
-  const handleCopyQQ = (e: React.MouseEvent) => {
+function IntroPanel({ profile = siteProfile }: IntroPanelProps) {
+  const bgImage = resolvePublicAsset('information/background.webp')
+  const avatarImage = profile.avatarPath
+    ? resolvePublicAsset(profile.avatarPath)
+    : null
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle')
+  const hasSocialLinks = Boolean(
+    profile.githubUrl ||
+    profile.bilibiliUrl ||
+    profile.email,
+  )
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault()
+    if (!profile.email) {
+      return
+    }
+
     navigator.clipboard
-      .writeText('1981805808@qq.com')
+      .writeText(profile.email)
       .then(() => {
         setCopyStatus('copied')
         setTimeout(() => {
@@ -37,65 +54,85 @@ function IntroPanel() {
           <div className="intro-panel__header">
             <div className="intro-panel__header-top">
               <span className="intro-panel__label">PROFILE ://</span>
-              <h2 className="intro-panel__title">娄宿三</h2>
-              <span className="intro-panel__subtitle">Hamal</span>
+              <h2 className="intro-panel__title">{profile.name}</h2>
+              {profile.handle ? (
+                <span className="intro-panel__subtitle">{profile.handle}</span>
+              ) : null}
             </div>
-            <div className="intro-panel__avatar-container">
-              <div className="intro-panel__avatar-orbit"></div>
-              <div className="intro-panel__avatar">
-                <img src={avatarImage} alt="娄宿三" />
+            {avatarImage ? (
+              <div className="intro-panel__avatar-container">
+                <div className="intro-panel__avatar-orbit"></div>
+                <div className="intro-panel__avatar">
+                  <img src={avatarImage} alt={profile.name} />
+                </div>
+                <div className="intro-panel__avatar-planet"></div>
               </div>
-              <div className="intro-panel__avatar-planet"></div>
-            </div>
+            ) : null}
           </div>
 
           <div className="intro-panel__content">
-            <div className="intro-panel__section">
-              <div className="intro-panel__section-title">
-                <span className="intro-panel__icon">✦</span>
-                <h3>ID ORIGIN</h3>
+            {profile.originDescription ? (
+              <div className="intro-panel__section">
+                <div className="intro-panel__section-title">
+                  <span className="intro-panel__icon">✦</span>
+                  <h3>ID ORIGIN</h3>
+                </div>
+                <p className="intro-panel__text">
+                  {profile.originDescription}
+                </p>
               </div>
-              <p className="intro-panel__text">
-                娄宿三，又称Hamal、白羊座Alpha，是白羊座最亮星。中二病时期起这个名字，大概也有着想要变得kirakiradokidoki的愿望，但实际上，在浩瀚的星空中，娄宿三也只是一颗二等星。
-              </p>
-            </div>
+            ) : null}
 
-            <div className="intro-panel__section">
-              <div className="intro-panel__section-title">
-                <span className="intro-panel__icon">✦</span>
-                <h3>INTERESTS & PATH</h3>
+            {profile.bio ? (
+              <div className="intro-panel__section">
+                <div className="intro-panel__section-title">
+                  <span className="intro-panel__icon">✦</span>
+                  <h3>INTERESTS & PATH</h3>
+                </div>
+                <p className="intro-panel__text">{profile.bio}</p>
               </div>
-              <p className="intro-panel__text">
-                一个擅长自扰的庸人。二次元&游戏爱好者。
-              </p>
-            </div>
+            ) : null}
           </div>
 
-          <div className="intro-panel__footer">
-            <div className="intro-panel__social-links">
-              <a href="https://github.com/YukariYukaro" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
-                <span className="social-icon"><Github /></span>
-                <span className="social-text">GitHub</span>
-              </a>
-              <a href="https://space.bilibili.com/39374538" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
-                <span className="social-icon"><Bilibili /></span>
-                <span className="social-text">Bilibili</span>
-              </a>
-              <button onClick={handleCopyQQ} className="social-link social-button" aria-label="Copy QQ" type="button">
-                <span className={`social-icon ${copyStatus === 'copied' ? 'social-icon--success' : ''}`}>
-                  {copyStatus === 'copied' ? (
-                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  ) : (
-                    <QQIcon style={{ fontSize: '14px', fill: '#fff' }} />
-                  )}
-                </span>
-                <span className="social-text">{copyStatus === 'copied' ? '已复制邮箱' : 'QQ 邮箱'}</span>
-              </button>
+          {hasSocialLinks ? (
+            <div className="intro-panel__footer">
+              <div className="intro-panel__social-links">
+                {profile.githubUrl ? (
+                  <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
+                    <span className="social-icon"><Github /></span>
+                    <span className="social-text">GitHub</span>
+                  </a>
+                ) : null}
+                {profile.bilibiliUrl ? (
+                  <a href={profile.bilibiliUrl} target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Bilibili">
+                    <span className="social-icon"><Bilibili /></span>
+                    <span className="social-text">Bilibili</span>
+                  </a>
+                ) : null}
+                {profile.email ? (
+                  <button
+                    onClick={handleCopyEmail}
+                    className="social-link social-button"
+                    aria-label="复制邮箱"
+                    title="复制邮箱"
+                    type="button"
+                  >
+                    <span className={`social-icon ${copyStatus === 'copied' ? 'social-icon--success' : ''}`}>
+                      {copyStatus === 'copied' ? (
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      ) : (
+                        <QQIcon style={{ fontSize: '14px', fill: '#fff' }} />
+                      )}
+                    </span>
+                    <span className="social-text">{copyStatus === 'copied' ? '已复制邮箱' : '邮箱'}</span>
+                  </button>
+                ) : null}
+              </div>
+              <div className="intro-panel__decoration-line"></div>
             </div>
-            <div className="intro-panel__decoration-line"></div>
-          </div>
+          ) : null}
         </div>
       </div>
     </section>

@@ -2,15 +2,16 @@ import Navbar from './components/Navbar'
 import Live2DWidget from './components/Live2DWidget'
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { navigationItems } from './app/navigation/navigationConfig'
 import { updateSEO } from './utils/seo'
-
-const NAV_PATHS = ['/home', '/information', '/portfolio']
 
 function App() {
   const location = useLocation()
   const pathname = location.pathname.toLowerCase()
-  const activeIndex = NAV_PATHS.indexOf(pathname)
-  const showNavbar = pathname === '/' || activeIndex >= 0
+  const activeNavigationItem = navigationItems.find(
+    (item) => item.path.toLowerCase() === pathname,
+  )
+  const showNavbar = pathname === '/' || Boolean(activeNavigationItem)
 
   useEffect(() => {
     const pageSEO = {
@@ -38,7 +39,7 @@ function App() {
 
   return (
     <>
-      <Navbar visible={showNavbar} activeIndex={Math.max(activeIndex, 0)} />
+      <Navbar visible={showNavbar} activeItemId={activeNavigationItem?.id} />
       <Outlet />
       <Live2DWidget />
     </>

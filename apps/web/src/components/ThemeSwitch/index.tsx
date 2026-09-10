@@ -30,14 +30,18 @@ export default function ThemeSwitch() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    try {
-      window.localStorage.setItem(STORAGE_KEY, theme)
-    } catch {
-      // 隐私模式下 localStorage 可能不可写，主题仍保持当前会话生效。
-    }
   }, [theme])
 
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
+  const selectNextTheme = () => {
+    setTheme(nextTheme)
+    try {
+      window.localStorage.setItem(STORAGE_KEY, nextTheme)
+    } catch {
+      // 隐私模式下 localStorage 可能不可写，主题仍保持当前会话生效。
+    }
+  }
+
   const label = theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'
 
   return (
@@ -46,7 +50,7 @@ export default function ThemeSwitch() {
       type="button"
       aria-label={label}
       title={label}
-      onClick={() => setTheme(nextTheme)}
+      onClick={selectNextTheme}
     >
       <span aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span>
     </button>
