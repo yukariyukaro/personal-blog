@@ -76,14 +76,31 @@ public/               # 静态资源
 
 本项目使用 **jsDelivr 的 GitHub CDN**（免费、无流量限制）加速静态资源，并通过其国内镜像域名 `cdn.jsdmirror.com` 访问，兼顾国内访问速度。
 
-- **CDN 映射**：`https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/<path>` 对应仓库 `yukariyukaro/personal-blog` 的 `main` 分支根目录下 `public/<path>` 文件。
-- **发布方式**：将 `apps/web/public/` 的内容同步到仓库根目录的 `public/`（或直接在根目录维护），推送到 GitHub 后 CDN 才会命中新内容。
+- **CDN 映射**：`https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@master/apps/web/public/<path>` 对应仓库 `yukariyukaro/personal-blog` 的 `master` 分支 `apps/web/public/<path>` 文件。
+- **发布方式**：直接把 `apps/web/public/` 推到 `master` 即可，CDN 会自动命中，无需再往仓库根目录同步副本。
 - **统一入口**：`src/utils/baseUrl.ts` 的 `resolvePublicAsset(assetPath)`。
   - 开发环境：返回本地 `BASE_URL` 路径，便于本地调试。
-  - 生产环境：返回 `https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@main/public/` 前缀路径。
-- **首屏硬编码直链**：`index.html` 中 React 挂载前就需要的资源（favicon、OG 图、预加载背景图、Loading 图、SmileySans 字体）使用了硬编码 CDN 链接，保证 React 挂载前即可命中 CDN。
+  - 生产环境：返回 `https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@master/apps/web/public/` 前缀路径。
+- **首屏硬编码直链**：`index.html` 中 React 挂载前就需要的资源（favicon、OG 图、预加载背景图、Loading 图）使用了硬编码 CDN 链接，保证 React 挂载前即可命中 CDN。
 - **字体独立仓库**：字体托管在另一个仓库 `yukariyukaro/mycdn`，通过 `https://cdn.jsdelivr.net/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf` 加载。
-- **缓存刷新**：jsDelivr 对 `@main` 分支内容有边缘缓存（默认最长约 12 小时更新）。更新文件后如需立即生效，可调用 jsDelivr Purge API：`https://purge.jsdelivr.net/gh/yukariyukaro/personal-blog@main/public/<path>`。
+- **缓存刷新**：jsDelivr 对 `@master` 分支内容有边缘缓存（默认最长约 12 小时更新）。更新文件后如需立即生效，可调用 jsDelivr Purge API：`https://purge.jsdelivr.net/gh/yukariyukaro/personal-blog@master/apps/web/public/<path>`。
+
+#### ⚠️ CDN 路径同步约束（必须遵守）
+
+生产环境的静态资源**统一走 CDN**，因此 CDN 前缀与实际仓库路径必须严格对应。**只要动了下面任意一项，就必须同步修改下列所有位置，否则线上会静默命中旧资源（表现为：本地 dev 正常、线上图片/视频是旧版本）：**
+
+1. **需要同步的三处引用**
+   - `src/utils/baseUrl.ts` → `CDN_BASE_URL`
+   - `index.html` → favicon、`og:image`、`twitter:image`、`#global-loading` 的 `<img>`
+   - 本文档的「CDN 映射」一节
+2. **会触发同步的事件**
+   - 移动 / 重命名 `apps/web/public/`（例如再次调整 monorepo 层级）
+   - 更换部署分支（当前为 `master`，历史上曾用 `main`）
+3. **验证方法**（改完后必须实测，任一项返回非 200 即为未生效）
+   - `curl -I "https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@master/apps/web/public/home/hls/index.m3u8"`
+   - 对照 `dist/` 中同名文件，确认 CDN 返回内容与本地构建产物一致
+
+> 历史教训：应用从仓库根目录迁移到 `apps/web/` 后，CDN 前缀仍停留在 `@main/public/`，导致线上长期加载旧结构下的旧视频与旧图片，而本地 dev 一切正常。
 
 ### 2) 首页视频 HLS 播放逻辑
 
