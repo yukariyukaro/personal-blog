@@ -392,5 +392,3 @@
     background: var(--control-bg-hover);
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
