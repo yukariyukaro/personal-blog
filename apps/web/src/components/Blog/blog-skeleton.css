@@ -1,0 +1,48 @@
+.blog-skeleton-bar {
+  display: block;
+  height: 0.85rem;
+  border-radius: 0.3rem;
+  background: var(--control-bg);
+  animation: blog-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.blog-skeleton-bar--title {
+  width: 72%;
+  height: 1.1rem;
+}
+
+.blog-skeleton-bar--short {
+  width: 62%;
+}
+
+.blog-skeleton-bar--meta {
+  width: 40%;
+  height: 0.7rem;
+}
+
+.blog-skeleton-bar--headline {
+  width: min(28rem, 70%);
+  height: clamp(1.75rem, 4vw, 3rem);
+}
+
+.blog-card--skeleton {
+  display: grid;
+  gap: 0.8rem;
+}
+
+@keyframes blog-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-skeleton-bar {
+    animation: none;
+  }
+}

@@ -90,3 +90,9 @@ input:focus-visible {
     transition: none;
   }
 }
+
+/* 路由 chunk 加载中的兜底占位：只保留页面底色，避免出现纯文字 Loading 与布局跳动 */
+.route-fallback {
+  min-height: 100vh;
+  background-color: var(--page-bg);
+}

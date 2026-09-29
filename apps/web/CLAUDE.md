@@ -43,7 +43,7 @@ This is a personal blog built with React 19 + Vite 8 + TypeScript. Key architect
 ### UI Framework
 - Radix UI Themes for component library (dark theme, teal accent, slate gray)
 - Custom CSS files alongside components (e.g., `Navbar.css`, `home.css`)
-- Global loading screen defined in `index.html` (removed by `AppBootstrap.tsx` after React mounts)
+- Global loading screen defined in `index.html` (removed by `AppBootstrap.tsx` once the critical font is ready)
 
 ### Asset Handling
 - Static assets in `public/` directory (favicon, images, video)
@@ -70,7 +70,7 @@ To add a new page: create `src/pages/NewPage/index.tsx` and export a default com
 ### 主要特性
 
 - **渐进式背景加载**：首页采用图片优先、视频就绪后平滑切换的策略，支持弱网降级
-- **全局 Loading 动画**："少女吃葱中"风格，使用自定义字体 SmileySans（via jsDelivr CDN）
+- **全局 Loading 动画**："少女吃葱中"风格，使用自定义字体 SmileySans（via JSDMirror，jsDelivr 国内镜像）
 - **玻璃拟态导航栏**：基于 Radix UI Themes，半透明背景配合毛玻璃效果
 - **打字机文字动画**：响应式自动换行，支持 `prefers-reduced-motion` 降级
 - **无障碍支持**：键盘导航、屏幕阅读器友好

@@ -1,13 +1,12 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import HeroPanel from '../../components/HomePanels/HeroPanel'
 import ScrollIndicator from '../../components/ScrollIndicator'
 import { resolvePublicAsset } from '../../utils/baseUrl'
 import HomePageWave from './HomePageWave'
+import ArticleList from '../../components/Blog/ArticleList'
 import './HomePage.css'
 
-const BlogReader = lazy(() => import('../../components/BlogReader'))
-
-const QUOTE_TEXT = '在你最孤独最无望的时候，有一扇门会在你身边打开。'
+const QUOTE_TEXT = '在我发现了自己的谬误后，我的确不再贪婪'
 
 type NetworkInformationLike = {
   saveData?: boolean
@@ -136,16 +135,7 @@ function Home() {
       </div>
 
       <div ref={articleSectionRef}>
-        <Suspense
-          fallback={
-            <section
-              className="home-page__reader-placeholder"
-              aria-label="文章内容加载中"
-            />
-          }
-        >
-          <BlogReader />
-        </Suspense>
+        <ArticleList />
       </div>
     </main>
   )

@@ -1,6 +1,6 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   navigationItems,
   type NavigationItemId,
@@ -19,6 +19,7 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchButtonRef = useRef<HTMLButtonElement | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     let animationFrameId = 0
@@ -88,7 +89,13 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
   const focusArticleSearch = () => {
     setIsSearchOpen(false)
     setIsMenuOpen(false)
-    window.dispatchEvent(new CustomEvent('blog:focus-search'))
+    // 文章列表页在 Home；不在该页时先跳回去，否则搜索框不存在、聚焦事件会静默失效
+    if (!window.location.hash.startsWith('#/Home')) {
+      navigate('/Home')
+    }
+    window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('blog:focus-search'))
+    }, 0)
   }
 
   return (

@@ -60,12 +60,6 @@
   }
 }
 
-.home-page__reader-placeholder {
-  min-height: 100vh;
-  background: #071016;
-  border-top: 1px solid rgba(92, 210, 224, 0.28);
-}
-
 @supports (height: 100svh) {
   .home-page__hero {
     height: 100svh;

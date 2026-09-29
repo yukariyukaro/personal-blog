@@ -1,6 +1,6 @@
 import Navbar from './components/Navbar'
 import Live2DWidget from './components/Live2DWidget'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { navigationItems } from './app/navigation/navigationConfig'
 import { updateSEO } from './utils/seo'
@@ -11,7 +11,12 @@ function App() {
   const activeNavigationItem = navigationItems.find(
     (item) => item.path.toLowerCase() === pathname,
   )
-  const showNavbar = pathname === '/' || Boolean(activeNavigationItem)
+  // 文章详情页为独立路由，仍需展示导航栏，并让「首页」保持高亮（列表页是它的上级页面）。
+  const isArticleRoute = pathname.startsWith('/post/')
+  const showNavbar =
+    pathname === '/' || Boolean(activeNavigationItem) || isArticleRoute
+  // 写作台为全屏沉浸式工作台，左下角不需要 Live2D 挂件遮挡。
+  const showLive2D = pathname !== '/editor'
 
   useEffect(() => {
     const pageSEO = {
@@ -39,9 +44,14 @@ function App() {
 
   return (
     <>
-      <Navbar visible={showNavbar} activeItemId={activeNavigationItem?.id} />
-      <Outlet />
-      <Live2DWidget />
+      <Navbar
+        visible={showNavbar}
+        activeItemId={isArticleRoute ? 'home' : activeNavigationItem?.id}
+      />
+      <Suspense fallback={<div className="route-fallback" aria-hidden="true" />}>
+        <Outlet />
+      </Suspense>
+      {showLive2D ? <Live2DWidget /> : null}
     </>
   )
 }

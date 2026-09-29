@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import routes from '~react-pages'
@@ -30,10 +30,8 @@ const router = createHashRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<p>Loading...</p>}>
-      <AppBootstrap>
-        <RouterProvider router={router} />
-      </AppBootstrap>
-    </Suspense>
+    <AppBootstrap>
+      <RouterProvider router={router} />
+    </AppBootstrap>
   </StrictMode>,
 )
