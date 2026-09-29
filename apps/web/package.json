@@ -9,8 +9,9 @@
     "check": "pnpm run check:size && pnpm run lint && pnpm run test:unit && pnpm run build",
     "content:build": "node scripts/build-content.mjs",
     "content:build:dev": "node scripts/build-content.mjs --include-drafts",
-    "dev": "pnpm run content:build:dev && vite",
-    "build": "pnpm run content:build && tsc -b && vite build",
+    "vendor:sync": "node scripts/vendor/copy-vditor-assets.mjs",
+    "dev": "pnpm run vendor:sync && pnpm run content:build:dev && vite",
+    "build": "pnpm run vendor:sync && pnpm run content:build && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:e2e": "playwright test",
@@ -24,12 +25,14 @@
     "@radix-ui/themes": "^3.3.0",
     "hls.js": "^1.6.15",
     "install": "^0.13.0",
+    "mathlive": "^0.110.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-markdown": "^10.1.0",
     "react-router": "^7.13.2",
     "react-router-dom": "^7.13.2",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "vditor": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

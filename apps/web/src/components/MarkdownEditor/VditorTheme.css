@@ -1,0 +1,180 @@
+/* 把 Vditor 的主题变量映射到站点 token，作用域限定在工作台内，避免影响阅读端。 */
+.md-workspace .vditor {
+  --panel-background-color: var(--surface-solid);
+  --textarea-background-color: var(--page-bg);
+  --textarea-text-color: var(--text-primary);
+  --toolbar-background-color: var(--surface-bg);
+  --toolbar-icon-color: var(--text-secondary);
+  --toolbar-icon-hover-color: var(--accent);
+  --border-color: var(--line-color);
+  --second-color: var(--text-muted);
+  --blockquote-color: var(--text-secondary);
+  border: 0;
+  border-radius: var(--md-radius);
+  background-color: var(--surface-solid);
+}
+
+.md-workspace .vditor-toolbar {
+  border-bottom: 1px solid var(--line-soft);
+  background-color: var(--surface-bg);
+}
+
+.md-workspace .vditor-toolbar__item {
+  color: var(--text-secondary);
+}
+
+.md-workspace .vditor-toolbar__item:hover {
+  color: var(--accent);
+}
+
+.md-workspace .vditor-reset {
+  color: var(--text-primary);
+  font-family: var(--sans);
+}
+
+.md-workspace .vditor-reset kbd,
+.md-workspace .vditor-reset samp {
+  font-family: var(--mono);
+}
+
+.md-workspace .vditor-reset a {
+  color: var(--accent);
+}
+
+.md-workspace .vditor-reset blockquote {
+  border-left-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--text-secondary);
+}
+
+.md-workspace .vditor-reset hr {
+  border-color: var(--line-color);
+}
+
+/* ── 行内代码 ──
+   Vditor 的 `.vditor-reset code:not(.hljs):not(.highlight-chroma)` 权重为 (0,3,1)，
+   单纯写 `.md-workspace .vditor-reset code`（(0,2,1)）会被压过，故补齐同级 :not() 链。
+   用 `:not(pre > code)` 精确排除代码块内的 code（三模式下块级 code 都是 pre 的直接子元素）。 */
+.md-workspace .vditor-reset code:not(.hljs):not(.highlight-chroma):not(pre > code) {
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  color: var(--accent);
+  background-color: var(--control-bg);
+  background-image: none;
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+/* ── 代码块 ──
+   三模式下代码块的视觉载体都是内层 code（外层 pre 透明，且 IR/WYSIWYG 的根编辑元素
+   本身就是 pre.vditor-reset，所以绝不能直接给 `.vditor-reset pre` 加背景或边框）。
+   两条选择器分别覆盖「已高亮（带 .hljs）」与「未高亮」两种 code。 */
+.md-workspace .vditor-reset pre > code,
+.md-workspace .vditor-reset pre > code:not(.hljs):not(.highlight-chroma) {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-color);
+  border-radius: var(--md-radius);
+  color: var(--text-primary);
+  background-color: var(--page-bg);
+  /* 干掉 Vditor 自带的 20×20 base64 噪点底纹 */
+  background-image: none;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+
+/* 行号列由 Vditor 用 padding-left: 4em !important + 绝对定位实现，此处只对齐配色 */
+.md-workspace .vditor-linenumber__rows > span::before {
+  color: var(--text-muted);
+}
+
+/* 复制按钮：贴合卡片右上角，并用站点色 */
+.md-workspace .vditor-copy span {
+  top: 0.6rem;
+  right: 0.7rem;
+  line-height: 1;
+}
+
+.md-workspace .vditor-copy svg {
+  color: var(--text-muted);
+}
+
+.md-workspace .vditor-copy span:hover svg {
+  color: var(--accent);
+}
+
+/* ── 表格 ── */
+.md-workspace .vditor-reset table {
+  display: table;
+  width: 100%;
+  margin: 1.1rem 0;
+  border: 1px solid var(--line-color);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--md-radius);
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+.md-workspace .vditor-reset table tr {
+  background-color: transparent;
+  border-top: 0;
+}
+
+/* 斑马纹改用站点主色，替代 Vditor 的 #fafbfc / #24292e / #2f363d */
+.md-workspace .vditor-reset table tbody tr:nth-child(2n) {
+  background-color: color-mix(in srgb, var(--accent) 5%, transparent);
+}
+
+.md-workspace .vditor-reset table th,
+.md-workspace .vditor-reset table td {
+  padding: 0.5rem 0.8rem;
+  border: 0;
+  border-right: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--text-secondary);
+  /* 放开 Vditor 的 nowrap，避免长内容把表格撑出横向滚动 */
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+}
+
+.md-workspace .vditor-reset table thead th {
+  color: var(--text-primary);
+  background-color: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.md-workspace .vditor-reset table tr > *:last-child {
+  border-right: 0;
+}
+
+.md-workspace .vditor-reset table tr:last-child > * {
+  border-bottom: 0;
+}
+
+.md-workspace .vditor-counter,
+.md-workspace .vditor-resize {
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+
+.md-workspace .vditor-panel,
+.md-workspace .vditor-hint {
+  border-color: var(--line-color);
+  background-color: var(--surface-solid);
+}
+
+.md-workspace .vditor-hint button:hover {
+  background-color: var(--control-bg);
+}
+
+/* 自定义公式按钮用的是描边图标，避免被统一的 fill 规则破坏形状。 */
+.md-workspace .vditor-toolbar__icon--math svg {
+  fill: none;
+  stroke: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-workspace .vditor * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -6,7 +6,8 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // public/vendor 是 vendor:sync 生成的第三方产物，不参与 lint。
+  globalIgnores(['dist', 'public/vendor']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [

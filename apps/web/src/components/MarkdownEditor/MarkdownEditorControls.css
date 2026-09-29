@@ -1,0 +1,349 @@
+/* 控件层：按钮 / 分段控件 / 搜索 / 徽标 / 顶栏 / 文件树 / 线上列表。 */
+
+.md-button {
+  min-height: 2.1rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: var(--control-bg);
+  font-size: 0.76rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.md-button:hover:not(:disabled),
+.md-button.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.md-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.md-button--primary {
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
+.md-button--primary:hover:not(:disabled) {
+  color: var(--accent-contrast);
+  background: var(--accent-strong);
+}
+
+.md-button--block {
+  width: 100%;
+}
+
+.md-icon-button {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 2.1rem;
+  padding: 0;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: var(--control-bg);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.md-icon-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.md-tab {
+  min-height: 1.9rem;
+  padding: 0 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--text-muted);
+  background: transparent;
+  font-size: 0.74rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.md-tab:hover {
+  color: var(--text-secondary);
+}
+
+.md-tab.is-active {
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
+.md-search {
+  min-height: 2.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--line-color);
+  border-radius: 8px;
+  color: var(--accent);
+  background: var(--control-bg);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.md-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.md-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: var(--text-primary);
+  background: transparent;
+  font-size: 0.78rem;
+}
+
+.md-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.md-search--compact {
+  margin: 0.6rem 0.75rem 0;
+}
+
+.md-link {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.md-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.md-link-button {
+  padding: 0;
+  border: 0;
+  color: var(--accent);
+  background: transparent;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.md-badge {
+  padding: 0.15rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 999px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.md-badge--warn {
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+}
+
+.md-badge--muted {
+  border-color: var(--line-color);
+  color: var(--text-muted);
+  background: var(--control-bg);
+}
+
+/* ── 顶栏 ── */
+
+.md-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--surface-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.md-toolbar__group {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.md-toolbar__group--actions {
+  margin-left: auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.md-toolbar__modes {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.15rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  background: var(--control-bg);
+}
+
+.md-toolbar__file {
+  max-width: 16rem;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.md-toolbar__dirty {
+  margin-left: 0.35rem;
+  color: var(--accent);
+  font-size: 0.6rem;
+}
+
+.md-toolbar .theme-switch {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* ── 文件树 ── */
+
+.md-tree {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.md-tree__dir,
+.md-tree__file {
+  width: 100%;
+  padding: 0.32rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  background: transparent;
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.md-tree__dir {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.md-tree__dir:hover,
+.md-tree__file:hover {
+  color: var(--accent);
+  background: var(--control-bg);
+}
+
+.md-tree__file.is-active {
+  color: var(--accent-contrast);
+  background: var(--accent);
+}
+
+.md-tree__caret {
+  flex: 0 0 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+}
+
+.md-tree__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 线上文章列表 ── */
+
+.md-online-list {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.md-online-item {
+  width: 100%;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  color: var(--text-secondary);
+  background: var(--surface-bg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.md-online-item:hover,
+.md-online-item:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  transform: translateY(-0.1rem);
+}
+
+.md-online-item__title {
+  color: var(--text-primary);
+  font-size: 0.84rem;
+}
+
+.md-online-item__meta {
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-online-item__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-button,
+  .md-tab,
+  .md-search,
+  .md-tree__dir,
+  .md-tree__file,
+  .md-online-item {
+    transition: none;
+  }
+}

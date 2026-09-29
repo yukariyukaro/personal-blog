@@ -14,7 +14,11 @@ const CODE_EXTENSIONS = new Set([
   '.styl',
 ])
 const IGNORED_DIRECTORY_NAMES = new Set(['node_modules', 'dist', 'output'])
-const IGNORED_DIRECTORY_PATHS = new Set(['public/content', 'public/pio'])
+const IGNORED_DIRECTORY_PATHS = new Set([
+  'public/content',
+  'public/pio',
+  'public/vendor',
+])
 
 export const MAX_CODE_LINES = 500
 
