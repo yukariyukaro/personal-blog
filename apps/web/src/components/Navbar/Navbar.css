@@ -8,16 +8,15 @@
   height: 96px;
   padding: 0 180px 0 5vw;
   z-index: 9999;
-  /* Deep to light frosted glass gradient */
+  /* Deep to light gradient：不再使用 backdrop-filter（它会随首屏视频/波浪逐帧重新采样模糊），
+     改由渐变本身保证导航文字的可读性 */
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--page-bg) 94%, transparent) 0%,
-    color-mix(in srgb, var(--page-bg) 66%, transparent) 44%,
+    color-mix(in srgb, var(--page-bg) 96%, transparent) 0%,
+    color-mix(in srgb, var(--page-bg) 78%, transparent) 44%,
     transparent 100%
   );
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  /* Use mask to make blur fade out towards bottom */
+  /* Use mask to make the bar fade out towards the bottom */
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   
@@ -32,7 +31,7 @@
 }
 
 .site-nav--scrolled {
-  background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
+  background-color: color-mix(in srgb, var(--page-bg) 92%, transparent);
 }
 
 .site-nav__scroll-progress {
@@ -43,6 +42,8 @@
   height: 3px;
   background: var(--accent);
   box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 72%, transparent);
+  /* 初始态：进度条由 JS 直接写 style 驱动，这里给出未滚动时的默认值 */
+  opacity: 0;
   transform: scaleX(0);
   transform-origin: left center;
   transition:
@@ -168,12 +169,10 @@
 :root[data-theme='light'] .site-nav {
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 255, 255, 0.58) 48%,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.78) 48%,
     transparent 100%
   );
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 :root[data-theme='light'] .site-nav :is(

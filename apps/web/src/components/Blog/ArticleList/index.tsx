@@ -109,6 +109,7 @@ export default function ArticleList() {
   if (indexError) {
     return (
       <section className="blog-reader" aria-label="博客内容">
+        <div className="blog-reader__backdrop" aria-hidden="true" />
         <p className="blog-hub__error" role="alert">
           文章目录加载失败，请刷新页面重试。
         </p>
@@ -127,6 +128,7 @@ export default function ArticleList() {
         } as CSSProperties
       }
     >
+      <div className="blog-reader__backdrop" aria-hidden="true" />
       <ReadingControls articleSectionRef={sectionRef} />
 
       <div className="blog-dashboard">

@@ -34,8 +34,6 @@
   border-radius: var(--reader-radius);
   background: var(--reader-surface);
   box-shadow: var(--reader-shadow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   scroll-margin-top: 6rem;
 }
 

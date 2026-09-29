@@ -6,6 +6,11 @@
   background: #071016;
 }
 
+/* 浅色主题下二屏底色是浅色，波浪需要同步转白，否则会在首屏与二屏交界处留下一条深色剪影 */
+:root[data-theme='light'] .home-page {
+  --home-wave-fill: #ffffff;
+}
+
 .home-page__hero {
   position: relative;
   width: 100%;
@@ -29,25 +34,18 @@
   height: clamp(9rem, 18vh, 15rem);
   overflow: hidden;
   pointer-events: none;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 .home-page__waves-svg {
   width: 100%;
   height: 100%;
   display: block;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .home-page__waves-parallax use {
-  transform: translateZ(0);
   transform-box: fill-box;
   transform-origin: center;
   animation: home-wave 25s cubic-bezier(0.5, 0.5, 0.45, 0.5) infinite;
-  backface-visibility: hidden;
-  will-change: transform;
 }
 
 @keyframes home-wave {

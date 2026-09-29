@@ -51,6 +51,7 @@ export default function ArticleReader() {
         } as CSSProperties
       }
     >
+      <div className="blog-reader__backdrop" aria-hidden="true" />
       <ReadingControls articleSectionRef={documentRef} />
 
       <div className="article-reader">

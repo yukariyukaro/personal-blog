@@ -81,10 +81,18 @@ function Home() {
 
   useEffect(() => {
     let animationFrameId = 0
+    // 记录上一次写入 React 的阈值状态：仅在布尔值翻转时更新，
+    // 避免滚动时每帧都调度一次 React 更新
+    let isPromptVisibleNow = true
 
     const updateScrollPrompt = () => {
       animationFrameId = 0
-      setIsScrollPromptVisible(window.scrollY < window.innerHeight * 0.35)
+      const nextVisible = window.scrollY < window.innerHeight * 0.35
+      if (nextVisible === isPromptVisibleNow) {
+        return
+      }
+      isPromptVisibleNow = nextVisible
+      setIsScrollPromptVisible(nextVisible)
     }
 
     const handleScroll = () => {

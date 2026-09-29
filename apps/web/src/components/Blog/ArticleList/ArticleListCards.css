@@ -6,8 +6,6 @@
   color: var(--text-secondary);
   background: var(--reader-surface);
   box-shadow: var(--reader-shadow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   overflow-wrap: anywhere;
 }
 
@@ -199,8 +197,6 @@
   color: var(--text-secondary);
   background: var(--reader-surface);
   box-shadow: var(--reader-shadow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
   content-visibility: auto;
   contain-intrinsic-size: 22rem;

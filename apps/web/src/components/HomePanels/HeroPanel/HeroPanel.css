@@ -128,16 +128,17 @@
   pointer-events: none;
   background: #000;
   opacity: 0;
-  filter: blur(20px);
-  animation: home-fade-in 1s ease-out forwards;
-  will-change: opacity, filter;
+  filter: blur(10px);
+  animation: home-fade-in 0.5s ease-out forwards;
   z-index: 1;
 }
 
 @keyframes home-fade-in {
   to {
     opacity: 1;
-    filter: blur(0);
+    /* 终点用 none 而非 blur(0)：插值过程等价于 blur(0)，
+       但动画结束后不会残留一个真实的 filter 效果与离屏渲染表面 */
+    filter: none;
   }
 }
 
@@ -149,7 +150,6 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% center;
-  will-change: opacity, filter, transform;
 }
 
 .home-bg__image {

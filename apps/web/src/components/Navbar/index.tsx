@@ -15,14 +15,18 @@ interface NavbarProps {
 }
 
 export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
-  const [scrollProgress, setScrollProgress] = useState(0)
+  const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchButtonRef = useRef<HTMLButtonElement | null>(null)
+  const scrollProgressRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     let animationFrameId = 0
+    // 记录上一次写入 React 的阈值状态：进度条本身直接改 DOM，
+    // 只有这个布尔值需要交给 React 才能驱动 .site-nav--scrolled 类名
+    let isScrolledNow = false
 
     const updateProgress = () => {
       animationFrameId = 0
@@ -32,7 +36,19 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
         scrollableHeight > 0
           ? Math.min(Math.max(window.scrollY / scrollableHeight, 0), 1)
           : 0
-      setScrollProgress(nextProgress)
+
+      // 进度是连续值、每帧都在变：直接写样式，避免滚动时每帧触发 React 重渲染
+      const progressBar = scrollProgressRef.current
+      if (progressBar) {
+        progressBar.style.opacity = nextProgress > 0 ? '1' : '0'
+        progressBar.style.transform = `scaleX(${nextProgress})`
+      }
+
+      const nextIsScrolled = nextProgress > 0.01
+      if (nextIsScrolled !== isScrolledNow) {
+        isScrolledNow = nextIsScrolled
+        setIsScrolled(nextIsScrolled)
+      }
     }
 
     const scheduleUpdate = () => {
@@ -101,16 +117,13 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
   return (
     <NavigationMenu.Root
       className={`site-nav ${visible ? '' : 'site-nav--hidden'} ${
-        scrollProgress > 0.01 ? 'site-nav--scrolled' : ''
+        isScrolled ? 'site-nav--scrolled' : ''
       } ${isMenuOpen ? 'site-nav--menu-open' : ''}`}
       aria-label="Main Navigation"
     >
       <div
+        ref={scrollProgressRef}
         className="site-nav__scroll-progress"
-        style={{
-          opacity: scrollProgress > 0 ? 1 : 0,
-          transform: `scaleX(${scrollProgress})`,
-        }}
         aria-hidden="true"
       />
 

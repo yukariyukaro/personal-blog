@@ -35,14 +35,11 @@
   font-size: 0.9rem;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.95);
-  background-color: rgba(30, 30, 30, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(30, 30, 30, 0.9);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(57, 197, 187, 0.3);
   user-select: none;
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
   /* 确保文本能正常显示在所有图层之上 */
   z-index: 9999;
 }
@@ -60,7 +57,7 @@
 }
 
 .glass-nav__tooltip-arrow {
-  fill: rgba(30, 30, 30, 0.85);
+  fill: rgba(30, 30, 30, 0.9);
 }
 
 @keyframes slideUpAndFade {

@@ -197,8 +197,22 @@ test.describe('博客核心体验', () => {
   })
 
   test('首屏波浪层级与阅读区背景符合契约', async ({ page }) => {
+    // playwright.config 全局设了 reducedMotion: 'reduce'，而 HomePage.css 在 reduce 下
+    // 会把波浪动画置为 none；本用例断言波浪动画存在，故先显式关闭减弱动效。
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+
     const wave = page.locator('.home-page__waves')
     await expect(wave).toBeVisible()
+    // 等待媒体查询变更生效，避免读到变更前计算出的 none
+    await expect
+      .poll(() =>
+        wave
+          .locator('use')
+          .first()
+          .evaluate((element) => getComputedStyle(element).animationName),
+      )
+      .toBe('home-wave')
+
     const waveStyle = await wave.locator('use').first().evaluate((element) => ({
       animationName: getComputedStyle(element).animationName,
       height: element.closest('svg')?.getBoundingClientRect().height ?? 0,
@@ -214,10 +228,19 @@ test.describe('博客核心体验', () => {
       scrollIndicator.evaluate((element) => Number(getComputedStyle(element).zIndex)),
     ])
     expect(scrollZIndex).toBeGreaterThan(waveZIndex)
-    const readerBackground = await page.locator('.blog-reader').evaluate((element) =>
-      getComputedStyle(element).backgroundImage,
+    const readerBackground = await page
+      .locator('.blog-reader__backdrop')
+      .evaluate((element) => {
+        const layer = getComputedStyle(element, '::before')
+        return {
+          backgroundImage: layer.backgroundImage,
+          position: layer.position,
+        }
+      })
+    expect(readerBackground.backgroundImage).toContain(
+      'information/background.webp',
     )
-    expect(readerBackground).toContain('information/background.webp')
+    expect(readerBackground.position).toBe('sticky')
     await expect(
       page.locator('iframe[title="Live2D 看板娘"]'),
     ).toHaveCount(0)
