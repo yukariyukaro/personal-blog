@@ -16,13 +16,23 @@ import './MarkdownEditor.css'
 
 const MathLiveDialog = lazy(() => import('./MathLiveDialog'))
 
-const readTheme = (): Theme =>
-  document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+// 编辑器主题是编辑器内部状态，不写 documentElement，避免影响站点其他页面。
+const EDITOR_THEME_STORAGE_KEY = 'md-editor-theme'
+
+const readInitialTheme = (): Theme => {
+  try {
+    return window.localStorage.getItem(EDITOR_THEME_STORAGE_KEY) === 'light'
+      ? 'light'
+      : 'dark'
+  } catch {
+    return 'dark'
+  }
+}
 
 export default function MarkdownEditor() {
   const noteLibrary = useNoteLibrary()
   const onlineArticles = useOnlineArticles()
-  const [theme, setTheme] = useState<Theme>(readTheme)
+  const [theme, setTheme] = useState<Theme>(readInitialTheme)
   // 窄屏默认收起侧栏，避免挤压编辑区。
   const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
     window.matchMedia('(min-width: 1180px)').matches,
@@ -94,16 +104,16 @@ export default function MarkdownEditor() {
     libraryVersion: rootVersion,
   })
 
-  // 主题只有一个来源：ThemeSwitch 写入的 data-theme，这里只做观察同步。
-  useEffect(() => {
-    const root = document.documentElement
-    const sync = () => setTheme(readTheme())
-    const observer = new MutationObserver(sync)
-
-    sync()
-    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] })
-
-    return () => observer.disconnect()
+  const toggleTheme = useCallback(() => {
+    setTheme((current) => {
+      const next = current === 'dark' ? 'light' : 'dark'
+      try {
+        window.localStorage.setItem(EDITOR_THEME_STORAGE_KEY, next)
+      } catch {
+        // 隐私模式下 localStorage 可能不可写，主题仅当前会话生效。
+      }
+      return next
+    })
   }, [])
 
   useEffect(() => {
@@ -182,6 +192,7 @@ export default function MarkdownEditor() {
       className={`md-workspace ${
         hasDocument ? 'md-workspace--document' : 'md-workspace--launcher'
       }${isSidebarOpen ? ' is-sidebar-open' : ''}`}
+      data-editor-theme={theme}
     >
       {hasDocument ? (
         <>
@@ -210,6 +221,8 @@ export default function MarkdownEditor() {
               onTogglePublish={togglePublish}
               onToggleSidebar={() => setIsSidebarOpen((open) => !open)}
               onCloseDocument={closeDocument}
+              theme={theme}
+              onToggleTheme={toggleTheme}
             />
 
             <div className="md-main__body">
@@ -243,6 +256,8 @@ export default function MarkdownEditor() {
           draftSavedAt={draftSavedAt}
           onRestoreDraft={() => void restoreDraft()}
           onOpenOnline={(summary) => void openOnline(summary)}
+          theme={theme}
+          onToggleTheme={toggleTheme}
         />
       )}
 

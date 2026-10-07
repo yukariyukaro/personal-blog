@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://cdn.jsdmirror.com/gh/yukariyukaro/personal-blog@master/apps/web/public/miku.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <!-- SEO Meta Tags -->
     <title>娄宿三的个人博客</title>
@@ -33,11 +33,19 @@
     <link rel="preconnect" href="https://cdn.jsdmirror.com" crossorigin="anonymous">
     <!-- 预加载自定义字体：与 preconnect 同源（jsdmirror 国内镜像），并提权到 high -->
     <link rel="preload" href="https://cdn.jsdmirror.com/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf" as="font" type="font/ttf" crossorigin="anonymous" fetchpriority="high">
+    <!-- 导航英文专用：Oswald Medium（方舟官网同款窄体，同字号下宽度约为普通无衬线体一半） -->
+    <link rel="preload" href="https://cdn.jsdmirror.com/npm/@fontsource/oswald@5.2.5/files/oswald-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous" fetchpriority="high">
     <style>
       /* 全局 Loading 关键样式 */
       @font-face {
         font-family: 'SmileySans';
         src: url('https://cdn.jsdmirror.com/gh/yukariyukaro/mycdn@main/SmileySans-Oblique.ttf') format('truetype');
+        font-display: swap;
+      }
+      /* 导航英文窄体：仅拉丁字符，失败时回退系统无衬线 */
+      @font-face {
+        font-family: 'Oswald';
+        src: url('https://cdn.jsdmirror.com/npm/@fontsource/oswald@5.2.5/files/oswald-latin-500-normal.woff2') format('woff2');
         font-display: swap;
       }
 
@@ -49,7 +57,9 @@
       #global-loading {
         position: fixed;
         inset: 0;
-        background-color: #071016;
+        /* 强制白底：与吃葱动图自带的近白背景（实测均值 #f8f8f5）对齐，
+           深色主题下也不会出现白底动图贴黑底的突兀方块 */
+        background-color: #f8f8f5;
         z-index: 9999;
         display: flex;
         align-items: flex-end;
@@ -75,6 +85,9 @@
         width: 10rem;
         height: auto;
         object-fit: contain;
+        /* 动图自带近白底色（不均匀，均值 #f8f8f5）：darken 让比背景亮的白全部融入底色，
+           白底在白屏上彻底隐形，等同真透明素材；角色暗部不受影响 */
+        mix-blend-mode: darken;
       }
 
       .loading-text-container {

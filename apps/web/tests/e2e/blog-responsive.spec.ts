@@ -1,6 +1,13 @@
 import { expect, test, type Page } from '@playwright/test'
 import { openReadyArticle, openReadyBlog } from './blog-test-helpers'
 
+// 背景音乐开关在三档视口都随导航栏可见，且默认（未开启时）可交互
+async function expectMusicToggleReady(page: Page) {
+  const musicToggle = page.getByRole('button', { name: '播放背景音乐' })
+  await expect(musicToggle).toBeVisible()
+  await expect(musicToggle).toHaveAttribute('aria-pressed', 'false')
+}
+
 async function expectDesktopLayout(page: Page) {
   const leftSidebar = page.getByRole('complementary', { name: '作者信息' })
   const main = page.locator('.blog-main')
@@ -35,6 +42,8 @@ async function expectDesktopLayout(page: Page) {
     leftBeforeCenter: true,
     centerBeforeRight: true,
   })
+
+  await expectMusicToggleReady(page)
 }
 
 async function expectTabletLayout(page: Page) {
@@ -64,6 +73,8 @@ async function expectTabletLayout(page: Page) {
   expect(secondCard).not.toBeNull()
   expect(Math.abs(firstCard!.y - secondCard!.y)).toBeLessThan(2)
   expect(firstCard!.x + firstCard!.width).toBeLessThanOrEqual(secondCard!.x)
+
+  await expectMusicToggleReady(page)
 }
 
 async function expectMobileLayout(page: Page) {
@@ -72,10 +83,12 @@ async function expectMobileLayout(page: Page) {
 
   await expect(page.locator('.site-nav__list')).toBeHidden()
   await expect(mobileMenu).toBeHidden()
+  await expect(page.locator('.site-nav__mobile-overlay')).toBeHidden()
   await expect(page.getByRole('button', { name: '开启 Live2D 看板娘' }))
     .toHaveCount(0)
   await expect(page.locator('.blog-article-grid .featured-article').first())
     .toBeVisible()
+  await expectMusicToggleReady(page)
 
   const widthState = await page.evaluate(() => {
     const dashboard = document.querySelector('.blog-dashboard')
@@ -144,8 +157,9 @@ async function expectMobileLayout(page: Page) {
   ).toBe(true)
 
   await menuButton.click()
+  // 菜单打开后汉堡与遮罩按钮同名，first() 指向 DOM 顺序更前的汉堡按钮
   await expect(
-    page.getByRole('button', { name: '关闭导航菜单' }),
+    page.getByRole('button', { name: '关闭导航菜单' }).first(),
   ).toBeVisible()
   const informationLink = page.getByRole('link', {
     name: 'INFORMATION 介绍',
@@ -159,6 +173,34 @@ async function expectMobileLayout(page: Page) {
   await expect(informationLink).toBeFocused()
   await page.keyboard.press('Enter')
   await expect(page).toHaveURL(/\/#\/Information$/)
+
+  // 抽屉契约：右贴边、宽度受限、完整落在视口内（等滑入动画结束后测量）
+  await menuButton.click()
+  await expect(mobileMenu).toBeVisible()
+  await expect
+    .poll(
+      () =>
+        mobileMenu.evaluate((menu) => {
+          const rect = menu.getBoundingClientRect()
+          return {
+            rightAligned: Math.abs(rect.right - window.innerWidth) <= 1,
+            widthLimited: rect.width <= 320,
+            fullyInViewport: rect.left >= 0,
+          }
+        }),
+      { timeout: 2_000 },
+    )
+    .toEqual({
+      rightAligned: true,
+      widthLimited: true,
+      fullyInViewport: true,
+    })
+
+  // 点击遮罩关闭抽屉（点左侧未被抽屉覆盖的可见区域）
+  await page
+    .locator('.site-nav__mobile-overlay')
+    .click({ position: { x: 20, y: 200 } })
+  await expect(mobileMenu).toBeHidden()
 }
 
 test.describe('响应式契约', () => {

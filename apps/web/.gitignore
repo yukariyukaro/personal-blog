@@ -15,6 +15,8 @@ dist-ssr
 public/content
 public/vendor
 output/playwright
+# playwright-cli 调试产物（console 日志 / 页面快照）
+.playwright-cli
 *.local
 
 # Editor directories and files

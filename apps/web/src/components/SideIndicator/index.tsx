@@ -1,4 +1,8 @@
+import { useEffect, useState } from 'react';
 import './SideIndicator.css';
+
+// 移动端做装饰减法：竖排指示条整体不渲染（规范约定 JS 早退 + CSS display:none 兜底）
+const MOBILE_BREAKPOINT = 768;
 
 interface SideIndicatorProps {
   currentIndex: number;
@@ -7,8 +11,24 @@ interface SideIndicatorProps {
 }
 
 export default function SideIndicator({ currentIndex, total, titles }: SideIndicatorProps) {
+  const [isMobile, setIsMobile] = useState(
+    () => window.innerWidth <= MOBILE_BREAKPOINT,
+  );
+
+  useEffect(() => {
+    const updateViewport = () => {
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
+    };
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
+  if (isMobile) {
+    return null;
+  }
+
   const currentTitle = titles[currentIndex];
-  
+
   return (
     <aside className="side-indicator" aria-label="Panel Navigation Indicator">
       <div className="side-indicator__inner" key={currentIndex}>

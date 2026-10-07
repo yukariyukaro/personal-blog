@@ -3,14 +3,14 @@ export default function HomePageWave() {
     <div className="home-page__waves" aria-hidden="true">
       <svg
         className="home-page__waves-svg"
-        viewBox="0 20 150 32"
+        viewBox="0 25 150 30"
         preserveAspectRatio="none"
         shapeRendering="auto"
       >
         <defs>
           <path
             id="home-gentle-wave"
-            d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v48h-352z"
+            d="M-160 43c30 0 58-10 88-10s58 10 88 10 58-10 88-10 58 10 88 10v48h-352z"
           />
         </defs>
         <g className="home-page__waves-parallax">
@@ -19,7 +19,7 @@ export default function HomePageWave() {
             x="48"
             y="0"
             fill="var(--home-wave-fill)"
-            opacity="0.28"
+            opacity="0.18"
             style={{ animationDelay: '-2s', animationDuration: '7s' }}
           />
           <use
@@ -27,7 +27,7 @@ export default function HomePageWave() {
             x="48"
             y="3"
             fill="var(--home-wave-fill)"
-            opacity="0.48"
+            opacity="0.34"
             style={{ animationDelay: '-3s', animationDuration: '10s' }}
           />
           <use
@@ -35,7 +35,7 @@ export default function HomePageWave() {
             x="48"
             y="5"
             fill="var(--home-wave-fill)"
-            opacity="0.7"
+            opacity="0.62"
             style={{ animationDelay: '-4s', animationDuration: '13s' }}
           />
           <use
@@ -43,7 +43,7 @@ export default function HomePageWave() {
             x="48"
             y="7"
             fill="var(--home-wave-fill)"
-            opacity="0.98"
+            opacity="0.9"
             style={{ animationDelay: '-5s', animationDuration: '20s' }}
           />
         </g>

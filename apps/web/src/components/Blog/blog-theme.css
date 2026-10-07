@@ -1,6 +1,4 @@
 :root {
-  --reader-overlay-start: rgba(5, 14, 19, 0.8);
-  --reader-overlay-end: rgba(5, 14, 19, 0.94);
   --reader-surface: color-mix(in srgb, var(--surface-solid) 88%, transparent);
   --reader-control: rgba(255, 255, 255, 0.055);
   --reader-control-hover: rgba(255, 255, 255, 0.1);
@@ -11,20 +9,4 @@
   --reader-danger-bg: rgba(255, 143, 135, 0.08);
   --reader-danger-border: rgba(255, 143, 135, 0.35);
   --reader-radius: 8px;
-}
-
-:root[data-theme='light'] {
-  --reader-overlay-start: rgba(238, 246, 244, 0.7);
-  --reader-overlay-end: rgba(238, 246, 244, 0.84);
-  /* 当前卡片不再依赖 backdrop-filter：改用较高的不透明度来保证浅色底上的
-     文字对比度与卡片边界，避免半透明过度而显得涣散 */
-  --reader-surface: rgba(255, 255, 255, 0.82);
-  --reader-control: rgba(11, 56, 53, 0.055);
-  --reader-control-hover: rgba(11, 56, 53, 0.1);
-  --reader-border: rgba(20, 48, 45, 0.14);
-  --reader-border-soft: rgba(20, 48, 45, 0.09);
-  --reader-text-muted: #566f6b;
-  --reader-shadow: 0 14px 36px rgba(29, 73, 66, 0.11);
-  --reader-danger-bg: #fff0ee;
-  --reader-danger-border: #f0b6b0;
 }

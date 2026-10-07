@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { siteProfile } from '../../../config/siteProfile'
 import {
   fetchArticleContent,
   type ArticleSummary,
 } from '../../../utils/contentApi'
-import { READER_BACKGROUND_IMAGE, filterArticles } from '../contentUtils'
+import { filterArticles } from '../contentUtils'
 import ReadingControls from '../ReadingControls'
 import ArticleCatalog from './ArticleCatalog'
 import BlogSidebar from './BlogSidebar'
@@ -122,11 +121,6 @@ export default function ArticleList() {
       ref={sectionRef}
       className="blog-reader"
       aria-label="博客内容"
-      style={
-        {
-          '--blog-reader-background': `url(${READER_BACKGROUND_IMAGE})`,
-        } as CSSProperties
-      }
     >
       <div className="blog-reader__backdrop" aria-hidden="true" />
       <ReadingControls articleSectionRef={sectionRef} />

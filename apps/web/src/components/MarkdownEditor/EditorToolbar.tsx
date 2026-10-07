@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import ThemeSwitch from '../ThemeSwitch'
-import type { EditorMode, EditorSource } from './types'
+import type { EditorMode, EditorSource, Theme } from './types'
 
 const MODES: Array<{ value: EditorMode; label: string }> = [
   { value: 'ir', label: '即时渲染' },
@@ -23,6 +22,8 @@ type EditorToolbarProps = {
   onTogglePublish: () => void
   onToggleSidebar: () => void
   onCloseDocument: () => void
+  theme: Theme
+  onToggleTheme: () => void
 }
 
 const getSourceBadge = (source: EditorSource) => {
@@ -51,8 +52,11 @@ export default function EditorToolbar({
   onTogglePublish,
   onToggleSidebar,
   onCloseDocument,
+  theme,
+  onToggleTheme,
 }: EditorToolbarProps) {
   const badge = getSourceBadge(source)
+  const themeLabel = theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'
 
   return (
     <header className="md-toolbar">
@@ -120,7 +124,15 @@ export default function EditorToolbar({
         >
           关闭
         </button>
-        <ThemeSwitch />
+        <button
+          type="button"
+          className="md-icon-button"
+          aria-label={themeLabel}
+          title={themeLabel}
+          onClick={onToggleTheme}
+        >
+          <span aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span>
+        </button>
         <Link className="md-link" to="/Home">
           ← 首页
         </Link>

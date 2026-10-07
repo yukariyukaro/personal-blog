@@ -4,11 +4,6 @@ import {
 } from '../../utils/contentApi'
 import { resolvePublicAsset } from '../../utils/baseUrl'
 
-/** 列表页与文章页共用的阅读区背景图 */
-export const READER_BACKGROUND_IMAGE = resolvePublicAsset(
-  'information/background.webp',
-)
-
 export const formatNumber = (value: number) =>
   new Intl.NumberFormat('zh-CN').format(value)
 

@@ -223,13 +223,6 @@
   font-size: 0.6rem;
 }
 
-.md-toolbar .theme-switch {
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
 /* ── 文件树 ── */
 
 .md-tree {

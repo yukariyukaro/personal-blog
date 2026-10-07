@@ -5,6 +5,7 @@ import type { MathKind } from './lib/mathSnippets'
 
 export type EditorMode = 'ir' | 'wysiwyg' | 'sv'
 
+/** 编辑器内部主题：仅作用于 /Editor 子树，与站点全局样式（唯黑夜主题）无关。 */
 export type Theme = 'dark' | 'light'
 
 /**

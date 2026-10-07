@@ -1,13 +1,16 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { fetchHealth } from './utils/apiClient'
+import { waitForHeroVideoReady } from './utils/heroVideoReady'
 
 type AppBootstrapProps = {
   children: ReactNode
 }
 
-// 关键字体（SmileySans）最长等待时间：超时后即便字体未就绪也展示页面，避免遮罩无限期停留
+// 关键字体（SmileySans）最长等待时间：超时后即便字体未就绪也继续，避免遮罩无限期停留
 const FONT_READY_TIMEOUT = 2000
+// 首屏视频最长等待时间：超时后放弃等待直接揭开（静态图降级已就位），弱网用户不至于卡在 Loading
+const HERO_VIDEO_READY_TIMEOUT = 6000
 
 const waitForCriticalFont = () => {
   if (typeof document === 'undefined' || !('fonts' in document)) {
@@ -21,6 +24,10 @@ const waitForCriticalFont = () => {
     }),
   ]).then(() => undefined)
 }
+
+// 非首页初始路由（文章/介绍/作品/写作台）没有首屏视频可等，直接放行
+const isHeroVideoExpected = () =>
+  !/^#\/(post|information|portfolio|editor)/i.test(window.location.hash)
 
 function AppBootstrap({ children }: AppBootstrapProps) {
   useEffect(() => {
@@ -38,8 +45,12 @@ function AppBootstrap({ children }: AppBootstrapProps) {
     let isCancelled = false
     let removalTimer = 0
 
-    // 等字体就绪再撤掉 Loading，避免首屏先渲染兜底字体、字体到达后再跳变（FOUT）
-    void waitForCriticalFont().then(() => {
+    // 字体与首屏视频都就绪后再撤 Loading：揭开后直接是可播放的视频，
+    // 不再有「黑屏等视频」的空窗（视频就绪/降级由 HeroPanel 广播）
+    void Promise.all([
+      waitForCriticalFont(),
+      waitForHeroVideoReady(HERO_VIDEO_READY_TIMEOUT, isHeroVideoExpected),
+    ]).then(() => {
       if (isCancelled) {
         return
       }

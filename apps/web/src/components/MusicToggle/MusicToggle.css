@@ -1,0 +1,102 @@
+/* 右上角背景音乐开关：图标与状态色复刻明日方舟官网（播放 #18d1ff 蓝 / 关闭白 + 压扁），
+   抖动动画参考 taozhiyy.top 的均衡器竖条（逐根错峰）。
+   按钮同官网风格：无边框无底色，裸图标浮在导航上，仅用颜色表达状态。 */
+.music-toggle {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  background: transparent;
+  cursor: pointer;
+  transition: color 300ms ease;
+}
+
+.music-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.music-toggle__icon {
+  height: 1.5rem;
+  width: auto;
+  fill: currentColor;
+  /* 关闭态：整只图标压扁一半（官网细节），播放时弹回原高 */
+  transform: scaleY(0.5);
+  transition: transform 300ms ease;
+}
+
+.music-toggle__bar {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.music-toggle.is-playing {
+  color: var(--accent-blue);
+}
+
+.music-toggle.is-playing .music-toggle__icon {
+  transform: scaleY(1);
+}
+
+.music-toggle.is-playing .music-toggle__bar {
+  animation: music-bar-dance 0.9s ease-in-out infinite;
+}
+
+.music-toggle.is-playing .music-toggle__bar:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+.music-toggle.is-playing .music-toggle__bar:nth-of-type(3) {
+  animation-delay: 0.2s;
+}
+
+.music-toggle.is-playing .music-toggle__bar:nth-of-type(4) {
+  animation-delay: 0.3s;
+}
+
+.music-toggle.is-playing .music-toggle__bar:nth-of-type(5) {
+  animation-delay: 0.4s;
+}
+
+@keyframes music-bar-dance {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@media (width >= 768px) {
+  .music-toggle {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+/* 新增 hover 按《响应式设计规范》第 6 节包裹，避免触屏设备粘住悬停态 */
+@media (hover: hover) {
+  .music-toggle:hover {
+    color: var(--accent-blue);
+  }
+
+  .music-toggle.is-playing:hover {
+    color: var(--accent-blue);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle,
+  .music-toggle__icon {
+    transition: none;
+  }
+
+  .music-toggle.is-playing .music-toggle__bar {
+    animation: none;
+  }
+}

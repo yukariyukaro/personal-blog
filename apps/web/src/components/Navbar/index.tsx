@@ -1,12 +1,13 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   navigationItems,
   type NavigationItemId,
 } from '../../app/navigation/navigationConfig'
 import { siteProfile } from '../../config/siteProfile'
-import ThemeSwitch from '../ThemeSwitch'
+import MusicToggle from '../MusicToggle'
 import './Navbar.css'
 
 interface NavbarProps {
@@ -14,12 +15,17 @@ interface NavbarProps {
   activeItemId?: NavigationItemId
 }
 
+// 移动端抽屉内的可聚焦元素（用于焦点圈与初始聚焦）
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])'
+
 export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const searchButtonRef = useRef<HTMLButtonElement | null>(null)
   const scrollProgressRef = useRef<HTMLDivElement | null>(null)
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -81,15 +87,48 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false)
+        menuButtonRef.current?.focus()
+        return
+      }
+      if (event.key !== 'Tab') {
+        return
+      }
+      // aria-modal 浮层的最低焦点闭环：Tab 循环限制在抽屉内
+      const menu = mobileMenuRef.current
+      if (!menu) {
+        return
+      }
+      const focusable = menu.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+      if (focusable.length === 0) {
+        return
+      }
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement
+      const isInsideMenu = menu.contains(active)
+      if (event.shiftKey && (active === first || !isInsideMenu)) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && (active === last || !isInsideMenu)) {
+        event.preventDefault()
+        first.focus()
       }
     }
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', handleKeyDown)
 
+    // 打开抽屉时把焦点移入第一个元素，配合 aria-modal；点击链接关闭时不抢焦点
+    const focusTimer = window.setTimeout(() => {
+      mobileMenuRef.current
+        ?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)
+        ?.focus()
+    }, 0)
+
     return () => {
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', handleKeyDown)
+      window.clearTimeout(focusTimer)
     }
   }, [isMenuOpen])
 
@@ -160,43 +199,78 @@ export default function Navbar({ visible = true, activeItemId }: NavbarProps) {
           title="搜索文章"
           onClick={focusArticleSearch}
         >
-          <span aria-hidden="true">⌕</span>
+          <svg
+            className="site-nav__icon-svg"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <circle cx="10.5" cy="10.5" r="6.75" fill="none" stroke="currentColor" strokeWidth="2.4" />
+            <line x1="15.6" y1="15.6" x2="21" y2="21" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+          </svg>
         </button>
-        <ThemeSwitch />
+        <MusicToggle />
         <button
+          ref={menuButtonRef}
           className="site-nav__menu-button"
           type="button"
           aria-label={isMenuOpen ? '关闭导航菜单' : '打开导航菜单'}
           aria-expanded={isMenuOpen}
+          aria-controls="site-nav-mobile-menu"
           onClick={() => setIsMenuOpen((current) => !current)}
         >
           <span aria-hidden="true">{isMenuOpen ? '×' : '≡'}</span>
         </button>
       </div>
 
-      <div className={`site-nav__mobile-menu ${isMenuOpen ? 'is-open' : ''}`}>
-        <div className="site-nav__mobile-menu-inner">
+      {/* 抽屉与遮罩挂到 body：.site-nav 的入场/隐藏 transform 会把 fixed 后代
+          变成相对导航定位，portal 可彻底解耦（taozhiyy 同款做法） */}
+      {createPortal(
+        <>
           <button
-            className="site-nav__mobile-search"
             type="button"
-            onClick={focusArticleSearch}
+            className={`site-nav__mobile-overlay ${isMenuOpen ? 'is-open' : ''}`}
+            aria-label="关闭导航菜单"
+            tabIndex={-1}
+            onClick={() => {
+              setIsMenuOpen(false)
+              menuButtonRef.current?.focus()
+            }}
+          />
+
+          <div
+            ref={mobileMenuRef}
+            id="site-nav-mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="导航菜单"
+            className={`site-nav__mobile-menu ${isMenuOpen ? 'is-open' : ''}`}
           >
-            <span aria-hidden="true">⌕</span>
-            搜索文章
-          </button>
-          {navigationItems.map((item) => (
-            <Link
-              key={item.id}
-              className={`site-nav__mobile-link ${activeItemId === item.id ? 'is-active' : ''}`}
-              to={item.path}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <span>{item.label}</span>
-              <strong>{item.shortLabel}</strong>
-            </Link>
-          ))}
-        </div>
-      </div>
+            <div className="site-nav__mobile-menu-inner">
+              <button
+                className="site-nav__mobile-search"
+                type="button"
+                onClick={focusArticleSearch}
+              >
+                <span aria-hidden="true">⌕</span>
+                搜索文章
+              </button>
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.id}
+                  className={`site-nav__mobile-link ${activeItemId === item.id ? 'is-active' : ''}`}
+                  to={item.path}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span>{item.label}</span>
+                  <strong>{item.shortLabel}</strong>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </>,
+        document.body,
+      )}
     </NavigationMenu.Root>
   )
 }

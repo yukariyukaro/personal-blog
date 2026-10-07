@@ -6,20 +6,6 @@ import App from './App'
 import AppBootstrap from './AppBootstrap'
 import './index.css'
 
-let storedTheme: string | null = null
-try {
-  storedTheme = window.localStorage.getItem('blog-theme')
-} catch {
-  storedTheme = null
-}
-const initialTheme =
-  storedTheme === 'light' || storedTheme === 'dark'
-    ? storedTheme
-    : window.matchMedia('(prefers-color-scheme: light)').matches
-      ? 'light'
-      : 'dark'
-document.documentElement.dataset.theme = initialTheme
-
 const router = createHashRouter([
   {
     path: '/',

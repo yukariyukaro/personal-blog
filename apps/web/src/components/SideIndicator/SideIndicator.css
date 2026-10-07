@@ -110,8 +110,9 @@
 }
 
 @media (max-width: 768px) {
+  /* 装饰减法：组件在移动端已 return null 不渲染，这里兜底防闪烁 */
   .side-indicator {
-    width: 60px;
+    display: none;
   }
   .side-indicator__inner {
     padding-left: 8px;

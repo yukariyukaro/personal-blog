@@ -20,8 +20,28 @@
   isolation: isolate;
 }
 
-:root[data-theme='light'] .md-workspace {
+/* 编辑器内部浅色主题：只重定义 .md-workspace 子树里的站点 token，
+   站点其余页面保持唯黑夜主题，不受影响。 */
+.md-workspace[data-editor-theme='light'] {
+  --page-bg: #eef6f4;
+  --surface-bg: rgba(255, 255, 255, 0.86);
+  --surface-solid: #ffffff;
+  --control-bg: rgba(11, 56, 53, 0.06);
+  --control-bg-hover: rgba(11, 56, 53, 0.12);
+  --text-primary: #12312f;
+  --text-secondary: #3b5d5a;
+  --text-muted: #6b8581;
+  --line-color: rgba(21, 77, 71, 0.2);
+  --line-soft: rgba(21, 77, 71, 0.1);
+  --accent: #078b7d;
+  --accent-strong: #08796e;
+  /* 浅色下沿用全站"深化保对比"策略：方舟电光蓝的深化近亲 */
+  --accent-blue: #0095c9;
+  --accent-contrast: #f3fffc;
+  --danger: #c24b42;
+  --shadow-lg: 0 24px 80px rgba(22, 78, 71, 0.14);
   --md-shadow: 0 14px 36px rgba(29, 73, 66, 0.11);
+  color-scheme: light;
 }
 
 .md-workspace--document {
@@ -43,9 +63,16 @@
 /* ── 起始屏 ── */
 
 .md-launcher {
+  position: relative;
   width: min(52rem, 100%);
   display: grid;
   gap: 1.5rem;
+}
+
+.md-launcher__theme-toggle {
+  position: absolute;
+  top: -0.5rem;
+  right: 0;
 }
 
 .md-launcher__header {

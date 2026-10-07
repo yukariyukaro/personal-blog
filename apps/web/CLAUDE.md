@@ -30,6 +30,21 @@ pnpm run lint     # Run ESLint
 pnpm run preview  # Preview production build locally
 ```
 
+## 响应式设计（强制）
+
+任何 Web 端 UI 改动都必须同时完成移动端适配，规范见 [.trae/rules/responsive-design.md](.trae/rules/responsive-design.md)（含断点口径、组件三档行为映射、反模式清单）。
+
+- **断点**：只允许 `768 / 1024 / 1440px`（与 `playwright.config.ts` 的 1440 / 834 / 390 三档视口对齐）。`1180 / 1200px` 是已登记的历史遗留，禁止扩散到其它文件。
+- **验证**：
+
+  ```bash
+  pnpm run check:responsive              # 静态守卫：断点 / px 字号 / 固定宽度 / 内联尺寸
+  pnpm run test:e2e -- blog-responsive   # 三档视口契约（1440 / 834 / 390）
+  ```
+
+- `check:responsive` 已接入 `pnpm run check`，违反规则会直接失败。
+- 新增组件或页面时，在规范文档的「组件响应式行为映射」表补一行；若引入新的布局结构（多栏 / 浮层 / 抽屉），在 `tests/e2e/blog-responsive.spec.ts` 的 `响应式契约` 中补对应断言。
+
 ## Architecture
 
 This is a personal blog built with React 19 + Vite 8 + TypeScript. Key architectural decisions:

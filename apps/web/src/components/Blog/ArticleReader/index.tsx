@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
-import type { CSSProperties } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import type { ArticleSummary } from '../../../utils/contentApi'
 import { updateSEO } from '../../../utils/seo'
-import { READER_BACKGROUND_IMAGE } from '../contentUtils'
 import ReadingControls from '../ReadingControls'
 import ArticleDocument from './ArticleDocument'
 import { ArticleReaderSkeleton } from './ArticleReaderSkeleton'
@@ -45,11 +43,6 @@ export default function ArticleReader() {
     <section
       className="blog-reader"
       aria-label="文章内容"
-      style={
-        {
-          '--blog-reader-background': `url(${READER_BACKGROUND_IMAGE})`,
-        } as CSSProperties
-      }
     >
       <div className="blog-reader__backdrop" aria-hidden="true" />
       <ReadingControls articleSectionRef={documentRef} />

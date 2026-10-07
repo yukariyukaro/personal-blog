@@ -2,62 +2,30 @@ import { expect, test } from '@playwright/test'
 import { siteProfile } from '../../src/config/siteProfile'
 import { openReadyBlog } from './blog-test-helpers'
 
-test.describe('主题契约', () => {
-  test('首次跟随系统且只持久化用户选择', async ({ page }) => {
-    await page.emulateMedia({
-      colorScheme: 'light',
-      reducedMotion: 'reduce',
-    })
-    await openReadyBlog(page)
+test.describe('编辑器主题契约', () => {
+  test('编辑器内切换主题仅作用于编辑器并持久化', async ({ page }) => {
+    await page.goto('/#/Editor')
+    await expect(page.locator('.md-workspace')).toBeVisible()
 
     const root = page.locator('html')
+    const workspace = page.locator('.md-workspace')
     const themeButton = page.getByRole('button', { name: /切换到/ }).first()
-    await expect(root).toHaveAttribute('data-theme', 'light')
+
+    await expect(workspace).toHaveAttribute('data-editor-theme', 'dark')
     expect(
-      await page.evaluate(() => window.localStorage.getItem('blog-theme')),
+      await page.evaluate(() => window.localStorage.getItem('md-editor-theme')),
     ).toBeNull()
-    expect(
-      await page.locator('body').evaluate(
-        (element) => getComputedStyle(element).transitionDuration,
-      ),
-    ).toBe('0s')
-    expect(
-      await themeButton.evaluate(
-        (element) => getComputedStyle(element).transitionDuration,
-      ),
-    ).toBe('0s')
 
     await themeButton.click()
-    await expect(root).toHaveAttribute('data-theme', 'dark')
+    await expect(workspace).toHaveAttribute('data-editor-theme', 'light')
     expect(
-      await page.evaluate(() => window.localStorage.getItem('blog-theme')),
-    ).toBe('dark')
+      await page.evaluate(() => window.localStorage.getItem('md-editor-theme')),
+    ).toBe('light')
+    // 站点唯一样式来源是黑夜主题：编辑器切换不得写入 html 的 data-theme。
+    expect(await root.getAttribute('data-theme')).toBeNull()
 
     await page.reload()
-    await expect(root).toHaveAttribute('data-theme', 'dark')
-  })
-
-  test('localStorage 不可写时在当前会话保持用户选择', async ({ page }) => {
-    await page.addInitScript(() => {
-      Object.defineProperty(Storage.prototype, 'setItem', {
-        configurable: true,
-        value: () => {
-          throw new Error('storage unavailable')
-        },
-      })
-    })
-    await page.emulateMedia({ colorScheme: 'light' })
-    await openReadyBlog(page)
-
-    const root = page.locator('html')
-    await page.getByRole('button', { name: /切换到/ }).first().click()
-    await expect(root).toHaveAttribute('data-theme', 'dark')
-
-    await page.evaluate(() => {
-      window.location.hash = '#/Information'
-    })
-    await expect(page).toHaveURL(/\/#\/Information$/)
-    await expect(root).toHaveAttribute('data-theme', 'dark')
+    await expect(workspace).toHaveAttribute('data-editor-theme', 'light')
   })
 })
 

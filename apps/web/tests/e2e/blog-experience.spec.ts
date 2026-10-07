@@ -12,17 +12,6 @@ test.describe('博客核心体验', () => {
     ).toBeVisible()
   })
 
-  test('支持主题切换并保持页面可用', async ({ page }) => {
-    const themeButton = page.getByRole('button', { name: /切换到/ }).first()
-    const before = await page.locator('html').getAttribute('data-theme')
-
-    await themeButton.click()
-
-    const after = await page.locator('html').getAttribute('data-theme')
-    expect(after).not.toBe(before)
-    await expect(page.getByRole('searchbox', { name: '搜索文章' })).toBeVisible()
-  })
-
   test('缺少封面时不渲染文章图片区域', async ({ page }) => {
     await expect(page.locator('.featured-article').first()).toBeVisible()
     await expect(page.locator('.featured-article__cover')).toHaveCount(0)

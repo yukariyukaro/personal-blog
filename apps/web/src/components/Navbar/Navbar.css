@@ -6,7 +6,9 @@
   display: flex;
   align-items: center;
   height: 96px;
-  padding: 0 180px 0 5vw;
+  /* 旧值右侧 180px 是给 SideIndicator 预留的，但它内容垂直居中、与顶部无纵向交集；
+     对齐明日方舟官网：操作图标贴近视口右缘，同时也缓解平板档导航的宽度压力 */
+  padding: 0 2.5rem 0 5vw;
   z-index: 9999;
   /* Deep to light gradient：不再使用 backdrop-filter（它会随首屏视频/波浪逐帧重新采样模糊），
      改由渐变本身保证导航文字的可读性 */
@@ -20,14 +22,16 @@
   mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   
-  animation: nav-slide-down 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* backwards：延迟期保持首帧（藏于视口上方），动画结束后回归基准样式 */
+  animation: nav-slide-down 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   animation-delay: 0.5s;
   transform: translateY(0);
   opacity: 1;
   transition:
     transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
     opacity 280ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 280ms ease;
+    background-color 280ms ease,
+    visibility 280ms ease;
 }
 
 .site-nav--scrolled {
@@ -137,10 +141,12 @@
 }
 
 .site-nav__text-en {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
+  /* 方舟官网同款：Oswald Medium 1.375rem 窄体大写（官网 CSS 原值），
+     窄体使同字号宽度约为普通无衬线体一半，导航可容纳更多条目 */
+  font-family: 'Oswald', ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: normal;
   color: var(--text-primary);
   transition: color 0.3s ease;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -148,49 +154,26 @@
 
 .site-nav__text-zh {
   font-family: 'SmileySans', system-ui, sans-serif;
-  font-size: 0.9rem;
+  /* 方舟官网中文副标签同为 0.875rem */
+  font-size: 0.875rem;
   font-weight: normal;
   letter-spacing: 0.15em;
   color: var(--text-muted);
   transition: color 0.3s ease;
 }
 
-.site-nav__link:hover .site-nav__text-en,
-.site-nav__link--active .site-nav__text-en {
-  color: var(--accent);
-  text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 60%, transparent);
+/* 导航链接与按钮的悬浮/激活态统一为方舟官网电光蓝（0.3s 颜色过渡即"变蓝动画"）。
+   注意 :root 本身计伪类特异性，浅色静态覆盖实际高达 (0,4,0)：
+   这里补 .site-nav__list 提到 (0,5,0) 才能真正压制（accent 时代 hover 同样被压制） */
+.site-nav .site-nav__list .site-nav__link:hover .site-nav__text-en,
+.site-nav .site-nav__list .site-nav__link--active .site-nav__text-en {
+  color: var(--accent-blue);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent-blue) 60%, transparent);
 }
 
-.site-nav__link:hover .site-nav__text-zh,
-.site-nav__link--active .site-nav__text-zh {
-  color: var(--accent);
-}
-
-:root[data-theme='light'] .site-nav {
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.94) 0%,
-    rgba(255, 255, 255, 0.78) 48%,
-    transparent 100%
-  );
-}
-
-:root[data-theme='light'] .site-nav :is(
-  .site-nav__logo,
-  .site-nav__text-en
-) {
-  color: #102a27;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.75);
-}
-
-:root[data-theme='light'] .site-nav .site-nav__text-zh {
-  color: #315550;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.65);
-}
-
-:root[data-theme='light'] .site-nav::after {
-  border-bottom-color: rgba(16, 42, 39, 0.2);
-  box-shadow: 0 1px 8px rgba(255, 255, 255, 0.6);
+.site-nav .site-nav__list .site-nav__link:hover .site-nav__text-zh,
+.site-nav .site-nav__list .site-nav__link--active .site-nav__text-zh {
+  color: var(--accent-blue);
 }
 
 @keyframes nav-slide-down {
@@ -212,11 +195,13 @@
 
   .site-nav__icon-button,
   .site-nav__menu-button,
-  .site-nav__mobile-menu {
+  .site-nav__mobile-menu,
+  .site-nav__mobile-overlay {
     transition: none;
   }
 }
 
+/* 非首页路由下由 App 通过 .site-nav--hidden 整体移出视口 */
 .site-nav--hidden {
   opacity: 0;
   transform: translateY(-100%);
@@ -226,38 +211,39 @@
 .site-nav__actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   margin-left: auto;
   flex-shrink: 0;
 }
 
+/* 明日方舟官网风格：按钮无边框无底色，裸图标浮在导航上，仅用颜色表达状态 */
 .site-nav__icon-button,
 .site-nav__menu-button {
   width: 2.75rem;
   height: 2.75rem;
   display: inline-grid;
   place-items: center;
-  border: 1px solid var(--line-color);
-  border-radius: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
   color: var(--text-primary);
-  background: var(--control-bg);
-  font-size: 1.35rem;
+  background: transparent;
+  font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  transition:
-    color 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
+  transition: color 300ms ease;
 }
 
 .site-nav__icon-button:hover,
 .site-nav__icon-button.is-active,
 .site-nav__menu-button:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: var(--control-bg-hover);
-  transform: translateY(-1px);
+  color: var(--accent-blue);
+}
+
+/* SVG 图标（搜索）与字符图标统一线条粗细与视觉重量 */
+.site-nav__icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
 }
 
 .site-nav__menu-button {
@@ -268,10 +254,28 @@
   display: none;
 }
 
+@media (max-width: 1024px) {
+  /* 平板档：Oswald 窄体占用小，可用接近桌面档的字号（仍略小以保间隙） */
+  .site-nav__list {
+    gap: 1.5rem;
+    margin-left: 2vw;
+  }
+
+  .site-nav__text-en {
+    font-size: 1.25rem;
+  }
+
+  .site-nav__actions {
+    gap: 0.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .site-nav {
-    height: 64px;
-    padding: 0 0.9rem;
+    /* 刘海屏：状态栏高度并入导航高度，内容不再被遮挡 */
+    height: calc(64px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) max(0.9rem, env(safe-area-inset-right, 0px))
+      0 max(0.9rem, env(safe-area-inset-left, 0px));
     background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
     mask-image: none;
     -webkit-mask-image: none;
@@ -310,28 +314,60 @@
     display: inline-grid;
   }
 
+  /* 右侧滑入抽屉（taozhiyy 同款形态）：min(80vw, 20rem) 宽，遮罩负责点击关闭。
+     portal 到 body 后需自带 z-index：略低于导航 9999，高于页面内 z 30~90 的悬浮件 */
   .site-nav__mobile-menu {
     position: fixed;
-    inset: 64px 0 0;
+    top: calc(64px + env(safe-area-inset-top, 0px));
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
     display: block;
-    padding: 0.75rem 1rem 2rem;
+    width: min(80vw, 20rem);
+    padding: 0.75rem 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
     background: color-mix(in srgb, var(--page-bg) 94%, transparent);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    opacity: 0;
+    border-left: 1px solid var(--line-color);
+    box-shadow: var(--shadow-lg);
     visibility: hidden;
-    transform: translateY(-0.5rem);
+    transform: translateX(100%);
     pointer-events: none;
     transition:
-      opacity 180ms ease,
-      transform 180ms ease,
-      visibility 180ms ease;
+      transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 220ms ease;
   }
 
   .site-nav__mobile-menu.is-open {
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .site-nav__mobile-overlay {
+    position: fixed;
+    top: calc(64px + env(safe-area-inset-top, 0px));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9998;
+    border: none;
+    padding: 0;
+    background: color-mix(in srgb, #04080f 42%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 220ms ease,
+      visibility 220ms ease;
+  }
+
+  .site-nav__mobile-overlay.is-open {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
     pointer-events: auto;
   }
 

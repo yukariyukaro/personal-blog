@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import type { ArticleSummary } from '../../utils/contentApi'
 import type { NoteLibrary } from './hooks/useNoteLibrary'
 import type { OnlineArticles } from './hooks/useOnlineArticles'
-import type { LauncherView } from './types'
+import type { LauncherView, Theme } from './types'
 
 type WorkspaceLauncherProps = {
   noteLibrary: NoteLibrary
@@ -12,6 +12,8 @@ type WorkspaceLauncherProps = {
   draftSavedAt: number | null
   onRestoreDraft: () => void
   onOpenOnline: (summary: ArticleSummary) => void
+  theme: Theme
+  onToggleTheme: () => void
 }
 
 const formatDraftTime = (timestamp: number) =>
@@ -30,8 +32,11 @@ export default function WorkspaceLauncher({
   draftSavedAt,
   onRestoreDraft,
   onOpenOnline,
+  theme,
+  onToggleTheme,
 }: WorkspaceLauncherProps) {
   const [view, setView] = useState<LauncherView>('home')
+  const themeLabel = theme === 'dark' ? '切换到浅色主题' : '切换到深色主题'
 
   const directoryLabel =
     noteLibrary.needsPermission && noteLibrary.rootName !== null
@@ -42,6 +47,15 @@ export default function WorkspaceLauncher({
 
   return (
     <div className="md-launcher">
+      <button
+        type="button"
+        className="md-icon-button md-launcher__theme-toggle"
+        aria-label={themeLabel}
+        title={themeLabel}
+        onClick={onToggleTheme}
+      >
+        <span aria-hidden="true">{theme === 'dark' ? '☼' : '◐'}</span>
+      </button>
       <header className="md-launcher__header">
         <p className="md-launcher__eyebrow">MD WORKSPACE</p>
         <h1 className="md-launcher__title">笔记写作台</h1>

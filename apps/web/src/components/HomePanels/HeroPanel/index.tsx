@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type Hls from 'hls.js'
 import EasterEggHint from '../../EasterEggHint'
+import HeroRail from './HeroRail'
+import { markHeroVideoReady } from '../../../utils/heroVideoReady'
 import './HeroPanel.css'
 
 type HeroPanelProps = {
@@ -41,16 +43,19 @@ function HeroPanel({
   )
   const shouldRenderVideo = canUseVideo && !hasVideoError
 
+  // 不走视频（减弱动效/省流/慢网）或视频彻底失败：立即广播就绪，Loading 直接揭开展示静态图
+  useEffect(() => {
+    if (!shouldRenderVideo) {
+      markHeroVideoReady()
+    }
+  }, [shouldRenderVideo])
+
   useEffect(() => {
     if (!shouldRenderVideo || videoMode !== 'hls') {
       return
     }
 
-    const win = window as Window & {
-      requestIdleCallback?: (callback: IdleRequestCallback) => number
-      cancelIdleCallback?: (handle: number) => void
-    }
-
+    // Loading 屏期间是视频加载的唯一窗口，预热不再等空闲时机，挂载即拉取
     const warmup = () => {
       const manifestUrl = new URL(hlsManifestSrc, window.location.href)
       const initUrl = new URL('init.mp4', manifestUrl).toString()
@@ -65,19 +70,7 @@ function HeroPanel({
       }
     }
 
-    if (win.requestIdleCallback) {
-      const idleId = win.requestIdleCallback(warmup)
-      return () => {
-        if (win.cancelIdleCallback) {
-          win.cancelIdleCallback(idleId)
-        }
-      }
-    }
-
-    const timerId = window.setTimeout(warmup, 300)
-    return () => {
-      window.clearTimeout(timerId)
-    }
+    warmup()
   }, [hlsManifestSrc, shouldRenderVideo, videoMode])
 
   useEffect(() => {
@@ -170,8 +163,19 @@ function HeroPanel({
       return
     }
 
+    // 与字体资源同级的高加载优先级：Loading 等待期就是视频的加载窗口
+    const withFetchPriority = videoElement as HTMLVideoElement & {
+      fetchPriority?: 'high' | 'low' | 'auto'
+    }
+    if ('fetchPriority' in withFetchPriority) {
+      withFetchPriority.fetchPriority = 'high'
+    }
+
     const markVideoLoaded = () => {
       setIsVideoLoaded(true)
+      // canplay 即广播就绪：Loading 揭开不等「播放成功 + 首帧回调」，
+      // 否则自动播放被拒或 StrictMode 重挂载竞态会让信号丢失、吃满超时
+      markHeroVideoReady()
     }
 
     const handleError = () => {
@@ -203,39 +207,38 @@ function HeroPanel({
       return
     }
 
-    const revealTimer = window.setTimeout(() => {
-      videoElement.play().catch(() => undefined)
+    // 视频可播放即拉起播放；第一帧渲染后做渐显切换
+    videoElement.play().catch(() => {
+      // 自动播放被策略拒绝：画面停在当前帧/静态图，但不能拖住 Loading
+      markHeroVideoReady()
+    })
 
-      let isRevealed = false
-      const reveal = () => {
-        if (isRevealed) {
-          return
-        }
-        isRevealed = true
-        setIsVideoVisible(true)
+    let isRevealed = false
+    const reveal = () => {
+      if (isRevealed) {
+        return
       }
+      isRevealed = true
+      setIsVideoVisible(true)
+      markHeroVideoReady()
+    }
 
-      const withVideoFrameCallback = videoElement as HTMLVideoElement & {
-        requestVideoFrameCallback?: (callback: () => void) => number
+    const withVideoFrameCallback = videoElement as HTMLVideoElement & {
+      requestVideoFrameCallback?: (callback: () => void) => number
+    }
+
+    if (typeof withVideoFrameCallback.requestVideoFrameCallback === 'function') {
+      withVideoFrameCallback.requestVideoFrameCallback(() => {
+        reveal()
+      })
+    } else {
+      const handleFirstTimeUpdate = () => {
+        reveal()
       }
-
-      if (typeof withVideoFrameCallback.requestVideoFrameCallback === 'function') {
-        withVideoFrameCallback.requestVideoFrameCallback(() => {
-          reveal()
-        })
-      } else {
-        const handleFirstTimeUpdate = () => {
-          reveal()
-        }
-        videoElement.addEventListener('timeupdate', handleFirstTimeUpdate, { once: true })
-        window.setTimeout(() => {
-          reveal()
-        }, 260)
-      }
-    }, 180)
-
-    return () => {
-      window.clearTimeout(revealTimer)
+      videoElement.addEventListener('timeupdate', handleFirstTimeUpdate, { once: true })
+      window.setTimeout(() => {
+        reveal()
+      }, 260)
     }
   }, [isVideoLoaded, shouldRenderVideo])
 
@@ -252,6 +255,7 @@ function HeroPanel({
   return (
     <section className={`home-panel ${panelClass}`} aria-label="home hero panel">
       <div className="home-info-container">
+        <p className="home-info-kicker">PERSONAL ARCHIVE / 00</p>
         <div className="home-info-divider"></div>
         <div className="home-info-header">
           <h1 className="home-title">娄宿三的小站</h1>
@@ -267,9 +271,11 @@ function HeroPanel({
         </div>
       </div>
 
+      <HeroRail />
+
       <section className="home-bg" aria-label="home background">
         <img
-          className={`home-bg__image ${canUseVideo && isVideoLoaded ? 'is-soft' : ''} ${canUseVideo && isVideoVisible ? 'is-hidden' : ''}`}
+          className="home-bg__image"
           src={imageSrc}
           alt=""
           aria-hidden="true"
@@ -279,12 +285,12 @@ function HeroPanel({
         {shouldRenderVideo && (
           <video
             ref={videoRef}
-            className={`home-bg__video ${isVideoLoaded ? 'is-primed' : ''} ${isVideoVisible ? 'is-visible' : ''}`}
+            className={`home-bg__video ${isVideoVisible ? 'is-visible' : ''}`}
             autoPlay
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             aria-hidden="true"
             onLoadStart={() => {
               setIsVideoLoaded(false)
