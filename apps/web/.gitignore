@@ -29,3 +29,6 @@ output/playwright
 *.njsproj
 *.sln
 *.sw?
+
+# E2E 验收产物（报告 / 关键节点截图）
+output/e2e-report

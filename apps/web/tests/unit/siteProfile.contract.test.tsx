@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 import type { SiteProfile } from '../../src/config/siteProfile'
 import BlogSidebar from '../../src/components/Blog/ArticleList/BlogSidebar'
-import IntroPanel from '../../src/components/HomePanels/IntroPanel'
+import IntroPanel from '../../src/pages/Information/components/IntroPanel'
 
 vi.mock('@lobehub/icons', () => ({
   Bilibili: () => <span />,

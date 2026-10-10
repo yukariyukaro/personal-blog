@@ -41,7 +41,7 @@ export default function ArticleReader() {
 
   return (
     <section
-      className="blog-reader"
+      className="blog-reader article-reader-page"
       aria-label="文章内容"
     >
       <div className="blog-reader__backdrop" aria-hidden="true" />

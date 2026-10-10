@@ -38,12 +38,16 @@ export default function ArticleDocument({
     <>
       <header className="blog-document__header">
         <div>
-          <span>READING</span>
+          <div className="blog-document__index">
+            <span className="blog-document__number">01</span>
+            <span>READING FILE / 阅读档案</span>
+          </div>
           <h2 id="blog-document-title">{article.title}</h2>
         </div>
         <div className="blog-document__header-meta">
+          <span className="blog-document__category">{article.category}</span>
           <time dateTime={article.publishedAt}>{article.publishedAt}</time>
-          <span>{article.tags.join(' / ')}</span>
+          <span>{article.wordCount.toLocaleString('zh-CN')} 字 / {article.tags.join(' / ')}</span>
           <button
             className="blog-share-button"
             type="button"
@@ -102,7 +106,8 @@ function ArticleToc({
 }: ArticleTocProps) {
   return (
     <aside className="blog-toc" aria-label="文章目录">
-      <span className="blog-toc__eyebrow">ON THIS PAGE</span>
+      <span className="blog-toc__eyebrow">02 / ON THIS PAGE</span>
+      <span className="blog-toc__caption">档案目录</span>
       <nav>
         {headings.map((heading) => (
           <a

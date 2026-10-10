@@ -1,121 +1,86 @@
 .scroll-indicator {
+  --scroll-accent: var(--home-accent, #68e0d1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   position: fixed;
-  bottom: 4vh;
+  bottom: max(1rem, env(safe-area-inset-bottom));
   left: 50%;
-  transform: translate(-50%, 10px);
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  opacity: 0;
-  padding: 0;
-  color: inherit;
-  background: transparent;
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  min-width: 4.5rem;
+  min-height: 2.75rem;
+  padding: 0.4rem 0.7rem;
   border: 0;
-  transition:
-    opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0;
+  background: transparent;
+  color: #eff5e8;
+  opacity: 0;
+  transform: translate(-50%, 0.5rem);
+  transition: opacity 250ms var(--ease-out), transform 250ms var(--ease-out);
   pointer-events: none;
 }
 
-.scroll-indicator--visible {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
+.scroll-indicator--visible { opacity: 1; transform: translate(-50%, 0); }
+.scroll-indicator--hidden { opacity: 0; transform: translate(-50%, 0.5rem); }
+.scroll-indicator--interactive.scroll-indicator--visible { cursor: pointer; pointer-events: auto; }
+.scroll-indicator--interactive:focus-visible { outline: 2px solid var(--scroll-accent); outline-offset: 3px; }
 
-.scroll-indicator--hidden {
-  opacity: 0;
-  transform: translate(-50%, 10px);
-}
-
-.scroll-indicator--interactive.scroll-indicator--visible {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.scroll-indicator--interactive:focus-visible {
-  outline: 2px solid #53d7df;
-  outline-offset: 8px;
-}
-
-.scroll-indicator--interactive:hover .scroll-mouse {
-  border-color: #8ceaf0;
-  box-shadow:
-    0 0 16px rgba(83, 215, 223, 0.42),
-    0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.scroll-mouse {
-  width: 22px;
-  height: 34px;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  border-radius: 12px;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.scroll-mouse::before {
+.scroll-beacon { position: relative; display: block; width: 1.75rem; height: 1.75rem; }
+.scroll-beacon svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.scroll-beacon__frame { fill: none; stroke: rgba(228, 240, 222, 0.7); stroke-width: 1.2; }
+.scroll-beacon__star { fill: var(--scroll-accent); }
+.scroll-beacon__axis { fill: none; stroke: var(--scroll-accent); stroke-width: 1.4; }
+.scroll-beacon::after {
   content: '';
   position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 6px;
-  background: #fff;
-  border-radius: 2px;
-  animation: scroll-wheel 1.5s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
+  inset: -0.2rem;
+  border: 1px solid var(--scroll-accent);
+  opacity: 0.2;
+  transform: rotate(45deg) scale(0.92);
+  animation: scroll-beacon-pulse 2400ms var(--ease-in-out) infinite;
 }
 
-.scroll-text {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+.scroll-text { color: #edf4e8; font-family: var(--mono, Consolas, monospace); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-shadow: 0 1px 6px #06100b; }
+.scroll-text__desktop { display: none; }
+.scroll-text__mobile { font-family: 'SmileySans', sans-serif; font-size: 0.8rem; letter-spacing: 0.16em; }
+.scroll-chevron { display: block; width: 1.6rem; height: 1.1rem; color: var(--scroll-accent); }
+.scroll-chevron svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.scroll-chevron path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; opacity: 0.45; }
+.scroll-chevron__first { animation: scroll-chevron-flow 1800ms linear infinite; }
+.scroll-chevron__second { animation: scroll-chevron-flow 1800ms linear 220ms infinite; }
+.scroll-indicator--hidden *,
+.scroll-indicator--hidden *::after { animation-play-state: paused; }
+
+@keyframes scroll-chevron-flow {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  35% { opacity: 1; transform: translateY(2px); }
+  70% { opacity: 0.35; transform: translateY(4px); }
 }
 
-@keyframes scroll-wheel {
-  0% {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, 10px);
-    opacity: 0;
-  }
+@keyframes scroll-beacon-pulse {
+  0%, 100% { opacity: 0.16; transform: rotate(45deg) scale(0.92); }
+  50% { opacity: 0.42; transform: rotate(45deg) scale(1.07); }
+}
+
+@media (width >= 768px) {
+  .scroll-indicator { bottom: 1.5rem; gap: 0.4rem; }
+  .scroll-beacon { width: 2rem; height: 2rem; }
+  .scroll-text__desktop { display: inline; }
+  .scroll-text__mobile { display: none; }
+  .scroll-chevron { width: 1.85rem; height: 1.25rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scroll-indicator--interactive:hover .scroll-beacon__frame { stroke: var(--scroll-accent); }
+  .scroll-indicator--interactive:hover .scroll-text { color: var(--scroll-accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-indicator {
-    transition-duration: 0.01ms !important;
-  }
-
-  .scroll-mouse::before {
-    animation: none !important;
-    opacity: 1 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .scroll-indicator {
-    bottom: 2vh;
-    transform: translate(-50%, 10px) scale(0.8);
-  }
-  .scroll-indicator--visible {
-    transform: translate(-50%, 0) scale(0.8);
-  }
-  .scroll-indicator--hidden {
-    transform: translate(-50%, 10px) scale(0.8);
-  }
-  .scroll-text {
-    font-family: 'SmileySans', system-ui, sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-  }
+  .scroll-indicator { transition: none; transform: translateX(-50%); }
+  .scroll-beacon::after,
+  .scroll-chevron path { animation: none; }
+  .scroll-beacon::after { opacity: 0.25; transform: rotate(45deg); }
+  .scroll-chevron path { opacity: 0.8; }
 }

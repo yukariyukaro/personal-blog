@@ -20,13 +20,20 @@ export default defineConfig({
         open: 'never',
       },
     ],
+    // 机器可读的 Markdown 验收报告：AI 只读它即可，不必打开页面或通读整页截图。
+    ['./tests/reporters/acceptance-report.ts'],
   ],
   use: {
     baseURL,
     locale: 'zh-CN',
     reducedMotion: 'reduce',
     screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    // 常规记录 DOM + aria 快照即可被文本工具读取；screen 体积最大，只在确实需要像素证据时单独开启。
+    trace: {
+      mode: 'retain-on-failure',
+      snapshots: { dom: true, aria: true, screen: false },
+      screenshots: false,
+    },
     video: 'retain-on-failure',
   },
   expect: {

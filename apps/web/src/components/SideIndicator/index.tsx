@@ -1,51 +1,29 @@
-import { useEffect, useState } from 'react';
-import './SideIndicator.css';
-
-// 移动端做装饰减法：竖排指示条整体不渲染（规范约定 JS 早退 + CSS display:none 兜底）
-const MOBILE_BREAKPOINT = 768;
+import './SideIndicator.css'
 
 interface SideIndicatorProps {
-  currentIndex: number;
-  total: number;
-  titles: { en: string; zh: string }[];
+  currentIndex: number
+  total: number
+  titles: { en: string; zh: string }[]
 }
 
 export default function SideIndicator({ currentIndex, total, titles }: SideIndicatorProps) {
-  const [isMobile, setIsMobile] = useState(
-    () => window.innerWidth <= MOBILE_BREAKPOINT,
-  );
-
-  useEffect(() => {
-    const updateViewport = () => {
-      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-    };
-    window.addEventListener('resize', updateViewport);
-    return () => window.removeEventListener('resize', updateViewport);
-  }, []);
-
-  if (isMobile) {
-    return null;
-  }
-
-  const currentTitle = titles[currentIndex];
+  const currentTitle = titles[currentIndex]
 
   return (
     <aside className="side-indicator" aria-label="Panel Navigation Indicator">
-      <div className="side-indicator__inner" key={currentIndex}>
+      <span className="side-indicator__register">PERSONAL<br />ARCHIVE</span>
+      <div className="side-indicator__inner">
         <div className="side-indicator__numbers">
-          <span className="side-indicator__current">
-            {String(currentIndex + 1).padStart(2, '0')}
-          </span>
-          <span className="side-indicator__divider">//</span>
-          <span className="side-indicator__total">
-            {String(total).padStart(2, '0')}
-          </span>
+          <span className="side-indicator__current">{String(currentIndex).padStart(2, '0')}</span>
+          <span className="side-indicator__sequence">/ {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}<small>LOUSUSAN</small></span>
         </div>
         <div className="side-indicator__text">
           <div className="side-indicator__title-en">{currentTitle.en}</div>
           <div className="side-indicator__title-zh">{currentTitle.zh}</div>
         </div>
       </div>
+      <span className="side-indicator__mark" aria-hidden="true">✦</span>
+      <span className="side-indicator__bottom">FIELD RECORD — {String(currentIndex).padStart(2, '0')}</span>
     </aside>
-  );
+  )
 }

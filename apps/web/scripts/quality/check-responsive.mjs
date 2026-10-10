@@ -14,10 +14,6 @@ export const LEGACY_BREAKPOINTS = new Map([
       'src/components/MarkdownEditor/index.tsx',
     ]),
   ],
-  [
-    1200,
-    new Set(['src/components/HomePanels/DetailPanel/DetailPanelCard.css']),
-  ],
 ])
 
 /** width / min-width 的固定像素上限，超过该值视为移动端横向溢出风险 */

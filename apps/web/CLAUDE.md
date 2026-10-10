@@ -32,15 +32,17 @@ pnpm run preview  # Preview production build locally
 
 ## 响应式设计（强制）
 
-任何 Web 端 UI 改动都必须同时完成移动端适配，规范见 [.trae/rules/responsive-design.md](.trae/rules/responsive-design.md)（含断点口径、组件三档行为映射、反模式清单）。
+任何 Web 端 UI 改动都必须同时完成移动端适配，规范见 [.trae/rules/responsive-design.md](.trae/rules/responsive-design.md)（含断点口径、组件三档行为映射、反模式清单）。文字字号、缩放补偿、对比和容纳空间必须遵守 [设计可读性规范](../../docs/agents/design-system.md)，不能以构图为由把主要内容缩成微字。
 
-- **断点**：只允许 `768 / 1024 / 1440px`（与 `playwright.config.ts` 的 1440 / 834 / 390 三档视口对齐）。`1180 / 1200px` 是已登记的历史遗留，禁止扩散到其它文件。
+- **断点**：只允许 `768 / 1024 / 1440px`（与 `playwright.config.ts` 的 1440 / 834 / 390 三档视口对齐）。编辑器 `1180px` 是已登记的历史遗留，禁止扩散；作品页旧 `1200px` 已退役。
 - **验证**：
 
   ```bash
-  pnpm run check:responsive              # 静态守卫：断点 / px 字号 / 固定宽度 / 内联尺寸
-  pnpm run test:e2e -- blog-responsive   # 三档视口契约（1440 / 834 / 390）
+  pnpm run check:responsive                            # 静态守卫：断点 / px 字号 / 固定宽度 / 内联尺寸
+  pnpm exec playwright test blog-responsive.spec.ts    # 三档视口契约（1440 / 834 / 390）
   ```
+
+  Web 验证以 Playwright E2E 为主，不默认做人工视觉验收或批量读截图。**验收先读运行产物 `output/e2e-report/summary.md`**（结论、失败项、动作时间线、截图索引），不自己打开页面；覆盖义务与产物契约见 [docs/agents/e2e-testing.md](../../docs/agents/e2e-testing.md)，测试筛选、变更复验与子代理结束条件见 [docs/agents/verification-workflow.md](../../docs/agents/verification-workflow.md)。
 
 - `check:responsive` 已接入 `pnpm run check`，违反规则会直接失败。
 - 新增组件或页面时，在规范文档的「组件响应式行为映射」表补一行；若引入新的布局结构（多栏 / 浮层 / 抽屉），在 `tests/e2e/blog-responsive.spec.ts` 的 `响应式契约` 中补对应断言。
@@ -57,7 +59,7 @@ This is a personal blog built with React 19 + Vite 8 + TypeScript. Key architect
 
 ### UI Framework
 - Radix UI Themes for component library (dark theme, teal accent, slate gray)
-- Custom CSS files alongside components (e.g., `Navbar.css`, `home.css`)
+- Custom CSS files alongside components (e.g., `Navbar.css`, `HomePage.css`)
 - Global loading screen defined in `index.html` (removed by `AppBootstrap.tsx` once the critical font is ready)
 
 ### Asset Handling
@@ -66,15 +68,8 @@ This is a personal blog built with React 19 + Vite 8 + TypeScript. Key architect
 - Base URL auto-detected from `GITHUB_REPOSITORY` env var for GitHub Pages deployment
 
 ### Pages Structure
-Each page is a folder with `index.tsx` and optional CSS:
-```
-src/pages/
-├── index.tsx          # Redirect to /Home
-├── [...all].tsx       # 404 fallback
-└── Home/
-    ├── index.tsx
-    └── home.css
-```
+页面按体量分级，页面私有组件 / hook / 页面级样式分别放 `components/`、`hooks/`、`styles/`（薄页面不加子目录）。
+完整槽位规范与归属判据见 [docs/agents/frontend-structure.md](../../docs/agents/frontend-structure.md)。
 
 To add a new page: create `src/pages/NewPage/index.tsx` and export a default component.
 

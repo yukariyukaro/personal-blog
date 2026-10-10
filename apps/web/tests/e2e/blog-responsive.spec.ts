@@ -204,6 +204,35 @@ async function expectMobileLayout(page: Page) {
 }
 
 test.describe('响应式契约', () => {
+  test('首页标题、档案栏与居中滚动提示互不遮挡', async ({ page }) => {
+    await openReadyBlog(page)
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    const hero = page.getByRole('region', { name: 'home hero panel' })
+    await expect(hero.getByRole('heading', { name: '娄宿三的小站' })).toBeVisible()
+    await expect(page.locator('.home-quote-text')).toHaveText('爱自己，是终身浪漫的开始。')
+    await expect(page.locator('.home-frame, .hamal-mark, .home-welcome-copy')).toHaveCount(0)
+
+    const geometry = await page.evaluate(() => {
+      const info = document.querySelector('.home-info-container')!
+      const rail = document.querySelector('.hero-rail')!
+      const prompt = document.querySelector('.scroll-indicator')!
+      const infoRect = info.getBoundingClientRect()
+      const railRect = rail.getBoundingClientRect()
+      const promptRect = prompt.getBoundingClientRect()
+      const links = Array.from(rail.querySelectorAll('a')).map((link) => link.getBoundingClientRect())
+      return {
+        fits: document.documentElement.scrollWidth <= innerWidth,
+        centered: Math.abs(promptRect.x + promptRect.width / 2 - innerWidth / 2) < 1,
+        infoFits: infoRect.left >= 0 && infoRect.right <= innerWidth,
+        railFits: railRect.left >= 0 && railRect.right <= innerWidth && railRect.bottom <= innerHeight,
+        regionsSeparate: innerWidth < 768 ? infoRect.bottom <= railRect.top && railRect.bottom <= promptRect.top : infoRect.right <= railRect.left,
+        touchTargets: links.every((rect) => rect.width >= 44 && rect.height >= 44) && promptRect.width >= 44 && promptRect.height >= 44,
+      }
+    })
+    expect(geometry).toEqual({ fits: true, centered: true, infoFits: true, railFits: true, regionsSeparate: true, touchTargets: true })
+    await expect(page.locator('.scroll-text__mobile')).toBeVisible({ visible: page.viewportSize()!.width < 768 })
+  })
+
   test('当前项目符合对应视口的布局与交互', async ({ page }, testInfo) => {
     await openReadyBlog(page)
 
@@ -220,6 +249,182 @@ test.describe('响应式契约', () => {
       default:
         throw new Error(`未覆盖的响应式测试项目：${testInfo.project.name}`)
     }
+  })
+
+  test('介绍页保留人物叠层与右侧竖栏，三档内容完整', async ({ page }) => {
+    await page.goto('/#/Information')
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: '娄宿三', exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: '复制邮箱' })).toBeVisible()
+    const rail = page.getByRole('complementary', { name: 'Panel Navigation Indicator' })
+    const width = page.viewportSize()!.width
+    await expect(rail).toBeVisible({ visible: width >= 768 })
+    const geometry = await page.evaluate(() => {
+      const card = document.querySelector('.intro-panel__card')!.getBoundingClientRect()
+      const art = document.querySelector('.intro-panel__visual')!.getBoundingClientRect()
+      const rail = document.querySelector('.side-indicator')!.getBoundingClientRect()
+      return {
+        pageFits: document.documentElement.scrollWidth <= innerWidth,
+        cardFits: card.left >= 0 && card.right <= innerWidth,
+        desktopComposition: innerWidth < 1024 || card.right <= art.left + 50,
+        railSeparate: innerWidth < 768 || card.right <= rail.left,
+        mobileArtBelow: innerWidth >= 768 || art.top >= card.bottom,
+      }
+    })
+    expect(geometry).toEqual({ pageFits: true, cardFits: true, desktopComposition: true, railSeparate: true, mobileArtBelow: true })
+    const links = await page.locator('.intro-panel__social').evaluateAll(elements => elements.map(element => {
+      const rect = element.getBoundingClientRect()
+      return rect.width >= 44 && rect.height >= 44
+    }))
+    expect(links.every(Boolean)).toBe(true)
+  })
+
+  test('作品目录完整命名，三档目录与卡组布局不遮挡、不横向溢出', async ({ page }) => {
+    await page.goto('/#/Portfolio')
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    await page.evaluate(() => document.fonts.ready)
+    const directory = page.locator('.portfolio-directory')
+    const cards = page.locator('.portfolio-card:not([hidden])')
+    await expect(directory).toBeVisible()
+    await expect(cards).toHaveCount(3)
+    await expect(page.locator('.portfolio-card--slot--1')).toBeVisible()
+    await expect(page.locator('.portfolio-card--slot-1')).toBeVisible()
+    await expect(page.locator('.portfolio-directory__item strong')).toHaveText([
+      'Triple Uni', '2025年度总结', '愚公迁移工具', '火山引擎ByteHouse 官网',
+    ])
+    await expect(page.locator('.portfolio-directory__item small')).toHaveText([
+      'COMMUNITY PLATFORM', '2025 YEAR IN REVIEW', 'YUGONG / BYTEHOUSE', 'CLOUD NATIVE / WEBSITE',
+    ])
+    const geometry = await page.evaluate(() => {
+      const stage = document.querySelector('.portfolio-stage')!.getBoundingClientRect()
+      const directory = document.querySelector('.portfolio-directory')!.getBoundingClientRect()
+      const carousel = document.querySelector('.portfolio-carousel')!.getBoundingClientRect()
+      const card = document.querySelector('.portfolio-card.is-active')!.getBoundingClientRect()
+      const status = document.querySelector('.portfolio-carousel__status')!.getBoundingClientRect()
+      const rail = document.querySelector('.side-indicator')!.getBoundingClientRect()
+      const fits = (rect: DOMRect) => rect.left >= 0 && rect.right <= innerWidth
+      const targets = [...document.querySelectorAll('.portfolio-directory__item, .portfolio-arrow')]
+      return {
+        pageFits: document.documentElement.scrollWidth <= innerWidth,
+        stageFits: fits(stage),
+        directoryFits: fits(directory),
+        centralCardFits: fits(card) && card.left >= stage.left && card.right <= stage.right,
+        regionsSeparate: innerWidth < 1024 ? directory.bottom <= carousel.top : directory.right <= carousel.left,
+        statusBelowCard: status.top >= card.bottom,
+        railSeparate: innerWidth < 768 || stage.right <= rail.left,
+        touchTargets: targets.every(element => {
+          const rect = element.getBoundingClientRect()
+          return rect.width >= 44 && rect.height >= 44 && fits(rect)
+        }),
+      }
+    })
+    expect(geometry).toEqual({
+      pageFits: true, stageFits: true, directoryFits: true, centralCardFits: true,
+      regionsSeparate: true, statusBelowCard: true, railSeparate: true, touchTargets: true,
+    })
+  })
+
+  test('作品档案支持邻卡、箭头、键盘切换及详情导航', async ({ page }) => {
+    await page.goto('/#/Portfolio')
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    const stage = page.locator('.portfolio-stage')
+    const activeCard = page.locator('.portfolio-card.is-active')
+    await expect(stage).toHaveAttribute('data-phase', 'idle')
+    await expect(activeCard).toContainText('Triple Uni')
+    await page.getByRole('button', { name: '下一个作品', exact: true }).click()
+    await expect(activeCard).toContainText('2025年度总结')
+    const neighbor = page.locator('.portfolio-card--slot-1')
+    await neighbor.scrollIntoViewIfNeeded()
+    const neighborBox = await neighbor.boundingBox()
+    await page.mouse.click(Math.min(page.viewportSize()!.width - 25, neighborBox!.x + neighborBox!.width - 20), neighborBox!.y + neighborBox!.height * 0.32)
+    await expect(activeCard).toContainText('愚公迁移工具')
+    await page.getByRole('region', { name: 'portfolio detail panel' }).focus()
+    await page.keyboard.press('ArrowLeft')
+    await expect(activeCard).toContainText('2025年度总结')
+    await activeCard.click()
+    await expect(page).toHaveURL(/project=annual-report/)
+    await expect(stage).toHaveClass(/portfolio-stage--detail/)
+    await expect(stage).toHaveAttribute('data-phase', 'idle')
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('2025年度总结')
+    await expect(page.locator('.portfolio-directory')).toBeHidden()
+    await expect(page.locator('.portfolio-carousel')).toBeHidden()
+    await expect(page.locator('.portfolio-directory__preview')).toBeHidden()
+    await expect(page.locator('.portfolio-details__link')).toHaveAttribute('href', 'https://yukariyukaro.github.io/2025EndYearReport/')
+    await page.getByRole('button', { name: '下一个项目', exact: true }).click()
+    await expect(page).toHaveURL(/project=yugong$/)
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('愚公迁移工具')
+    await page.getByRole('button', { name: '上一个项目', exact: true }).click()
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('2025年度总结')
+    await page.getByRole('button', { name: '返回档案' }).click()
+    await expect(page).toHaveURL(/\/#\/Portfolio$/)
+    await expect(activeCard).toContainText('2025年度总结')
+    await expect(activeCard).toBeFocused()
+    await page.locator('.portfolio-directory__item').nth(2).click()
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('愚公迁移工具')
+    await page.reload()
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('愚公迁移工具')
+    await expect(page.locator('.portfolio-directory')).toBeHidden()
+    await expect(page.locator('.portfolio-carousel')).toBeHidden()
+    const geometry = await page.evaluate(() => {
+      const panel = document.querySelector('.portfolio-stage')!.getBoundingClientRect()
+      const details = document.querySelector('.portfolio-details')!.getBoundingClientRect()
+      const rail = document.querySelector('.side-indicator')!.getBoundingClientRect()
+      return {
+        pageFits: document.documentElement.scrollWidth <= innerWidth,
+        panelFits: panel.left >= 0 && panel.right <= innerWidth,
+        railSeparate: innerWidth < 768 || details.right <= rail.left,
+      }
+    })
+    expect(geometry).toEqual({ pageFits: true, panelFits: true, railSeparate: true })
+  })
+
+  test('精确指针轮播滚轮节流，三档详情导航不残留其他项目的图片', async ({ page }, testInfo) => {
+    await page.goto('/#/Portfolio')
+    await expect(page.locator('#global-loading')).toHaveCount(0)
+    const stage = page.locator('.portfolio-stage')
+    const activeCard = page.locator('.portfolio-card.is-active')
+    if (testInfo.project.name === 'desktop-chromium') {
+      // 同批输入保持在节流窗口内，避免 expect 等待消耗手势窗口。
+      await stage.dispatchEvent('wheel', { deltaY: 120, deltaMode: 0 })
+      await stage.dispatchEvent('wheel', { deltaY: 120, deltaMode: 0 })
+    } else {
+      await page.getByRole('button', { name: '下一个作品', exact: true }).click()
+    }
+    await expect(activeCard).toContainText('2025年度总结')
+    await page.getByRole('button', { name: '下一个作品', exact: true }).click()
+    await expect(activeCard).toContainText('愚公迁移工具')
+    await expect(activeCard.locator('.portfolio-card__tape')).toBeVisible()
+    await expect(page.locator('.detail-menu__preview-container')).toHaveCount(0)
+    await activeCard.click()
+    const artwork = page.locator('.portfolio-details__art')
+    await expect(artwork.locator('img')).toHaveCount(0)
+    await expect(artwork.getByRole('img', { name: '愚公迁移工具原创几何封面，非产品截图' })).toBeVisible()
+    await expect(page.locator('.portfolio-directory__preview')).toBeHidden()
+    await page.getByRole('button', { name: '上一个项目', exact: true }).click()
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('2025年度总结')
+    await expect(artwork.locator('img')).toHaveAttribute('src', /YearReport/)
+    await page.getByRole('button', { name: '上一个项目', exact: true }).click()
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('Triple Uni')
+    await expect(artwork.locator('img')).toHaveAttribute('src', /TripleUni/)
+    await page.getByRole('button', { name: '上一个项目', exact: true }).click()
+    await expect(page.locator('#portfolio-detail-title')).toHaveText('火山引擎ByteHouse 官网')
+    await expect(page).toHaveURL(/project=bytehouse$/)
+    await expect(artwork.locator('img')).toHaveCount(0)
+    await expect(artwork.getByRole('img', { name: '火山引擎ByteHouse 官网原创几何封面，非产品截图' })).toBeVisible()
+    await expect(artwork.getByRole('img', { name: '愚公迁移工具原创几何封面，非产品截图' })).toHaveCount(0)
+    await expect(page.locator('.portfolio-directory')).toBeHidden()
+  })
+
+  test('阅读页与未找到页面三档不横向溢出', async ({ page }) => {
+    await openReadyArticle(page, 'abstraction')
+    await expect(page.locator('.markdown-body')).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.goto('/#/missing-page')
+    await expect(page.getByRole('heading', { name: '档案未找到。' })).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.getByRole('link', { name: '返回首页 / HOME' }).click()
+    await expect(page).toHaveURL(/\/#\/Home$/)
   })
 
   test('移动端文章页正文可读且不横向溢出', async ({ page }, testInfo) => {

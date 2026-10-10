@@ -63,7 +63,7 @@ test('符合主干断点的样式与脚本不报错', async (context) => {
   const root = await createTestRoot(context)
   await writeSource(
     root,
-    'src/pages/Home/HomePage.css',
+    'src/pages/Home/styles/HomePage.css',
     [
       '@media (max-width: 768px) {',
       '  .home-page__hero {',
@@ -91,22 +91,34 @@ test('拒绝非主干断点，但放行登记的遗留断点', async (context) =
   const root = await createTestRoot(context)
   await writeSource(
     root,
-    'src/pages/Home/HomePage.css',
+    'src/pages/Home/styles/HomePage.css',
     '@media (max-width: 900px) {\n  .a { color: red; }\n}\n',
   )
   await writeSource(
     root,
-    'src/components/HomePanels/DetailPanel/DetailPanelCard.css',
-    '@media (max-width: 1200px) {\n  .a { color: red; }\n}\n',
+    'src/components/MarkdownEditor/MarkdownEditorLayout.css',
+    '@media (max-width: 1180px) {\n  .a { color: red; }\n}\n',
   )
 
   const violations = await findResponsiveViolations(root)
 
   assert.deepEqual(
     violations.map((violation) => [violation.path, violation.line]),
-    [['src/pages/Home/HomePage.css', 1]],
+    [['src/pages/Home/styles/HomePage.css', 1]],
   )
   assert.match(violations[0].message, /非主干断点 900px/)
+})
+
+test('作品场景不再保留 1200px 遗留断点', async (context) => {
+  const root = await createTestRoot(context)
+  await writeSource(
+    root,
+    'src/pages/Portfolio/components/PortfolioStage/PortfolioStage.css',
+    '@media (max-width: 1200px) {\n  .a { color: red; }\n}\n',
+  )
+  const violations = await findResponsiveViolations(root)
+  assert.equal(violations.length, 1)
+  assert.match(violations[0].message, /非主干断点 1200px/)
 })
 
 test('拒绝写死 px 的字号与过大的固定宽度', async (context) => {

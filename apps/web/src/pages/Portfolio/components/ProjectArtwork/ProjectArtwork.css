@@ -1,0 +1,123 @@
+.project-artwork {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.project-artwork--graphic {
+  --artwork-ink: #0e2119;
+  --artwork-paper: #bfd0ae;
+  --artwork-accent: #ccd98b;
+  --artwork-line: #6e8a68;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: var(--artwork-accent);
+  background: var(--artwork-ink);
+}
+
+/* The host owns the frame: one drawing fits covers, previews and detail plates. */
+span.project-artwork.project-artwork--graphic > svg.project-artwork__drawing {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.project-artwork__drawing .project-artwork__paper {
+  fill: var(--artwork-ink);
+}
+
+.project-artwork__drawing .project-artwork__registration {
+  stroke: var(--artwork-line);
+  stroke-width: 1;
+  opacity: 0.65;
+}
+
+.project-artwork__drawing .project-artwork__construction {
+  stroke: var(--artwork-line);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.project-artwork__drawing .project-artwork__dot {
+  fill: var(--artwork-paper);
+  opacity: 0.24;
+}
+
+.project-artwork__drawing .project-artwork__engraving {
+  stroke: var(--artwork-ink);
+  stroke-width: 2;
+  opacity: 0.65;
+}
+
+.project-artwork__drawing .project-artwork__orbit {
+  stroke: var(--artwork-paper);
+  stroke-width: 1.75;
+}
+
+.project-artwork__drawing .project-artwork__orbit-front {
+  stroke: var(--artwork-paper);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.project-artwork__drawing .project-artwork__shadow {
+  fill: #050f0b;
+  stroke: var(--artwork-line);
+  stroke-width: 1;
+}
+
+.project-artwork__drawing .project-artwork__solid {
+  fill: var(--artwork-accent);
+}
+
+.project-artwork__drawing .project-artwork__incision {
+  stroke: var(--artwork-ink);
+  stroke-width: 1.5;
+}
+
+.project-artwork__drawing .project-artwork__fine {
+  stroke: var(--artwork-paper);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+.project-artwork__drawing .project-artwork__left-face {
+  fill: #738866;
+}
+
+.project-artwork__drawing .project-artwork__right-face {
+  fill: #263c2c;
+}
+
+.project-artwork__drawing .project-artwork__top-face {
+  fill: #183225;
+  stroke: var(--artwork-line);
+  stroke-width: 1;
+}
+
+.project-artwork__drawing .project-artwork__top-face--lit {
+  fill: #41563a;
+  stroke: var(--artwork-paper);
+}
+
+.project-artwork__drawing .project-artwork__shelf {
+  stroke: var(--artwork-paper);
+  stroke-width: 2;
+}
+
+.project-artwork__code {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.9rem;
+  left: 1rem;
+  max-width: 100%;
+  color: #dbe9d3;
+  font: 0.75rem / 1.5 var(--mono, monospace);
+  letter-spacing: 0.07em;
+  text-align: center;
+  overflow-wrap: anywhere;
+}

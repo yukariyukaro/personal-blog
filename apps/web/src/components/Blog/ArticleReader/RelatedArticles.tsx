@@ -17,7 +17,7 @@ export default function RelatedArticles({
   return (
     <section className="related-articles" aria-labelledby="related-articles-title">
       <div className="related-articles__heading">
-        <span className="blog-toc__eyebrow">KEEP EXPLORING</span>
+        <span className="blog-toc__eyebrow">03 / KEEP EXPLORING</span>
         <h3 id="related-articles-title">继续阅读</h3>
       </div>
       <div className="related-articles__list">

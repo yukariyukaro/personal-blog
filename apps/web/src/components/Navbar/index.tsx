@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   navigationItems,
   type NavigationItemId,
-} from '../../app/navigation/navigationConfig'
+} from '../../config/navigationConfig'
 import { siteProfile } from '../../config/siteProfile'
 import MusicToggle from '../MusicToggle'
 import './Navbar.css'

@@ -22,7 +22,16 @@ const defaultBase = hasCustomDomain
     : "/";
 const base = normalizeBase(process.env.VITE_BASE_URL ?? defaultBase);
 
+export const PAGE_ROUTE_EXCLUDES = [
+  "node_modules",
+  ".git",
+  "**/__*__/**",
+  "**/{components,hooks,utils,styles}/**",
+  "**/*.{test,spec}.{ts,tsx,js,jsx}",
+  "**/*.d.ts",
+];
+
 export default defineConfig({
   base,
-  plugins: [react(), Pages()],
+  plugins: [react(), Pages({ exclude: PAGE_ROUTE_EXCLUDES })],
 });

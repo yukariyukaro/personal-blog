@@ -1,0 +1,32 @@
+.not-found-page {
+  --accent: #b4ee83;
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding: 2rem 1.25rem;
+  background: radial-gradient(ellipse at 15% 40%, rgba(116, 166, 95, 0.12), transparent 65%), #0c1510;
+  color: #f0f2ed;
+}
+.not-found-file { width: min(100%, 72rem); margin-inline: auto; }
+.not-found-file__header,
+.not-found-file__footer { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding-block: 1rem; border-block: 1px solid rgba(219, 228, 211, 0.2); font: var(--font-label) / 1.5 var(--mono); color: #a5b49c; letter-spacing: 0.07em; }
+.not-found-file__label { color: var(--accent); }
+.not-found-file__body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: 3rem; }
+.not-found-file__graphic { position: relative; display: grid; justify-items: center; align-content: center; min-height: 15rem; border: 1px solid rgba(219, 228, 211, 0.1); background: repeating-linear-gradient(45deg, transparent 0 3rem, rgba(219, 228, 211, 0.055) 3rem calc(3rem + 1px), transparent calc(3rem + 1px) 6rem); }
+.not-found-file__number { font: 500 clamp(7rem, 20vw, 15rem)/1 'Oswald', var(--sans); color: transparent; -webkit-text-stroke: 1px var(--accent); }
+.not-found-file__stamp { position: absolute; bottom: 2rem; padding: 0.4rem 0.7rem; font: var(--font-label) / 1.5 var(--mono); letter-spacing: 0.1em; color: #0c1510; background: var(--accent); }
+.not-found-file__message { align-self: center; min-width: 0; }
+.not-found-file__eyebrow { font: var(--font-label) / 1.5 var(--mono); color: var(--accent); letter-spacing: 0.1em; }
+.not-found-file__message h1 { margin: 1rem 0; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.2; }
+.not-found-file__message h1 > span { color: var(--accent); }
+.not-found-file__description { color: #bdcdb5; font-size: 1rem; line-height: 1.8; }
+.not-found-file__return { display: flex; align-items: center; justify-content: space-between; gap: 2rem; min-height: 2.75rem; width: fit-content; margin-top: 2rem; padding: 0.85rem 1.25rem; border: 1px solid var(--accent); font-size: var(--font-control); }
+.not-found-file__return > span:last-child { color: var(--accent); }
+@media (width >= 768px) {
+  .not-found-page { padding: 3rem 5vw; }
+  .not-found-file__body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; }
+  .not-found-file__graphic { min-height: 25rem; }
+}
+@media (hover: hover) {
+  .not-found-file__return:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+}

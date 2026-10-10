@@ -2,6 +2,7 @@ import { readdir, readFile } from 'node:fs/promises'
 import { extname, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+// 仅约束脚本与组件代码；样式表不设行数上限（长样式表属正常形态）
 const CODE_EXTENSIONS = new Set([
   '.js',
   '.jsx',
@@ -9,9 +10,6 @@ const CODE_EXTENSIONS = new Set([
   '.tsx',
   '.mjs',
   '.cjs',
-  '.css',
-  '.scss',
-  '.styl',
 ])
 const IGNORED_DIRECTORY_NAMES = new Set(['node_modules', 'dist', 'output'])
 const IGNORED_DIRECTORY_PATHS = new Set([

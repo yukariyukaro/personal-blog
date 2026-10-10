@@ -1,4 +1,4 @@
-import IntroPanel from '../../components/HomePanels/IntroPanel'
+import IntroPanel from './components/IntroPanel'
 import PanelPageLayout from '../../components/PanelPageLayout'
 
 function Information() {

@@ -1,12 +1,14 @@
-import DetailPanel from '../../components/HomePanels/DetailPanel'
 import PanelPageLayout from '../../components/PanelPageLayout'
+import PortfolioStage from './components/PortfolioStage'
+import usePortfolioController from './hooks/usePortfolioController'
+import './styles/PortfolioPage.css'
 
 function Portfolio() {
+  const controller = usePortfolioController()
+
   return (
     <PanelPageLayout currentIndex={2}>
-      <section className="home-panel home-panel--current" aria-label="home detail panel">
-        <DetailPanel />
-      </section>
+      <PortfolioStage controller={controller} />
     </PanelPageLayout>
   )
 }

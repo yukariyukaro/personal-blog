@@ -57,30 +57,25 @@ const runCli = (root) =>
 test('代码文件最多允许 500 行', async (context) => {
   const root = await createTestRoot(context)
   await writeLines(root, 'src/valid.ts', 500)
-  await writeLines(root, 'src/invalid.css', 501)
+  await writeLines(root, 'src/invalid.ts', 501)
 
   assert.equal(MAX_CODE_LINES, 500)
   assert.deepEqual(await findOversizedCodeFiles(root), [
-    { path: 'src/invalid.css', lines: 501 },
+    { path: 'src/invalid.ts', lines: 501 },
   ])
 })
 
-test('只检查支持的代码文件并排除生成目录', async (context) => {
+test('只检查脚本与组件代码，放行样式文件并排除生成目录', async (context) => {
   const root = await createTestRoot(context)
-  const extensions = [
-    '.js',
-    '.jsx',
-    '.ts',
-    '.tsx',
-    '.mjs',
-    '.cjs',
-    '.css',
-    '.scss',
-    '.styl',
-  ]
+  const extensions = ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs']
+  const styleExtensions = ['.css', '.scss', '.styl']
 
   await Promise.all([
     ...extensions.map((extension) =>
+      writeLines(root, `src/oversized${extension}`, 501),
+    ),
+    // 样式表不设行数上限
+    ...styleExtensions.map((extension) =>
       writeLines(root, `src/oversized${extension}`, 501),
     ),
     writeLines(root, 'src/article.md', 501),
@@ -107,8 +102,9 @@ test('CLI 根据扫描结果设置退出码并输出超限文件', async (contex
   const root = await createTestRoot(context)
   const validRoot = join(root, 'valid')
   const invalidRoot = join(root, 'invalid')
-  await writeLines(validRoot, 'src/valid.css', 500)
-  await writeLines(invalidRoot, 'src/invalid.css', 501)
+  await writeLines(validRoot, 'src/valid.ts', 500)
+  await writeLines(validRoot, 'src/oversized.css', 900)
+  await writeLines(invalidRoot, 'src/invalid.ts', 501)
 
   assert.deepEqual(await runCli(validRoot), {
     code: 0,
@@ -119,5 +115,5 @@ test('CLI 根据扫描结果设置退出码并输出超限文件', async (contex
   const invalidResult = await runCli(invalidRoot)
   assert.equal(invalidResult.code, 1)
   assert.equal(invalidResult.stdout, '')
-  assert.match(invalidResult.stderr, /src\/invalid\.css: 501 lines/)
+  assert.match(invalidResult.stderr, /src\/invalid\.ts: 501 lines/)
 })

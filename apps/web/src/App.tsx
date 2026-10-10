@@ -2,7 +2,7 @@ import Navbar from './components/Navbar'
 import Live2DWidget from './components/Live2DWidget'
 import { Suspense, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import { navigationItems } from './app/navigation/navigationConfig'
+import { navigationItems } from './config/navigationConfig'
 import { updateSEO } from './utils/seo'
 
 function App() {
